@@ -1907,6 +1907,28 @@
     resizeArkhamCanvas();
     window.addEventListener('resize', resizeArkhamCanvas, { passive: true });
 
+    // Occluder Tiles (Photos, Graphs, Hardware Cards) under which searchlights pass
+    const TILE_SELECTORS = [
+      '.hero__frame',
+      '.machine__frame',
+      '.gallery__card',
+      '.chip-table-wrap',
+      '.bandwidth',
+      '.workload',
+      '.die',
+      '.proof__hero',
+      '.bench',
+      '.spec-table',
+      '.model',
+      '.outro'
+    ].join(',');
+    let occluderElements = [];
+    const refreshOccluders = () => {
+      occluderElements = Array.from(document.querySelectorAll(TILE_SELECTORS));
+    };
+    refreshOccluders();
+    window.addEventListener('resize', refreshOccluders, { passive: true });
+
     // Snowflakes (150 multi-depth particles drifting across full viewport)
     const NUM_SNOW = 150;
     const snowflakes = [];
@@ -2034,6 +2056,37 @@
         aCtx.closePath();
         aCtx.fillStyle = g2;
         aCtx.fill();
+
+        // 1.5. Dynamic Tile Occlusion for Searchlight Beams
+        // Lighthouse beams pass UNDER solid tiles (photos, graphs, hardware cards).
+        // If a tile cuts off only half of the beam, the remaining half shines uninterrupted in the night sky.
+        // Editorial text, titles, and ambient space remain illuminated by the beam.
+        if (occluderElements.length > 0) {
+          aCtx.save();
+          aCtx.globalCompositeOperation = 'destination-out';
+          aCtx.fillStyle = '#000000';
+          for (let i = 0; i < occluderElements.length; i++) {
+            const rect = occluderElements[i].getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < cHeight && rect.right > 0 && rect.left < cWidth) {
+              aCtx.fillRect(rect.left, rect.top, rect.width, rect.height);
+            }
+          }
+          const openDrawer = document.querySelector('.soundtrack-drawer.is-open');
+          if (openDrawer) {
+            const dRect = openDrawer.getBoundingClientRect();
+            if (dRect.bottom > 0 && dRect.top < cHeight && dRect.right > 0 && dRect.left < cWidth) {
+              aCtx.fillRect(dRect.left, dRect.top, dRect.width, dRect.height);
+            }
+          }
+          const activeTooltip = document.querySelector('.pin[aria-expanded="true"] .pin__tooltip');
+          if (activeTooltip) {
+            const tRect = activeTooltip.getBoundingClientRect();
+            if (tRect.bottom > 0 && tRect.top < cHeight && tRect.right > 0 && tRect.left < cWidth) {
+              aCtx.fillRect(tRect.left, tRect.top, tRect.width, tRect.height);
+            }
+          }
+          aCtx.restore();
+        }
       }
 
       // 2. Snowflakes (Full Viewport with Scroll Drift)

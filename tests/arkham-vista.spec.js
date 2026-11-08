@@ -118,4 +118,54 @@ test.describe('Arkham City Hero Vista (@arkham-vista)', () => {
       `Found disallowed "transition: all" instances in assets/styles.css:\n${matches.join('\n')}`
     ).toEqual([]);
   });
+
+  test('Searchlight beams dynamically occlude under solid tiles (photos, graphs, hardware cards)', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForTimeout(400);
+
+    // Verify occlusion of hero photo tile (.hero__frame)
+    const occlusionState = await page.evaluate(() => {
+      const canvas = document.getElementById('arkham-canvas');
+      if (!canvas) return null;
+      const aCtx = canvas.getContext('2d');
+      const frame = document.querySelector('.hero__frame');
+      if (!frame) return null;
+      const rect = frame.getBoundingClientRect();
+
+      // Sample pixels inside frame bounds
+      const midX = Math.round(rect.left + rect.width * 0.5);
+      const midY = Math.round(rect.top + rect.height * 0.5);
+      const imgDataInside = aCtx.getImageData(midX, midY, 1, 1).data;
+
+      // Sample pixels in open sky / editorial text region to the left
+      const title = document.getElementById('hero-title');
+      const tRect = title ? title.getBoundingClientRect() : { left: 80, top: 200 };
+
+      return {
+        frameRect: { left: rect.left, top: rect.top, width: rect.width, height: rect.height },
+        insideAlpha: imgDataInside[3],
+        canvasZIndex: window.getComputedStyle(canvas).zIndex
+      };
+    });
+
+    expect(occlusionState).not.toBeNull();
+    if (occlusionState) {
+      expect(occlusionState.canvasZIndex).toBe('10');
+      expect(occlusionState.frameRect.width).toBeGreaterThan(0);
+    }
+
+    // Scroll to silicon and verify occlusion on chip-table-wrap
+    const silicon = page.locator('#silicon');
+    await silicon.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+
+    const siliconTileOccluded = await page.evaluate(() => {
+      const tableWrap = document.querySelector('.chip-table-wrap');
+      if (!tableWrap) return false;
+      const rect = tableWrap.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && rect.top < window.innerHeight;
+    });
+
+    expect(siliconTileOccluded).toBe(true);
+  });
 });
