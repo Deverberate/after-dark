@@ -1880,6 +1880,375 @@
   }
 
   /* ----------------------------------------------------------------------
+     00 — Comic Prologue: Scrollytelling Rooftop Descent Engine
+     Bat-Signal projection, volumetric storm clouds, procedural lightning,
+     animated comic Batman figures (Gargoyle Crouch & Standing Apex),
+     flocking bats particle swarm, and smooth transition to Hero console.
+  ---------------------------------------------------------------------- */
+  const prologueSection = document.getElementById('prologue');
+  const prologueCanvas = document.getElementById('prologue-canvas');
+  const prologueFlash = document.getElementById('prologue-flash');
+  const prologueCrouch = document.getElementById('prologue-figure-crouch');
+  const prologueStand = document.getElementById('prologue-figure-stand');
+  const headCrouch = document.getElementById('p-head-crouch');
+  const headStand = document.getElementById('p-head-stand');
+  const prologueSkyline = document.querySelector('.prologue__skyline');
+  const prologueStatus = document.getElementById('prologue-status');
+  const pStep1 = document.getElementById('p-step-1');
+  const pStep2 = document.getElementById('p-step-2');
+  const pStep3 = document.getElementById('p-step-3');
+  const prologueSkip = document.getElementById('prologue-skip');
+  const heroTarget = document.getElementById('hero');
+
+  if (prologueSection && prologueCanvas && prologueCanvas.getContext) {
+    const pCtx = prologueCanvas.getContext('2d');
+    let pWidth = window.innerWidth;
+    let pHeight = window.innerHeight;
+
+    const resizePrologueCanvas = () => {
+      pWidth = window.innerWidth;
+      pHeight = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      prologueCanvas.width = pWidth * dpr;
+      prologueCanvas.height = pHeight * dpr;
+      pCtx.setTransform(1, 0, 0, 1, 0, 0);
+      pCtx.scale(dpr, dpr);
+    };
+
+    resizePrologueCanvas();
+    window.addEventListener('resize', resizePrologueCanvas, { passive: true });
+
+    // Lightning State & Procedural Bolt Generator
+    let lightningActive = false;
+    let lightningStartTime = 0;
+    let lightningBolts = [];
+    let lastStage = 1;
+
+    const generateBolt = (x1, y1, x2, y2, displace, depth) => {
+      if (depth <= 0) {
+        return [{ x1, y1, x2, y2 }];
+      }
+      const midX = (x1 + x2) / 2 + (Math.random() - 0.5) * displace;
+      const midY = (y1 + y2) / 2 + (Math.random() - 0.5) * (displace * 0.4);
+      let segments = [];
+      segments = segments.concat(generateBolt(x1, y1, midX, midY, displace * 0.55, depth - 1));
+      segments = segments.concat(generateBolt(midX, midY, x2, y2, displace * 0.55, depth - 1));
+      // Occasional fork branch
+      if (Math.random() < 0.35 && depth > 1) {
+        const forkX = midX + (Math.random() - 0.5) * displace * 0.8;
+        const forkY = midY + Math.random() * displace * 0.6;
+        segments = segments.concat(generateBolt(midX, midY, forkX, forkY, displace * 0.4, depth - 2));
+      }
+      return segments;
+    };
+
+    const triggerLightning = () => {
+      if (prefersReducedMotion()) return;
+      lightningActive = true;
+      lightningStartTime = performance.now();
+
+      // Generate 1-2 prominent lightning branches originating from the clouds
+      const startX = pWidth * (0.35 + Math.random() * 0.4);
+      const startY = pHeight * 0.05;
+      const endX = startX + (Math.random() - 0.5) * pWidth * 0.3;
+      const endY = pHeight * (0.65 + Math.random() * 0.25);
+      lightningBolts = generateBolt(startX, startY, endX, endY, pWidth * 0.12, 5);
+
+      // Trigger screen-level sheet flash overlay (strictly visual, silent)
+      if (prologueFlash) {
+        prologueFlash.classList.add('is-flashing');
+        setTimeout(() => {
+          if (prologueFlash) {
+            prologueFlash.classList.remove('is-flashing');
+            prologueFlash.classList.add('is-strobe');
+            setTimeout(() => {
+              if (prologueFlash) {
+                prologueFlash.classList.remove('is-strobe');
+              }
+            }, 90);
+          }
+        }, 65);
+      }
+
+      // Scatter bats
+      for (let i = 0; i < bats.length; i++) {
+        bats[i].vx += (Math.random() - 0.5) * 4;
+        bats[i].vy -= Math.random() * 3 + 1;
+      }
+    };
+
+    // Ambient lightning timer: fires every 4.8 - 5.8s
+    let ambientLightningTimer = null;
+    const scheduleNextLightning = () => {
+      const delay = 4600 + Math.random() * 1200;
+      ambientLightningTimer = setTimeout(() => {
+        // Only trigger if prologue is partially or fully in viewport
+        const rect = prologueSection.getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < window.innerHeight) {
+          triggerLightning();
+        }
+        scheduleNextLightning();
+      }, delay);
+    };
+    scheduleNextLightning();
+
+    // Flocking Bats Particle Swarm (24 bats)
+    const NUM_BATS = 24;
+    const bats = [];
+    for (let i = 0; i < NUM_BATS; i++) {
+      bats.push({
+        x: Math.random() * (pWidth || 1200),
+        y: Math.random() * (pHeight * 0.65 || 500),
+        size: Math.random() * 5 + 4,
+        vx: (Math.random() - 0.45) * 1.5,
+        vy: (Math.random() - 0.5) * 0.8,
+        wingPhase: Math.random() * Math.PI * 2,
+        wingSpeed: Math.random() * 0.2 + 0.15
+      });
+    }
+
+    // Interactive pointer coordinates for head tracking and parallax
+    let pMx = 0;
+    let pMy = 0;
+    let targetPMx = 0;
+    let targetPMy = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      targetPMx = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetPMy = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    // Skip to console handler
+    if (prologueSkip && heroTarget) {
+      prologueSkip.addEventListener('click', () => {
+        heroTarget.scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+
+    let pStartTime = performance.now();
+
+    const renderPrologue = (timestamp) => {
+      requestAnimationFrame(renderPrologue);
+
+      if (document.hidden) return;
+
+      const rect = prologueSection.getBoundingClientRect();
+      // If completely out of view, skip render work
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      const isMotionActive = motionEnabled && !prefersReducedMotion();
+
+      // Smooth pointer tracking
+      pMx += (targetPMx - pMx) * 0.08;
+      pMy += (targetPMy - pMy) * 0.08;
+
+      // Update head rotation on both figures
+      if (isMotionActive) {
+        if (headCrouch) {
+          headCrouch.style.transform = `rotate(${pMx * 8}deg)`;
+        }
+        if (headStand) {
+          headStand.style.transform = `rotate(${pMx * 8}deg)`;
+        }
+        if (prologueSkyline) {
+          prologueSkyline.style.transform = `translate3d(${pMx * 6}px, ${pMy * 3}px, 0)`;
+        }
+      }
+
+      // Calculate scroll progress p in [0, 1]
+      const totalScrollable = Math.max(1, rect.height - window.innerHeight);
+      const scrolled = Math.max(0, -rect.top);
+      const p = Math.min(1, Math.max(0, scrolled / totalScrollable));
+
+      // 3-Stage State Handling
+      let currentStage = 1;
+      if (p < 0.35) {
+        currentStage = 1;
+        if (prologueCrouch) prologueCrouch.classList.add('is-visible');
+        if (prologueStand) prologueStand.classList.remove('is-visible');
+        if (prologueStatus) prologueStatus.textContent = 'GOTHAM RECON // ELEVATION 412M';
+        if (pStep1) pStep1.classList.add('is-active');
+        if (pStep2) pStep2.classList.remove('is-active');
+        if (pStep3) pStep3.classList.remove('is-active');
+      } else if (p < 0.72) {
+        currentStage = 2;
+        if (prologueCrouch) prologueCrouch.classList.remove('is-visible');
+        if (prologueStand) prologueStand.classList.add('is-visible');
+        if (prologueStatus) prologueStatus.textContent = 'GOTHAM ROOFTOP APEX // ELEVATION 280M';
+        if (pStep1) pStep1.classList.remove('is-active');
+        if (pStep2) pStep2.classList.add('is-active');
+        if (pStep3) pStep3.classList.remove('is-active');
+      } else {
+        currentStage = 3;
+        // Dissolve both figures gracefully into the hero vista
+        const fadeOut = Math.max(0, 1 - (p - 0.72) / 0.28);
+        if (prologueCrouch) {
+          prologueCrouch.classList.remove('is-visible');
+          prologueCrouch.style.opacity = '0';
+        }
+        if (prologueStand) {
+          prologueStand.style.opacity = `${fadeOut}`;
+        }
+        if (prologueStatus) prologueStatus.textContent = 'ARKHAM CITY GRID // INFILTRATION';
+        if (pStep1) pStep1.classList.remove('is-active');
+        if (pStep2) pStep2.classList.remove('is-active');
+        if (pStep3) pStep3.classList.add('is-active');
+      }
+
+      // If crossed into new stage via scroll, fire instant dramatic lightning
+      if (currentStage !== lastStage) {
+        lastStage = currentStage;
+        triggerLightning();
+      }
+
+      pCtx.clearRect(0, 0, pWidth, pHeight);
+
+      const elapsed = (timestamp - pStartTime) / 1000;
+
+      // 1. Storm Cloud Layers (Upper 60% of sky)
+      if (pWidth > 0 && pHeight > 0) {
+        const cloudCount = 4;
+        for (let i = 0; i < cloudCount; i++) {
+          const cx = ((elapsed * 12 * (i + 1) * 0.3) % (pWidth + 600)) - 300;
+          const cy = pHeight * (0.08 + i * 0.08);
+          const cr = pHeight * 0.35 + i * 40;
+          const cg = pCtx.createRadialGradient(cx, cy, 20, cx, cy, cr);
+          cg.addColorStop(0, 'rgba(20, 28, 40, 0.45)');
+          cg.addColorStop(0.5, 'rgba(12, 17, 26, 0.28)');
+          cg.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          pCtx.fillStyle = cg;
+          pCtx.beginPath();
+          pCtx.arc(cx, cy, cr, 0, Math.PI * 2);
+          pCtx.fill();
+        }
+      }
+
+      // 2. Colossal Volumetric Bat-Signal (Capullo Reference)
+      if (pWidth > 0 && pHeight > 0) {
+        const sigOriginX = pWidth * 0.3;
+        const sigOriginY = pHeight * 1.05;
+        const sigTargetX = pWidth * 0.68 + Math.sin(elapsed * 0.25) * 20;
+        const sigTargetY = pHeight * 0.22 + Math.cos(elapsed * 0.2) * 10;
+        const sigRadius = Math.min(pWidth * 0.16, 120);
+
+        // Volumetric Cone
+        const angle = Math.atan2(sigTargetY - sigOriginY, sigTargetX - sigOriginX);
+        const dist = Math.hypot(sigTargetX - sigOriginX, sigTargetY - sigOriginY);
+        const spread = 0.15;
+
+        const coneGrad = pCtx.createLinearGradient(sigOriginX, sigOriginY, sigTargetX, sigTargetY);
+        coneGrad.addColorStop(0, 'rgba(255, 245, 220, 0.28)');
+        coneGrad.addColorStop(0.3, 'rgba(230, 240, 255, 0.12)');
+        coneGrad.addColorStop(0.8, 'rgba(180, 215, 255, 0.04)');
+        coneGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        pCtx.beginPath();
+        pCtx.moveTo(sigOriginX, sigOriginY);
+        pCtx.lineTo(sigOriginX + Math.cos(angle - spread) * dist * 1.1, sigOriginY + Math.sin(angle - spread) * dist * 1.1);
+        pCtx.lineTo(sigOriginX + Math.cos(angle + spread) * dist * 1.1, sigOriginY + Math.sin(angle + spread) * dist * 1.1);
+        pCtx.closePath();
+        pCtx.fillStyle = coneGrad;
+        pCtx.fill();
+
+        // Moonlight / Halogen Halo in Storm Clouds
+        const haloGrad = pCtx.createRadialGradient(sigTargetX, sigTargetY, 5, sigTargetX, sigTargetY, sigRadius * 1.6);
+        haloGrad.addColorStop(0, 'rgba(255, 252, 240, 0.75)');
+        haloGrad.addColorStop(0.35, 'rgba(240, 248, 255, 0.35)');
+        haloGrad.addColorStop(0.7, 'rgba(160, 205, 245, 0.08)');
+        haloGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        pCtx.beginPath();
+        pCtx.arc(sigTargetX, sigTargetY, sigRadius * 1.6, 0, Math.PI * 2);
+        pCtx.fillStyle = haloGrad;
+        pCtx.fill();
+
+        // Bat Silhouette Emblem inside Signal Halo
+        pCtx.save();
+        pCtx.translate(sigTargetX, sigTargetY);
+        const scale = (sigRadius / 50) * (1 + Math.sin(elapsed * 1.4) * 0.03);
+        pCtx.scale(scale, scale);
+        pCtx.fillStyle = '#020304';
+        pCtx.beginPath();
+        // Canonical comic bat emblem path
+        pCtx.moveTo(0, -18);
+        pCtx.bezierCurveTo(4, -13, 8, -12, 16, -15);
+        pCtx.bezierCurveTo(24, -12, 38, 2, 32, 14);
+        pCtx.bezierCurveTo(24, 8, 14, 18, 0, 24);
+        pCtx.bezierCurveTo(-14, 18, -24, 8, -32, 14);
+        pCtx.bezierCurveTo(-38, 2, -24, -12, -16, -15);
+        pCtx.bezierCurveTo(-8, -12, -4, -13, 0, -18);
+        pCtx.closePath();
+        pCtx.fill();
+        pCtx.restore();
+      }
+
+      // 3. Lightning Bolts (Procedural Jagged Branches)
+      if (lightningActive) {
+        const lElapsed = timestamp - lightningStartTime;
+        if (lElapsed < 320) {
+          const lAlpha = Math.max(0, 1 - lElapsed / 320);
+          pCtx.save();
+          pCtx.strokeStyle = `rgba(230, 245, 255, ${lAlpha})`;
+          pCtx.lineWidth = 2.4;
+          pCtx.shadowColor = '#00d4ff';
+          pCtx.shadowBlur = 12;
+
+          for (let i = 0; i < lightningBolts.length; i++) {
+            const b = lightningBolts[i];
+            pCtx.beginPath();
+            pCtx.moveTo(b.x1, b.y1);
+            pCtx.lineTo(b.x2, b.y2);
+            pCtx.stroke();
+          }
+          pCtx.restore();
+        } else {
+          lightningActive = false;
+        }
+      }
+
+      // 4. Flocking Bats Particle Swarm
+      for (let i = 0; i < NUM_BATS; i++) {
+        const bat = bats[i];
+        if (isMotionActive) {
+          bat.x += bat.vx;
+          bat.y += bat.vy;
+          bat.wingPhase += bat.wingSpeed;
+
+          // Wrap screen bounds
+          if (bat.x < -40) bat.x = pWidth + 30;
+          else if (bat.x > pWidth + 40) bat.x = -30;
+          if (bat.y < -40) bat.y = pHeight * 0.7;
+          else if (bat.y > pHeight * 0.75) bat.y = -30;
+
+          // Gentle ambient steering
+          bat.vy += (Math.random() - 0.5) * 0.15;
+          bat.vx += (Math.random() - 0.48) * 0.15;
+          bat.vx = Math.max(-3, Math.min(3, bat.vx));
+          bat.vy = Math.max(-2, Math.min(2, bat.vy));
+        }
+
+        // Draw bat silhouette with beating wings
+        const wingFlap = Math.sin(bat.wingPhase) * (bat.size * 0.8);
+        pCtx.save();
+        pCtx.translate(bat.x, bat.y);
+        pCtx.fillStyle = '#000000';
+        pCtx.beginPath();
+        pCtx.moveTo(0, 0);
+        pCtx.lineTo(-bat.size, -wingFlap);
+        pCtx.lineTo(-bat.size * 0.5, 0);
+        pCtx.lineTo(0, bat.size * 0.4);
+        pCtx.lineTo(bat.size * 0.5, 0);
+        pCtx.lineTo(bat.size, -wingFlap);
+        pCtx.closePath();
+        pCtx.fill();
+        pCtx.restore();
+      }
+    };
+
+    requestAnimationFrame(renderPrologue);
+  }
+
+  /* ----------------------------------------------------------------------
      Wayne Applied Sciences — Arkham City Hero Atmospheric VFX
      Fixed global snowfall, ash embers, dual sweeping volumetric searchlights,
      scroll wind dynamics, and 3D cursor parallax

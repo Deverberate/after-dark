@@ -168,4 +168,47 @@ test.describe('Arkham City Hero Vista (@arkham-vista)', () => {
 
     expect(siliconTileOccluded).toBe(true);
   });
+
+  test('Prologue section mounts before Hero with canvas, skyline, and figures', async ({ page }) => {
+    await page.goto('/');
+
+    const prologue = page.locator('#prologue');
+    await expect(prologue).toBeAttached();
+
+    const canvas = page.locator('#prologue-canvas');
+    await expect(canvas).toBeAttached();
+    await expect(canvas).toHaveAttribute('role', 'img');
+
+    const crouchFigure = page.locator('#prologue-figure-crouch');
+    await expect(crouchFigure).toBeAttached();
+
+    const standFigure = page.locator('#prologue-figure-stand');
+    await expect(standFigure).toBeAttached();
+
+    const statusTelemetry = page.locator('#prologue-status');
+    await expect(statusTelemetry).toBeAttached();
+    await expect(statusTelemetry).toContainText(/GOTHAM/i);
+  });
+
+  test('Prologue skip button is visible, clickable, and meets >= 44x44px touch target requirement', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto('/');
+
+    const skipBtn = page.locator('#prologue-skip');
+    await expect(skipBtn).toBeVisible();
+
+    const box = await skipBtn.boundingBox();
+    expect(box).not.toBeNull();
+    if (box) {
+      expect(box.width).toBeGreaterThanOrEqual(44);
+      expect(box.height).toBeGreaterThanOrEqual(44);
+    }
+
+    // Click skip button to descend to hero
+    await skipBtn.click();
+    await page.waitForTimeout(600);
+
+    const hero = page.locator('#hero');
+    await expect(hero).toBeInViewport();
+  });
 });

@@ -23,7 +23,7 @@
   <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="assets/styles.css?v=2.3">
+  <link rel="stylesheet" href="assets/styles.css?v=2.4">
   <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -107,6 +107,147 @@
   </header>
 
   <main id="main" tabindex="-1">
+    <!-- ============================================================
+         00 — Prologue: Comic Scrollytelling Rooftop Descent
+    ============================================================= -->
+    <section class="prologue" id="prologue" aria-label="Prologue: Gotham Rooftop Descent">
+      <div class="prologue__sticky" id="prologue-sticky">
+        <!-- Storm Clouds, Volumetric Bat-Signal, Lightning & Bats Canvas -->
+        <canvas id="prologue-canvas" class="prologue__canvas" role="img" aria-label="Animated stormy Gotham night sky with Bat-Signal projection, drifting clouds, and periodic lightning"></canvas>
+
+        <!-- Sky Lightning Flash Overlay -->
+        <div class="prologue__flash" id="prologue-flash" aria-hidden="true"></div>
+
+        <!-- Distant City Rooftops Parallax -->
+        <div class="prologue__skyline" aria-hidden="true">
+          <svg class="prologue__skyline-svg" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice" focusable="false">
+            <defs>
+              <linearGradient id="prologue-sky-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0c1017" stop-opacity="0.9"/>
+                <stop offset="60%" stop-color="#05070a" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#010203" stop-opacity="1"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 600 L0 420 L60 420 L70 330 L80 330 L85 240 L90 240 L92 160 L95 160 L97 90 L100 160 L103 160 L105 240 L110 240 L115 330 L125 330 L135 420 L220 420 L230 360 L280 360 L285 290 L295 290 L300 360 L360 360 L370 430 L440 430 L450 340 L490 340 L500 430 L580 430 L590 280 L600 200 L605 100 L610 200 L620 280 L640 430 L720 430 L730 330 L780 330 L790 430 L870 430 L880 310 L890 230 L895 110 L900 230 L910 310 L930 430 L1020 430 L1030 350 L1080 350 L1090 430 L1180 430 L1190 260 L1200 170 L1205 60 L1210 170 L1220 260 L1240 430 L1330 430 L1340 320 L1390 320 L1400 430 L1490 430 L1500 270 L1510 190 L1515 110 L1520 190 L1530 270 L1550 430 L1600 430 L1600 600 Z" fill="url(#prologue-sky-grad)"/>
+            <circle cx="97" cy="90" r="3" fill="#e10600" opacity="0.8"/>
+            <circle cx="605" cy="100" r="3" fill="#e10600" opacity="0.8"/>
+            <circle cx="1205" cy="60" r="3" fill="#e10600" opacity="0.8"/>
+          </svg>
+        </div>
+
+        <!-- Stage 1 Figure: Gargoyle Crouch (Capullo Reference) -->
+        <div class="prologue__figure prologue__figure--crouch is-visible" id="prologue-figure-crouch" aria-hidden="true">
+          <svg class="prologue__svg prologue__svg--crouch" viewBox="0 0 400 480" focusable="false">
+            <defs>
+              <filter id="pEyeGlow1" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <linearGradient id="pGargoyleStone" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#181c22"/>
+                <stop offset="50%" stop-color="#0d1014"/>
+                <stop offset="100%" stop-color="#050709"/>
+              </linearGradient>
+              <linearGradient id="pBatInk1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a0d12"/>
+                <stop offset="100%" stop-color="#020304"/>
+              </linearGradient>
+            </defs>
+            <!-- Parapet Wall & Ledge -->
+            <path d="M0 480 L0 320 L120 320 L140 340 L140 480 Z" fill="url(#pGargoyleStone)" stroke="#222830" stroke-width="1.5"/>
+            <!-- Gargoyle Head -->
+            <g id="p-gargoyle">
+              <path d="M120 320 Q160 300 210 325 Q260 350 280 390 Q270 410 240 420 Q200 425 170 395 Q140 430 135 480 L120 480 Z" fill="url(#pGargoyleStone)" stroke="#1a2028" stroke-width="2"/>
+              <path d="M210 325 Q235 285 250 270 Q240 295 230 330 Z" fill="#2a323d"/>
+              <path d="M190 320 Q205 290 215 280 Q210 300 200 325 Z" fill="#1e242c"/>
+              <path d="M245 375 Q275 365 295 385 Q270 400 240 395 Z" fill="#090c10"/>
+              <polygon points="220,345 235,340 230,350" fill="#050709" stroke="#333d4a" stroke-width="1"/>
+            </g>
+            <!-- Batman Crouching Silhouette -->
+            <g id="p-batman-crouch-mesh" class="prologue-figure-mesh">
+              <!-- Flowing Cape Behind -->
+              <path class="prologue-cape-wave" d="M110 230 Q60 280 40 420 Q90 390 120 410 Q140 370 150 340 Z" fill="url(#pBatInk1)" stroke="#1a202c" stroke-width="1"/>
+              <!-- Torso & Legs -->
+              <path class="prologue-chest" d="M135 210 Q165 205 185 230 Q205 255 195 295 Q175 330 145 335 Q125 320 125 280 Q125 240 135 210 Z" fill="url(#pBatInk1)"/>
+              <path d="M165 260 Q190 260 210 295 Q220 325 205 335 Q185 335 175 310 Z" fill="#080a0e" stroke="#1f2630" stroke-width="1.5"/>
+              <path d="M130 270 Q145 270 160 305 Q165 330 150 340 Q135 340 130 315 Z" fill="#06080a"/>
+              <!-- Arms Bracing -->
+              <path d="M140 220 Q120 250 125 290 Q135 295 140 285 Q135 255 150 230 Z" fill="#0a0d12"/>
+              <path d="M175 225 Q205 240 215 275 Q205 280 195 275 Q190 250 170 235 Z" fill="#0c0f15"/>
+              <!-- Head & Cowl -->
+              <g class="prologue-batman-head" id="p-head-crouch" transform-origin="155 195">
+                <path d="M142 205 L145 160 Q150 178 155 180 Q160 178 165 160 L168 205 Q155 218 142 205 Z" fill="#020304" stroke="#1f2733" stroke-width="1.2"/>
+                <polygon points="147,192 153,194 152,196 146,193" fill="#e6edf1" filter="url(#pEyeGlow1)"/>
+                <polygon points="163,192 157,194 158,196 164,193" fill="#e6edf1" filter="url(#pEyeGlow1)"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Stage 2 Figure: Standing Apex (Absolute / Jim Lee Reference) -->
+        <div class="prologue__figure prologue__figure--stand" id="prologue-figure-stand" aria-hidden="true">
+          <svg class="prologue__svg prologue__svg--stand" viewBox="0 0 440 540" focusable="false">
+            <defs>
+              <linearGradient id="pStandCapeGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0e131a"/>
+                <stop offset="60%" stop-color="#070a0e"/>
+                <stop offset="100%" stop-color="#020305"/>
+              </linearGradient>
+            </defs>
+            <!-- Apex Base -->
+            <path d="M40 540 L160 410 L280 410 L400 540 Z" fill="#0d1117" stroke="#252c38" stroke-width="2"/>
+            <rect x="180" y="440" width="80" height="100" fill="#06080b" stroke="#1c222c" stroke-width="1.5"/>
+            <!-- Batman Standing Silhouette -->
+            <g id="p-batman-stand-mesh" class="prologue-figure-mesh">
+              <!-- Billowing Cape -->
+              <path class="prologue-cape-billow" d="M160 170 Q70 200 20 280 Q-10 360 10 480 Q80 440 140 460 Q170 380 190 320 Z" fill="url(#pStandCapeGrad)" stroke="#1a222d" stroke-width="1.5"/>
+              <path d="M260 170 Q340 210 390 310 Q420 390 410 490 Q340 440 280 450 Q260 380 240 320 Z" fill="url(#pStandCapeGrad)" stroke="#1a222d" stroke-width="1.5"/>
+              <!-- Powerful Legs -->
+              <path d="M185 300 Q170 360 165 420 L195 420 Q205 370 215 300 Z" fill="#06080b" stroke="#1e2632" stroke-width="1.5"/>
+              <path d="M235 300 Q250 360 255 420 L225 420 Q215 370 205 300 Z" fill="#080a0e" stroke="#1e2632" stroke-width="1.5"/>
+              <!-- Muscular Torso & Belt -->
+              <path class="prologue-chest" d="M165 170 Q150 220 175 285 L245 285 Q270 220 255 170 Z" fill="#090c10" stroke="#212a36" stroke-width="1.8"/>
+              <path d="M190 195 Q205 200 210 190 Q215 200 230 195 Q220 208 210 212 Q200 208 190 195 Z" fill="#1b2430" opacity="0.8"/>
+              <rect x="180" y="278" width="60" height="12" fill="#221e10" stroke="#facc15" stroke-width="0.8" opacity="0.6"/>
+              <rect x="203" y="276" width="14" height="16" fill="#3a3212" stroke="#facc15" stroke-width="1" opacity="0.8"/>
+              <!-- Spiked Arms -->
+              <path d="M165 170 Q130 200 135 250 Q145 280 155 300 L170 290 Q155 260 150 230 Q160 200 175 185 Z" fill="#080a0e" stroke="#1f2734" stroke-width="1.5"/>
+              <polygon points="135,245 125,240 137,255" fill="#1b232f"/>
+              <polygon points="138,260 128,255 140,270" fill="#1b232f"/>
+              <polygon points="142,275 132,270 144,285" fill="#1b232f"/>
+              <path d="M255 170 Q290 200 285 250 Q275 280 265 300 L250 290 Q265 260 270 230 Q260 200 245 185 Z" fill="#0a0d12" stroke="#1f2734" stroke-width="1.5"/>
+              <polygon points="285,245 295,240 283,255" fill="#1b232f"/>
+              <polygon points="282,260 292,255 280,270" fill="#1b232f"/>
+              <polygon points="278,275 288,270 276,285" fill="#1b232f"/>
+              <!-- Head & Cowl -->
+              <g class="prologue-batman-head" id="p-head-stand" transform-origin="210 155">
+                <path d="M195 165 L198 115 Q205 135 210 138 Q215 135 222 115 L225 165 Q210 176 195 165 Z" fill="#030406" stroke="#222b38" stroke-width="1.5"/>
+                <polygon points="201,150 207,152 206,154 200,151" fill="#e6edf1" filter="url(#pEyeGlow1)"/>
+                <polygon points="219,150 213,152 214,154 220,151" fill="#e6edf1" filter="url(#pEyeGlow1)"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Tactical HUD Controls & Skip Button -->
+        <div class="prologue__hud">
+          <div class="prologue__telemetry">
+            <span class="prologue__telemetry-dot" aria-hidden="true"></span>
+            <span class="prologue__telemetry-label" id="prologue-status">GOTHAM RECON // ELEVATION 412M</span>
+          </div>
+          <div class="prologue__indicator">
+            <span class="prologue__indicator-step is-active" id="p-step-1">01 // WATCHTOWER</span>
+            <span class="prologue__indicator-step" id="p-step-2">02 // APEX</span>
+            <span class="prologue__indicator-step" id="p-step-3">03 // DESCENT</span>
+          </div>
+          <button class="prologue__skip" id="prologue-skip" type="button" aria-label="DESCEND TO CONSOLE — Skip prologue and proceed to Hero console">
+            <span>DESCEND TO CONSOLE</span>
+            <span class="prologue__skip-icon" aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- ============================================================
          01 — Hero (Arkham City Menu Vista)
     ============================================================= -->
@@ -1302,6 +1443,6 @@
     </div>
   </footer>
 
-  <script src="assets/main.js?v=2.3" defer></script>
+  <script src="assets/main.js?v=2.4" defer></script>
 </body>
 </html>
