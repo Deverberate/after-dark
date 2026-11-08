@@ -4,7 +4,7 @@
   "description": "M4 After Dark — Batman-themed MacBook Pro M4 Max concept study",
   "private": true,
   "scripts": {
-    "build": "echo 'Static build complete'",
+    "build": "mkdir -p public && cp -r assets index.html public/",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui"
