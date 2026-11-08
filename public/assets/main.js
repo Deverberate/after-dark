@@ -1373,6 +1373,513 @@
   });
 
   /* ----------------------------------------------------------------------
+     Wayne Applied Sciences — Acoustic Terminal (Soundtrack Drawer & Engine)
+     Cinematic background themes on loop via YouTube IFrame API + 32-ch FFT
+  ---------------------------------------------------------------------- */
+  const SOUNDTRACKS = [
+    {
+      id: 'arkham',
+      title: 'Arkham City Main Theme',
+      artist: 'Nick Arundel & Ron Fish · Batman: Arkham City',
+      ytId: 'SXKrsJZWqK0',
+      tempo: 72,
+      sub: 'DEFAULT'
+    },
+    {
+      id: 'batfleck',
+      title: 'A Beautiful Lie',
+      artist: 'Hans Zimmer & Junkie XL · Batfleck',
+      ytId: 'jioG6eFBiew',
+      tempo: 60,
+      sub: 'BvS'
+    },
+    {
+      id: 'battinson',
+      title: 'The Batman Theme',
+      artist: 'Michael Giacchino · Battinson',
+      ytId: '_WEonvtesdc',
+      tempo: 80,
+      sub: '2022'
+    },
+    {
+      id: 'batbale',
+      title: 'Molossus / Dark Knight Theme',
+      artist: 'Hans Zimmer & J.N. Howard · Batbale',
+      ytId: 'iGx5a1ifSDs',
+      tempo: 110,
+      sub: 'TRILOGY'
+    }
+  ];
+
+  let ytPlayer = null;
+  let isPlayerReady = false;
+  let currentTrackIndex = 0;
+  let isSoundtrackPlaying = false;
+  let soundtrackVolume = 40;
+  let isSoundtrackMuted = false;
+  let pendingSoundtrackPlay = false;
+  let userGestureReceived = false;
+
+  const triggerEl = document.getElementById('soundtrack-trigger');
+  const drawerEl = document.getElementById('soundtrack-drawer');
+  const backdropEl = document.getElementById('soundtrack-backdrop');
+  const closeBtn = document.getElementById('soundtrack-close');
+  const playBtn = document.getElementById('soundtrack-play');
+  const prevBtn = document.getElementById('soundtrack-prev');
+  const nextBtn = document.getElementById('soundtrack-next');
+  const volumeSlider = document.getElementById('soundtrack-volume');
+  const volumeValEl = document.getElementById('soundtrack-volume-val');
+  const volumeMuteBtn = document.getElementById('soundtrack-volume-mute');
+  const currentTitleEl = document.getElementById('soundtrack-current-title');
+  const currentArtistEl = document.getElementById('soundtrack-current-artist');
+  const eqStateEl = document.getElementById('soundtrack-eq-state');
+  const trackCards = document.querySelectorAll('.soundtrack-track-card');
+  const visualizerCanvas = document.getElementById('soundtrack-canvas');
+
+  // Load YouTube IFrame API script tag
+  if (!window.YT) {
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScript = document.getElementsByTagName('script')[0];
+    if (firstScript && firstScript.parentNode) {
+      firstScript.parentNode.insertBefore(tag, firstScript);
+    } else {
+      document.head.appendChild(tag);
+    }
+  }
+
+  const prevYTReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = () => {
+    if (typeof prevYTReady === 'function') prevYTReady();
+    initSoundtrackPlayer();
+  };
+
+  if (window.YT && window.YT.Player) {
+    initSoundtrackPlayer();
+  }
+
+  function initSoundtrackPlayer() {
+    const container = document.getElementById('yt-soundtrack-player');
+    if (!container || ytPlayer) return;
+
+    try {
+      ytPlayer = new window.YT.Player('yt-soundtrack-player', {
+        height: '180',
+        width: '320',
+        videoId: SOUNDTRACKS[currentTrackIndex].ytId,
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          fs: 0,
+          loop: 1,
+          playlist: SOUNDTRACKS[currentTrackIndex].ytId,
+          modestbranding: 1,
+          rel: 0,
+          playsinline: 1,
+          enablejsapi: 1,
+          origin: window.location.origin || undefined
+        },
+        events: {
+          onReady: (event) => {
+            isPlayerReady = true;
+            try {
+              event.target.setVolume(soundtrackVolume);
+            } catch (e) {}
+            if (pendingSoundtrackPlay) {
+              pendingSoundtrackPlay = false;
+              playCurrentSoundtrack();
+            }
+          },
+          onStateChange: (event) => {
+            const state = event.data;
+            const YTState = window.YT ? window.YT.PlayerState : {};
+            if (state === (YTState.PLAYING !== undefined ? YTState.PLAYING : 1)) {
+              isSoundtrackPlaying = true;
+              syncSoundtrackUI(true);
+            } else if (state === (YTState.ENDED !== undefined ? YTState.ENDED : 0)) {
+              // Ensure continuous loop
+              try {
+                ytPlayer.seekTo(0);
+                ytPlayer.playVideo();
+              } catch (e) {}
+            } else if (state === (YTState.PAUSED !== undefined ? YTState.PAUSED : 2)) {
+              isSoundtrackPlaying = false;
+              syncSoundtrackUI(false);
+            }
+          },
+          onError: (event) => {
+            console.warn('YouTube Player Event Notice:', event.data);
+          }
+        }
+      });
+    } catch (err) {
+      console.warn('YT.Player initialization deferred', err);
+    }
+  }
+
+  function syncSoundtrackUI(playing) {
+    if (playBtn) {
+      const iconPlay = playBtn.querySelector('.icon-play');
+      const iconPause = playBtn.querySelector('.icon-pause');
+      if (iconPlay) iconPlay.style.display = playing ? 'none' : 'block';
+      if (iconPause) iconPause.style.display = playing ? 'block' : 'none';
+      playBtn.setAttribute('aria-label', playing ? 'Pause soundtrack' : 'Play soundtrack');
+    }
+
+    if (drawerEl) drawerEl.classList.toggle('is-playing', playing);
+    if (triggerEl) triggerEl.classList.toggle('is-playing', playing);
+    if (eqStateEl) eqStateEl.textContent = playing ? 'TRANSMITTING' : 'STANDBY';
+  }
+
+  function playCurrentSoundtrack() {
+    if (!isPlayerReady || !ytPlayer || typeof ytPlayer.playVideo !== 'function') {
+      pendingSoundtrackPlay = true;
+      return;
+    }
+    try {
+      ytPlayer.setVolume(soundtrackVolume);
+      if (isSoundtrackMuted) {
+        ytPlayer.mute();
+      } else {
+        ytPlayer.unMute();
+      }
+      ytPlayer.playVideo();
+      isSoundtrackPlaying = true;
+      syncSoundtrackUI(true);
+    } catch (e) {
+      console.warn('Error starting soundtrack playback', e);
+    }
+  }
+
+  function pauseCurrentSoundtrack() {
+    if (!isPlayerReady || !ytPlayer || typeof ytPlayer.pauseVideo !== 'function') return;
+    try {
+      ytPlayer.pauseVideo();
+      isSoundtrackPlaying = false;
+      syncSoundtrackUI(false);
+    } catch (e) {}
+  }
+
+  function loadSoundtrack(index, autoPlay = true) {
+    if (index < 0) index = SOUNDTRACKS.length - 1;
+    if (index >= SOUNDTRACKS.length) index = 0;
+    currentTrackIndex = index;
+    const track = SOUNDTRACKS[index];
+
+    if (currentTitleEl) currentTitleEl.textContent = track.title;
+    if (currentArtistEl) currentArtistEl.textContent = track.artist;
+
+    trackCards.forEach((card, idx) => {
+      const isActive = idx === index;
+      card.classList.toggle('is-active', isActive);
+      card.setAttribute('aria-checked', String(isActive));
+    });
+
+    if (isPlayerReady && ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      try {
+        if (autoPlay) {
+          ytPlayer.loadVideoById({
+            videoId: track.ytId,
+            startSeconds: 0
+          });
+          isSoundtrackPlaying = true;
+          syncSoundtrackUI(true);
+        } else {
+          ytPlayer.cueVideoById({
+            videoId: track.ytId,
+            startSeconds: 0
+          });
+        }
+      } catch (e) {
+        console.warn('Error switching soundtrack', e);
+      }
+    } else if (autoPlay) {
+      pendingSoundtrackPlay = true;
+    }
+  }
+
+  // Autoplay on first user interaction gesture (complying with browser autoplay policy)
+  const triggerAutoplayOnGesture = () => {
+    if (userGestureReceived) return;
+    userGestureReceived = true;
+    ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((evt) => {
+      window.removeEventListener(evt, triggerAutoplayOnGesture);
+    });
+    playCurrentSoundtrack();
+  };
+
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((evt) => {
+    window.addEventListener(evt, triggerAutoplayOnGesture, { passive: true, once: true });
+  });
+
+  // Drawer Open / Close / Accessibility
+  function openSoundtrackDrawer() {
+    if (!drawerEl || !backdropEl || !triggerEl) return;
+    drawerEl.removeAttribute('hidden');
+    drawerEl.classList.add('is-open');
+    backdropEl.classList.add('is-open');
+    drawerEl.setAttribute('aria-hidden', 'false');
+    triggerEl.setAttribute('aria-expanded', 'true');
+    wayneAudio.play('chirp');
+    triggerHaptic(18);
+
+    if (!isSoundtrackPlaying && !userGestureReceived) {
+      userGestureReceived = true;
+      playCurrentSoundtrack();
+    }
+
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeSoundtrackDrawer() {
+    if (!drawerEl || !backdropEl || !triggerEl) return;
+    drawerEl.classList.remove('is-open');
+    backdropEl.classList.remove('is-open');
+    drawerEl.setAttribute('aria-hidden', 'true');
+    drawerEl.setAttribute('hidden', '');
+    triggerEl.setAttribute('aria-expanded', 'false');
+    wayneAudio.play('click');
+    triggerHaptic(12);
+    triggerEl.focus();
+  }
+
+  if (triggerEl) {
+    triggerEl.addEventListener('click', () => {
+      userGestureReceived = true;
+      const isOpen = drawerEl && drawerEl.classList.contains('is-open');
+      if (isOpen) closeSoundtrackDrawer();
+      else openSoundtrackDrawer();
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeSoundtrackDrawer);
+  if (backdropEl) backdropEl.addEventListener('click', closeSoundtrackDrawer);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawerEl && drawerEl.classList.contains('is-open')) {
+      closeSoundtrackDrawer();
+    }
+  });
+
+  // Transport Controls
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      userGestureReceived = true;
+      wayneAudio.play('click');
+      triggerHaptic(14);
+      if (isSoundtrackPlaying) {
+        pauseCurrentSoundtrack();
+      } else {
+        playCurrentSoundtrack();
+      }
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      userGestureReceived = true;
+      wayneAudio.play('click');
+      triggerHaptic(12);
+      loadSoundtrack(currentTrackIndex - 1, true);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      userGestureReceived = true;
+      wayneAudio.play('click');
+      triggerHaptic(12);
+      loadSoundtrack(currentTrackIndex + 1, true);
+    });
+  }
+
+  trackCards.forEach((card, index) => {
+    card.addEventListener('click', () => {
+      userGestureReceived = true;
+      wayneAudio.play('click');
+      triggerHaptic(12);
+      loadSoundtrack(index, true);
+    });
+  });
+
+  // Volume & Mute Controls
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value, 10);
+      soundtrackVolume = isNaN(val) ? 40 : Math.max(0, Math.min(100, val));
+      if (volumeValEl) volumeValEl.textContent = `${soundtrackVolume}%`;
+
+      if (isSoundtrackMuted && soundtrackVolume > 0) {
+        isSoundtrackMuted = false;
+        if (volumeMuteBtn) volumeMuteBtn.classList.remove('is-muted');
+        if (isPlayerReady && ytPlayer && typeof ytPlayer.unMute === 'function') {
+          try { ytPlayer.unMute(); } catch (err) {}
+        }
+      }
+
+      if (isPlayerReady && ytPlayer && typeof ytPlayer.setVolume === 'function') {
+        try { ytPlayer.setVolume(soundtrackVolume); } catch (err) {}
+      }
+    });
+  }
+
+  if (volumeMuteBtn) {
+    volumeMuteBtn.addEventListener('click', () => {
+      isSoundtrackMuted = !isSoundtrackMuted;
+      wayneAudio.play('click');
+      triggerHaptic(12);
+
+      if (isSoundtrackMuted) {
+        volumeMuteBtn.classList.add('is-muted');
+        volumeMuteBtn.setAttribute('aria-label', 'Unmute soundtrack');
+        if (volumeValEl) volumeValEl.textContent = 'MUTED';
+        if (isPlayerReady && ytPlayer && typeof ytPlayer.mute === 'function') {
+          try { ytPlayer.mute(); } catch (err) {}
+        }
+      } else {
+        volumeMuteBtn.classList.remove('is-muted');
+        volumeMuteBtn.setAttribute('aria-label', 'Mute soundtrack');
+        if (volumeValEl) volumeValEl.textContent = `${soundtrackVolume}%`;
+        if (isPlayerReady && ytPlayer && typeof ytPlayer.unMute === 'function') {
+          try {
+            ytPlayer.unMute();
+            ytPlayer.setVolume(soundtrackVolume);
+          } catch (err) {}
+        }
+      }
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     Wayne Applied Sciences — 32-Bar Acoustic Spectrum & Oscilloscope
+  ---------------------------------------------------------------------- */
+  if (visualizerCanvas && visualizerCanvas.getContext) {
+    const vCtx = visualizerCanvas.getContext('2d');
+    const NUM_BARS = 32;
+    const barHeights = new Float32Array(NUM_BARS);
+    const peakCaps = new Float32Array(NUM_BARS);
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const displayW = 340;
+    const displayH = 88;
+    visualizerCanvas.width = displayW * dpr;
+    visualizerCanvas.height = displayH * dpr;
+    vCtx.scale(dpr, dpr);
+
+    const barWidth = 7;
+    const barGap = 3.5;
+    const totalW = NUM_BARS * barWidth + (NUM_BARS - 1) * barGap;
+    const startX = (displayW - totalW) / 2;
+    const baselineY = 70;
+
+    let vStartTime = performance.now();
+
+    const renderVisualizer = (timestamp) => {
+      requestAnimationFrame(renderVisualizer);
+
+      const elapsed = (timestamp - vStartTime) / 1000;
+      const track = SOUNDTRACKS[currentTrackIndex];
+      const tempo = track ? track.tempo : 72;
+      const beatPeriod = 60 / tempo;
+      const beatPhase = (elapsed / beatPeriod) % 1;
+
+      vCtx.clearRect(0, 0, displayW, displayH);
+
+      // Volume multiplier (0 if muted)
+      const volMult = isSoundtrackMuted ? 0 : (soundtrackVolume / 100);
+
+      // Check motion setting
+      const isMotionActive = motionEnabled && !prefersReducedMotion();
+
+      for (let i = 0; i < NUM_BARS; i++) {
+        let targetEnergy = 0;
+
+        if (isSoundtrackPlaying && isMotionActive && volMult > 0) {
+          // Synthetic audio energy spectrum:
+          // Low frequencies (0-7): rhythmic sub-bass pulse
+          if (i < 8) {
+            const kick = Math.pow(Math.max(0, 1 - 3.2 * beatPhase), 2);
+            const sub = Math.sin(elapsed * 4.5 + i * 0.4) * 0.25 + 0.35;
+            targetEnergy = (kick * 0.7 + sub * 0.3) * (0.8 + 0.2 * Math.sin(i * 0.8));
+          }
+          // Mid frequencies (8-21): harmonic orchestral movement
+          else if (i < 22) {
+            const swell = (Math.sin(elapsed * 2.4 + i * 0.5) * Math.cos(elapsed * 1.2 - i * 0.3) * 0.5 + 0.5);
+            const harmonic = Math.sin(elapsed * 5.0 + i * 0.7) * 0.15;
+            targetEnergy = (swell + harmonic) * 0.75;
+          }
+          // High frequencies (22-31): crisp string & percussive shimmer
+          else {
+            const flutter = Math.sin(elapsed * 7.5 + i * 1.2) * 0.3 + 0.35;
+            const noise = ((Math.sin(elapsed * 23 + i * 17) * 43758.5453) % 1) * 0.15;
+            targetEnergy = (flutter + noise) * 0.6;
+          }
+
+          targetEnergy = Math.max(0.04, Math.min(1, targetEnergy * volMult));
+        } else if (isMotionActive) {
+          // Idle standby subtle breathing wave
+          targetEnergy = (Math.sin(elapsed * 1.5 + i * 0.25) * 0.04 + 0.06);
+        } else {
+          // Reduced motion static tactical profile
+          targetEnergy = 0.08 + 0.12 * Math.sin((i / NUM_BARS) * Math.PI);
+        }
+
+        const targetH = Math.max(2, targetEnergy * 56);
+        barHeights[i] = barHeights[i] * 0.78 + targetH * 0.22;
+
+        if (barHeights[i] >= peakCaps[i]) {
+          peakCaps[i] = barHeights[i];
+        } else {
+          peakCaps[i] = Math.max(2, peakCaps[i] - (isMotionActive ? 0.7 : 0.05));
+        }
+
+        const bx = startX + i * (barWidth + barGap);
+        const bh = barHeights[i];
+        const by = baselineY - bh;
+
+        // Draw EQ bar gradient
+        const grad = vCtx.createLinearGradient(0, baselineY, 0, by);
+        grad.addColorStop(0, 'rgba(230, 237, 241, 0.18)');
+        grad.addColorStop(0.6, 'rgba(230, 237, 241, 0.65)');
+        grad.addColorStop(1, '#ffffff');
+
+        vCtx.fillStyle = grad;
+        vCtx.fillRect(bx, by, barWidth, bh);
+
+        // Peak Meter Cap (Signal Red)
+        const peakY = baselineY - peakCaps[i] - 2;
+        vCtx.fillStyle = '#e10600';
+        vCtx.fillRect(bx, peakY, barWidth, 2);
+      }
+
+      // Draw Oscilloscope Base Waveform
+      vCtx.beginPath();
+      const waveY = 79;
+      vCtx.moveTo(startX, waveY);
+
+      for (let x = 0; x <= totalW; x += 3) {
+        let oscOffset = 0;
+        if (isSoundtrackPlaying && isMotionActive && volMult > 0) {
+          oscOffset = (
+            Math.sin(x * 0.06 + elapsed * 6) * 3.5 +
+            Math.cos(x * 0.12 - elapsed * 3) * 2.0
+          ) * volMult;
+        } else if (isMotionActive) {
+          oscOffset = Math.sin(x * 0.03 + elapsed * 1.2) * 0.8;
+        }
+        vCtx.lineTo(startX + x, waveY + oscOffset);
+      }
+
+      vCtx.strokeStyle = isSoundtrackPlaying ? 'rgba(225, 6, 0, 0.55)' : 'rgba(230, 237, 241, 0.2)';
+      vCtx.lineWidth = 1.2;
+      vCtx.stroke();
+    };
+
+    requestAnimationFrame(renderVisualizer);
+  }
+
+  /* ----------------------------------------------------------------------
      Footer year
   ---------------------------------------------------------------------- */
   const yearNode = document.getElementById('year');

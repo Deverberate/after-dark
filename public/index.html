@@ -1000,6 +1000,149 @@
     </div>
   </aside>
 
+  <!-- =====================================================================
+       Wayne Applied Sciences — Acoustic Terminal (Soundtrack Drawer)
+  ====================================================================== -->
+  <!-- Right-edge trigger button -->
+  <button class="soundtrack-trigger" id="soundtrack-trigger" type="button" aria-expanded="false" aria-controls="soundtrack-drawer" aria-label="SOUNDSTAGE // 04 — Open audio drawer">
+    <span class="soundtrack-trigger__icon" aria-hidden="true">
+      <span class="soundtrack-trigger__bar"></span>
+      <span class="soundtrack-trigger__bar"></span>
+      <span class="soundtrack-trigger__bar"></span>
+      <span class="soundtrack-trigger__bar"></span>
+    </span>
+    <span class="soundtrack-trigger__label">SOUNDSTAGE // 04</span>
+    <span class="soundtrack-trigger__led" id="soundtrack-trigger-led" aria-hidden="true"></span>
+  </button>
+
+  <!-- Soundtrack Drawer Backdrop -->
+  <div class="soundtrack-backdrop" id="soundtrack-backdrop" aria-hidden="true"></div>
+
+  <!-- Slide-Out Drawer -->
+  <aside class="soundtrack-drawer" id="soundtrack-drawer" role="dialog" aria-modal="true" aria-labelledby="soundtrack-drawer-title" aria-hidden="true" hidden>
+    <div class="soundtrack-drawer__inner">
+      <!-- Drawer Header -->
+      <div class="soundtrack-drawer__header">
+        <div class="soundtrack-drawer__tag">
+          <span class="soundtrack-drawer__led" id="soundtrack-status-led" aria-hidden="true"></span>
+          <span class="soundtrack-drawer__sub">WAYNE APPLIED SCIENCES // AC-04</span>
+        </div>
+        <div class="soundtrack-drawer__title-row">
+          <h2 class="soundtrack-drawer__title" id="soundtrack-drawer-title">Soundstage Terminal</h2>
+          <button class="soundtrack-drawer__close" id="soundtrack-close" type="button" aria-label="Close Soundstage terminal">
+            <span aria-hidden="true">✕</span>
+          </button>
+        </div>
+        <p class="soundtrack-drawer__desc">Cinematic Batman themes on loop. Select movement &amp; calibrate acoustic gain.</p>
+      </div>
+
+      <!-- 32-Bar Tactical Visualizer -->
+      <div class="soundtrack-visualizer-card">
+        <div class="soundtrack-visualizer-card__header">
+          <span class="soundtrack-visualizer-card__label">ACOUSTIC SPECTRUM // 32-CH FFT</span>
+          <span class="soundtrack-visualizer-card__state" id="soundtrack-eq-state">STANDBY</span>
+        </div>
+        <div class="soundtrack-visualizer-wrap">
+          <canvas id="soundtrack-canvas" width="340" height="88" role="img" aria-label="32-channel acoustic frequency spectrum visualizer and oscilloscope"></canvas>
+        </div>
+        <div class="soundtrack-visualizer-card__footer">
+          <span>016&nbsp;Hz</span>
+          <span>500&nbsp;Hz</span>
+          <span>02&nbsp;kHz</span>
+          <span>16&nbsp;kHz</span>
+        </div>
+      </div>
+
+      <!-- Currently Playing Track Card -->
+      <div class="soundtrack-now-playing">
+        <div class="soundtrack-now-playing__badge">ACTIVE TRANSMISSION</div>
+        <div class="soundtrack-now-playing__title" id="soundtrack-current-title">Arkham City Main Theme</div>
+        <div class="soundtrack-now-playing__artist" id="soundtrack-current-artist">Nick Arundel &amp; Ron Fish · Batman: Arkham City</div>
+        <div class="soundtrack-now-playing__meta">
+          <span class="soundtrack-now-playing__loop"><span class="soundtrack-now-playing__dot" aria-hidden="true"></span> LOOP ACTIVE</span>
+          <span class="soundtrack-now-playing__source">ORIGIN: YOUTUBE IFRAME</span>
+        </div>
+      </div>
+
+      <!-- Transport Controls -->
+      <div class="soundtrack-transport">
+        <button class="soundtrack-btn soundtrack-btn--prev" id="soundtrack-prev" type="button" aria-label="Previous soundtrack">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M3 2.5h2v11H3zM13 3.2 5.5 8 13 12.8z"/></svg>
+        </button>
+        <button class="soundtrack-btn soundtrack-btn--play" id="soundtrack-play" type="button" aria-label="Play or pause soundtrack">
+          <svg class="icon-play" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M5 3.2 12.5 8 5 12.8z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true" style="display:none;"><path d="M4.5 3h2.5v10H4.5zM9 3h2.5v10H9z"/></svg>
+        </button>
+        <button class="soundtrack-btn soundtrack-btn--next" id="soundtrack-next" type="button" aria-label="Next soundtrack">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M11 2.5h2v11h-2zM3 3.2 10.5 8 3 12.8z"/></svg>
+        </button>
+      </div>
+
+      <!-- Volume Gain Slider -->
+      <div class="soundtrack-volume-wrap">
+        <div class="soundtrack-volume-wrap__label-row">
+          <label for="soundtrack-volume" class="soundtrack-volume-wrap__label">ACOUSTIC GAIN</label>
+          <span class="soundtrack-volume-wrap__val" id="soundtrack-volume-val">40%</span>
+        </div>
+        <div class="soundtrack-volume-wrap__control">
+          <button class="soundtrack-volume-mute" id="soundtrack-volume-mute" type="button" aria-label="Mute or unmute soundtrack">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M2 5.5h2.8L8 2.2v11.6L4.8 10.5H2zm8 0a3.5 3.5 0 0 1 0 5m1.5-7.5a6 6 0 0 1 0 10" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+          </button>
+          <input type="range" class="soundtrack-volume-slider" id="soundtrack-volume" min="0" max="100" value="40" aria-label="Soundtrack master volume percentage">
+        </div>
+      </div>
+
+      <!-- Track Selection List -->
+      <div class="soundtrack-tracks">
+        <div class="soundtrack-tracks__heading">SELECT ARCHIVAL SCORE</div>
+        <div class="soundtrack-tracks__list" role="radiogroup" aria-label="Batman soundtrack track selection">
+          
+          <button class="soundtrack-track-card is-active" data-track-id="arkham" type="button" role="radio" aria-checked="true">
+            <span class="soundtrack-track-card__num">01</span>
+            <div class="soundtrack-track-card__info">
+              <span class="soundtrack-track-card__title">Arkham City Main Theme</span>
+              <span class="soundtrack-track-card__meta">Nick Arundel &amp; Ron Fish · Arkham City</span>
+            </div>
+            <span class="soundtrack-track-card__tag">DEFAULT</span>
+          </button>
+
+          <button class="soundtrack-track-card" data-track-id="batfleck" type="button" role="radio" aria-checked="false">
+            <span class="soundtrack-track-card__num">02</span>
+            <div class="soundtrack-track-card__info">
+              <span class="soundtrack-track-card__title">A Beautiful Lie</span>
+              <span class="soundtrack-track-card__meta">Hans Zimmer &amp; Junkie XL · Batfleck</span>
+            </div>
+            <span class="soundtrack-track-card__tag">BvS</span>
+          </button>
+
+          <button class="soundtrack-track-card" data-track-id="battinson" type="button" role="radio" aria-checked="false">
+            <span class="soundtrack-track-card__num">03</span>
+            <div class="soundtrack-track-card__info">
+              <span class="soundtrack-track-card__title">The Batman Theme</span>
+              <span class="soundtrack-track-card__meta">Michael Giacchino · Battinson</span>
+            </div>
+            <span class="soundtrack-track-card__tag">2022</span>
+          </button>
+
+          <button class="soundtrack-track-card" data-track-id="batbale" type="button" role="radio" aria-checked="false">
+            <span class="soundtrack-track-card__num">04</span>
+            <div class="soundtrack-track-card__info">
+              <span class="soundtrack-track-card__title">Molossus / Dark Knight Theme</span>
+              <span class="soundtrack-track-card__meta">Hans Zimmer &amp; J.N. Howard · Batbale</span>
+            </div>
+            <span class="soundtrack-track-card__tag">TRILOGY</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Offscreen YouTube Player Container -->
+      <div id="yt-soundtrack-container" class="soundtrack-yt-container" aria-hidden="true">
+        <div id="yt-soundtrack-player"></div>
+      </div>
+    </div>
+  </aside>
+
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer__top">
