@@ -23,11 +23,15 @@
   <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/styles.css?v=2.2">
   <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Arkham City Global Atmospheric VFX Canvas (Snowfall, Ash Embers, Volumetric Searchlights across entire site) -->
+  <canvas id="arkham-canvas" class="arkham-canvas" role="img" aria-label="Living Arkham City atmospheric snowfall and volumetric searchlight simulation"></canvas>
+  <div class="arkham-scanlines" aria-hidden="true"></div>
 
   <!-- Inline icon + mark sprite -->
   <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -107,9 +111,6 @@
          01 — Hero (Arkham City Menu Vista)
     ============================================================= -->
     <section class="hero hero--arkham-vista" id="hero" aria-labelledby="hero-title">
-      <!-- Arkham Atmospheric VFX Canvas (Snowfall, Ash Embers, Volumetric Searchlights) -->
-      <canvas id="arkham-canvas" class="arkham-canvas" role="img" aria-label="Living Arkham City atmospheric snowfall and volumetric searchlight simulation"></canvas>
-
       <!-- Arkham City Skyline Silhouette -->
       <div class="arkham-skyline" aria-hidden="true">
         <svg class="arkham-skyline__svg" viewBox="0 0 1600 480" preserveAspectRatio="xMidYMax slice" focusable="false">
@@ -144,9 +145,6 @@
           <text x="1275" y="325" fill="#facc15" font-family="monospace" font-size="7" letter-spacing="2" opacity="0.6" class="arkham-neon arkham-neon--amber">GCPD</text>
         </svg>
       </div>
-
-      <!-- Scanline Atmosphere Overlay -->
-      <div class="arkham-scanlines" aria-hidden="true"></div>
 
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="hero__signal" aria-hidden="true">
@@ -1304,6 +1302,6 @@
     </div>
   </footer>
 
-  <script src="assets/main.js" defer></script>
+  <script src="assets/main.js?v=2.2" defer></script>
 </body>
 </html>

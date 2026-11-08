@@ -771,7 +771,7 @@ textarea {
 
 .hero__copy {
   position: relative;
-  z-index: 2;
+  z-index: 15;
 }
 
 .hero__kicker {
@@ -1089,7 +1089,7 @@ textarea {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 0;
+  z-index: 10;
 }
 
 /* Gotham Skyline Silhouette */
@@ -1238,6 +1238,7 @@ textarea {
 /* Arkham Menu Navigation */
 .arkham-menu {
   position: relative;
+  z-index: 15;
   margin-top: 1.5rem;
   margin-bottom: 1.25rem;
   display: flex;
@@ -1252,7 +1253,7 @@ textarea {
   flex-direction: column;
   gap: 0.35rem;
   position: relative;
-  z-index: 2;
+  z-index: 15;
 }
 
 .arkham-menu__item {
