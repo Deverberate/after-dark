@@ -1880,6 +1880,269 @@
   }
 
   /* ----------------------------------------------------------------------
+     Wayne Applied Sciences — Arkham City Hero Atmospheric VFX
+     Falling snowflakes, ash embers, dual sweeping volumetric searchlights,
+     and 3D cursor parallax
+  ---------------------------------------------------------------------- */
+  const arkhamCanvas = document.getElementById('arkham-canvas');
+  const heroSection = document.getElementById('hero');
+  const arkhamPerch = document.querySelector('.arkham-perch');
+  const arkhamSkyline = document.querySelector('.arkham-skyline');
+
+  if (arkhamCanvas && arkhamCanvas.getContext && heroSection) {
+    const aCtx = arkhamCanvas.getContext('2d');
+    let cWidth = 0;
+    let cHeight = 0;
+
+    const resizeArkhamCanvas = () => {
+      const rect = heroSection.getBoundingClientRect();
+      cWidth = rect.width;
+      cHeight = rect.height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      arkhamCanvas.width = cWidth * dpr;
+      arkhamCanvas.height = cHeight * dpr;
+      aCtx.setTransform(1, 0, 0, 1, 0, 0);
+      aCtx.scale(dpr, dpr);
+    };
+
+    resizeArkhamCanvas();
+    window.addEventListener('resize', resizeArkhamCanvas, { passive: true });
+
+    // Snowflakes (130 multi-depth particles)
+    const NUM_SNOW = 130;
+    const snowflakes = [];
+    for (let i = 0; i < NUM_SNOW; i++) {
+      snowflakes.push({
+        x: Math.random() * (cWidth || 1200),
+        y: Math.random() * (cHeight || 800),
+        radius: Math.random() * 2.2 + 0.6,
+        alpha: Math.random() * 0.6 + 0.25,
+        speedY: Math.random() * 1.4 + 0.5,
+        windDrift: Math.random() * 0.8 + 0.2,
+        swayPhase: Math.random() * Math.PI * 2,
+        swaySpeed: Math.random() * 1.5 + 0.8
+      });
+    }
+
+    // Ash Embers (24 glowing particles drifting upward)
+    const NUM_EMBERS = 24;
+    const embers = [];
+    for (let i = 0; i < NUM_EMBERS; i++) {
+      embers.push({
+        x: Math.random() * (cWidth || 1200),
+        y: (cHeight || 800) + Math.random() * 100,
+        radius: Math.random() * 1.8 + 0.8,
+        speedY: -(Math.random() * 0.9 + 0.4),
+        speedX: (Math.random() - 0.5) * 0.6,
+        alpha: Math.random() * 0.7 + 0.2,
+        maxLife: Math.random() * 200 + 100,
+        life: Math.random() * 100
+      });
+    }
+
+    // Mouse Parallax coordinates (smoothed with spring interpolation)
+    let currentMx = 0;
+    let currentMy = 0;
+    let targetMx = 0;
+    let targetMy = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      targetMx = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMy = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    let vfxStartTime = performance.now();
+
+    const renderArkhamVFX = (timestamp) => {
+      requestAnimationFrame(renderArkhamVFX);
+
+      // Check motion preference
+      const isMotionActive = motionEnabled && !prefersReducedMotion();
+
+      // Smooth parallax damping
+      currentMx += (targetMx - currentMx) * 0.08;
+      currentMy += (targetMy - currentMy) * 0.08;
+
+      if (isMotionActive) {
+        if (arkhamPerch) {
+          arkhamPerch.style.transform = `translate3d(${currentMx * -10}px, ${currentMy * -6}px, 0) rotateY(${currentMx * 2}deg) rotateX(${currentMy * -1.5}deg)`;
+        }
+        if (arkhamSkyline) {
+          arkhamSkyline.style.transform = `translate3d(${currentMx * 8}px, ${currentMy * 3}px, 0)`;
+        }
+      }
+
+      aCtx.clearRect(0, 0, cWidth, cHeight);
+
+      const elapsed = (timestamp - vfxStartTime) / 1000;
+
+      // 1. Draw Dual Volumetric Searchlights
+      if (isMotionActive && cWidth > 0 && cHeight > 0) {
+        // Searchlight 1: Anchor Left Horizon
+        const sl1X = cWidth * 0.22;
+        const sl1Y = cHeight * 0.88;
+        const sl1Angle = -0.75 + Math.sin(elapsed * 0.32) * 0.42;
+        const sl1Len = cHeight * 1.35;
+        const sl1Spread = 0.16;
+
+        const g1 = aCtx.createRadialGradient(sl1X, sl1Y, 10, sl1X + Math.cos(sl1Angle) * sl1Len * 0.5, sl1Y + Math.sin(sl1Angle) * sl1Len * 0.5, sl1Len * 0.8);
+        g1.addColorStop(0, 'rgba(215, 230, 255, 0.15)');
+        g1.addColorStop(0.35, 'rgba(160, 195, 240, 0.07)');
+        g1.addColorStop(0.8, 'rgba(120, 160, 210, 0.015)');
+        g1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        aCtx.beginPath();
+        aCtx.moveTo(sl1X, sl1Y);
+        aCtx.lineTo(sl1X + Math.cos(sl1Angle - sl1Spread) * sl1Len, sl1Y + Math.sin(sl1Angle - sl1Spread) * sl1Len);
+        aCtx.lineTo(sl1X + Math.cos(sl1Angle + sl1Spread) * sl1Len, sl1Y + Math.sin(sl1Angle + sl1Spread) * sl1Len);
+        aCtx.closePath();
+        aCtx.fillStyle = g1;
+        aCtx.fill();
+
+        // Searchlight 2: Anchor Right Horizon
+        const sl2X = cWidth * 0.78;
+        const sl2Y = cHeight * 0.92;
+        const sl2Angle = -2.35 + Math.cos(elapsed * 0.26) * 0.38;
+        const sl2Len = cHeight * 1.45;
+        const sl2Spread = 0.18;
+
+        const g2 = aCtx.createRadialGradient(sl2X, sl2Y, 10, sl2X + Math.cos(sl2Angle) * sl2Len * 0.5, sl2Y + Math.sin(sl2Angle) * sl2Len * 0.5, sl2Len * 0.8);
+        g2.addColorStop(0, 'rgba(215, 230, 255, 0.14)');
+        g2.addColorStop(0.35, 'rgba(160, 195, 240, 0.06)');
+        g2.addColorStop(0.8, 'rgba(120, 160, 210, 0.01)');
+        g2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        aCtx.beginPath();
+        aCtx.moveTo(sl2X, sl2Y);
+        aCtx.lineTo(sl2X + Math.cos(sl2Angle - sl2Spread) * sl2Len, sl2Y + Math.sin(sl2Angle - sl2Spread) * sl2Len);
+        aCtx.lineTo(sl2X + Math.cos(sl2Angle + sl2Spread) * sl2Len, sl2Y + Math.sin(sl2Angle + sl2Spread) * sl2Len);
+        aCtx.closePath();
+        aCtx.fillStyle = g2;
+        aCtx.fill();
+      }
+
+      // 2. Snowflakes
+      for (let i = 0; i < NUM_SNOW; i++) {
+        const s = snowflakes[i];
+        if (isMotionActive) {
+          s.y += s.speedY;
+          s.x += Math.sin(elapsed * s.swaySpeed + s.swayPhase) * s.windDrift;
+          if (s.y > cHeight + 10) {
+            s.y = -10;
+            s.x = Math.random() * cWidth;
+          }
+          if (s.x > cWidth + 10) s.x = -10;
+          else if (s.x < -10) s.x = cWidth + 10;
+        }
+
+        aCtx.beginPath();
+        aCtx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        aCtx.fillStyle = `rgba(230, 237, 241, ${s.alpha})`;
+        aCtx.fill();
+      }
+
+      // 3. Ash Embers (Rising from Industrial Horizon)
+      for (let i = 0; i < NUM_EMBERS; i++) {
+        const em = embers[i];
+        if (isMotionActive) {
+          em.y += em.speedY;
+          em.x += em.speedX + Math.sin(elapsed * 2 + i) * 0.3;
+          em.life++;
+
+          if (em.life > em.maxLife || em.y < 0) {
+            em.y = cHeight + Math.random() * 40;
+            em.x = Math.random() * cWidth;
+            em.life = 0;
+            em.maxLife = Math.random() * 200 + 100;
+          }
+        }
+
+        const lifeRatio = 1 - (em.life / em.maxLife);
+        const emberAlpha = Math.max(0, em.alpha * lifeRatio);
+
+        aCtx.beginPath();
+        aCtx.arc(em.x, em.y, em.radius, 0, Math.PI * 2);
+        aCtx.fillStyle = `rgba(225, 45, 20, ${emberAlpha})`;
+        aCtx.shadowColor = '#e10600';
+        aCtx.shadowBlur = 6;
+        aCtx.fill();
+        aCtx.shadowBlur = 0;
+      }
+    };
+
+    requestAnimationFrame(renderArkhamVFX);
+  }
+
+  /* ----------------------------------------------------------------------
+     Wayne Applied Sciences — Arkham City Menu Controller
+     Laser reticle tracking, chromatic glitch, audio chime, and soundtrack sync
+  ---------------------------------------------------------------------- */
+  const arkhamMenu = document.querySelector('.arkham-menu');
+  const arkhamReticle = document.getElementById('arkham-reticle');
+  const arkhamMenuItems = document.querySelectorAll('.arkham-menu__item');
+
+  if (arkhamMenu && arkhamReticle && arkhamMenuItems.length > 0) {
+    const positionReticle = (item) => {
+      if (!item) {
+        arkhamReticle.classList.remove('is-visible');
+        return;
+      }
+      const itemTop = item.offsetTop;
+      const itemHeight = item.offsetHeight;
+      arkhamReticle.style.transform = `translateY(${itemTop}px)`;
+      arkhamReticle.style.height = `${itemHeight}px`;
+      arkhamReticle.classList.add('is-visible');
+    };
+
+    // Position on active item initially
+    const activeInitial = arkhamMenu.querySelector('.arkham-menu__item.is-active') || arkhamMenuItems[0];
+    if (activeInitial) {
+      setTimeout(() => positionReticle(activeInitial), 100);
+    }
+
+    arkhamMenuItems.forEach((item) => {
+      // Hover interaction
+      item.addEventListener('mouseenter', () => {
+        positionReticle(item);
+        wayneAudio.play('click');
+        triggerHaptic(10);
+        item.classList.add('is-glitching');
+        setTimeout(() => item.classList.remove('is-glitching'), 280);
+      });
+
+      // Keyboard focus
+      item.addEventListener('focus', () => {
+        positionReticle(item);
+        wayneAudio.play('click');
+        triggerHaptic(10);
+        item.classList.add('is-glitching');
+        setTimeout(() => item.classList.remove('is-glitching'), 280);
+      });
+
+      // Click: trigger tactical chime, haptic, and auto-engage soundtrack!
+      item.addEventListener('click', () => {
+        wayneAudio.play('chirp');
+        triggerHaptic(16);
+
+        arkhamMenuItems.forEach((m) => m.classList.remove('is-active'));
+        item.classList.add('is-active');
+
+        // Engage background soundtrack if not playing
+        if (!isSoundtrackPlaying) {
+          userGestureReceived = true;
+          playCurrentSoundtrack();
+        }
+      });
+    });
+
+    // When mouse leaves menu container, return reticle to active item
+    arkhamMenu.addEventListener('mouseleave', () => {
+      const currentActive = arkhamMenu.querySelector('.arkham-menu__item.is-active');
+      if (currentActive) positionReticle(currentActive);
+    });
+  }
+
+  /* ----------------------------------------------------------------------
      Footer year
   ---------------------------------------------------------------------- */
   const yearNode = document.getElementById('year');
