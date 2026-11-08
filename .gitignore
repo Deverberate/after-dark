@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Test artifacts and reports
+playwright-report/
+test-results/
+
+# OS files
+.DS_Store
+
+# Keys and credentials
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+Documents*
