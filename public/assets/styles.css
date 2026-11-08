@@ -1145,69 +1145,124 @@ textarea {
 
 .prologue__figure.is-visible {
   opacity: 1;
-}
-
-.prologue__figure--crouch {
-  bottom: 4vh;
-  left: clamp(4%, 9vw, 15%);
-  width: clamp(240px, 28vw, 420px);
-  transform: translateY(24px) scale(0.96);
-}
-
-.prologue__figure--crouch.is-visible {
-  transform: translateY(0) scale(1);
-}
-
-.prologue__figure--stand {
-  bottom: 4vh;
-  right: clamp(5%, 11vw, 18%);
-  width: clamp(260px, 30vw, 460px);
-  transform: translateY(30px) scale(0.96);
-}
-
-.prologue__figure--stand.is-visible {
-  transform: translateY(0) scale(1);
-}
-
-.prologue__svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.85));
-}
-
-.prologue-chest {
-  animation: batBreathe 4.2s infinite ease-in-out;
-  transform-origin: 50% 60%;
+  animation: batBreathe 4.8s infinite ease-in-out;
+  transform-origin: 50% 85%;
 }
 
 @keyframes batBreathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.025); }
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.015); }
 }
 
-.prologue-cape-wave {
-  animation: capeWave 3.2s infinite ease-in-out;
-  transform-origin: 110px 230px;
+/* Stealth Mode & Lightning Chiaroscuro Engine */
+.prologue__figure-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0.02;
+  filter: brightness(0);
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease-out;
+  will-change: opacity, filter;
 }
 
-@keyframes capeWave {
-  0%, 100% { transform: rotate(0deg) skewX(0deg); }
-  50% { transform: rotate(-2deg) skewX(-1.5deg); }
+.prologue__figure.is-lightning-lit .prologue__figure-body {
+  opacity: 1;
+  filter: brightness(1.32) contrast(1.22) drop-shadow(0 0 32px rgba(180, 230, 255, 0.85));
 }
 
-.prologue-cape-billow {
-  animation: capeBillow 2.8s infinite ease-in-out;
-  transform-origin: 160px 170px;
+.prologue__figure--crouch {
+  bottom: 0;
+  left: clamp(1%, 4vw, 10%);
+  width: clamp(340px, 38vw, 560px);
+  height: clamp(520px, 64vh, 820px);
+  transform: translateY(24px) scale(0.96);
 }
 
-@keyframes capeBillow {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.03, 0.98) rotate(-1.8deg); }
+.prologue__figure--stand {
+  bottom: 0;
+  right: clamp(2%, 6vw, 12%);
+  width: clamp(360px, 40vw, 600px);
+  height: clamp(540px, 66vh, 850px);
+  transform: translateY(30px) scale(0.96);
 }
 
-.prologue-batman-head {
-  transition: transform 0.12s ease-out;
+.prologue__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.85));
+}
+
+.prologue__art--stand {
+  position: relative;
+  z-index: 2;
+}
+
+/* Dynamic Aerodynamic Billowing Wind Cape Canvas */
+.prologue__cape-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Razor-Sharp Glowing Cowl Eyes (Always Piercing Through the Dark) */
+.prologue__eyes {
+  position: absolute;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 0.75vw, 10px);
+  pointer-events: none;
+  will-change: transform;
+  transition: transform 0.12s ease-out, opacity 0.25s ease-out;
+}
+
+.prologue__eye {
+  display: inline-block;
+  width: clamp(8px, 0.75vw, 12px);
+  height: clamp(2.5px, 0.25vw, 4px);
+  background: #ffffff;
+  border-radius: 1px;
+  box-shadow: 0 0 10px #00e5ff, 0 0 4px #ffffff, 0 0 18px rgba(0, 229, 255, 0.7);
+}
+
+.prologue__eye--left {
+  transform: rotate(-9deg);
+}
+
+.prologue__eye--right {
+  transform: rotate(9deg);
+}
+
+.prologue__eyes--crouch {
+  top: 15.2%;
+  left: 33.2%;
+}
+
+.prologue__eyes--stand {
+  top: 24.5%;
+  left: 48%;
+}
+
+.prologue__eyes--descent {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+  transition: opacity 0.25s ease-out, transform 0.1s linear;
+}
+
+.prologue__eyes--descent .prologue__eye {
+  width: clamp(10px, 1vw, 16px);
+  height: clamp(3px, 0.3vw, 5px);
+  box-shadow: 0 0 14px #00e5ff, 0 0 6px #ffffff, 0 0 24px rgba(0, 229, 255, 0.85);
 }
 
 /* Prologue Tactical HUD Overlay */

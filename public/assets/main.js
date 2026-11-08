@@ -1890,8 +1890,10 @@
   const prologueFlash = document.getElementById('prologue-flash');
   const prologueCrouch = document.getElementById('prologue-figure-crouch');
   const prologueStand = document.getElementById('prologue-figure-stand');
-  const headCrouch = document.getElementById('p-head-crouch');
-  const headStand = document.getElementById('p-head-stand');
+  const capeCanvas = document.getElementById('prologue-cape-canvas');
+  const pEyesCrouch = document.getElementById('p-eyes-crouch');
+  const pEyesStand = document.getElementById('p-eyes-stand');
+  const pEyesDescent = document.getElementById('p-eyes-descent');
   const prologueSkyline = document.querySelector('.prologue__skyline');
   const prologueStatus = document.getElementById('prologue-status');
   const pStep1 = document.getElementById('p-step-1');
@@ -1917,6 +1919,26 @@
 
     resizePrologueCanvas();
     window.addEventListener('resize', resizePrologueCanvas, { passive: true });
+
+    // Dynamic Billowing Wind Cape Canvas Context
+    let capeCtx = null;
+    if (capeCanvas && capeCanvas.getContext) {
+      capeCtx = capeCanvas.getContext('2d');
+    }
+
+    const resizeCapeCanvas = () => {
+      if (!capeCanvas || !capeCtx) return;
+      const rect = capeCanvas.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        capeCanvas.width = rect.width * dpr;
+        capeCanvas.height = rect.height * dpr;
+        capeCtx.setTransform(1, 0, 0, 1, 0, 0);
+        capeCtx.scale(dpr, dpr);
+      }
+    };
+    resizeCapeCanvas();
+    window.addEventListener('resize', resizeCapeCanvas, { passive: true });
 
     // Lightning State & Procedural Bolt Generator
     let lightningActive = false;
@@ -1954,6 +1976,13 @@
       const endY = pHeight * (0.65 + Math.random() * 0.25);
       lightningBolts = generateBolt(startX, startY, endX, endY, pWidth * 0.12, 5);
 
+      // Illuminate active figure with dramatic rim lighting and comic textures
+      if (lastStage === 1 && prologueCrouch) {
+        prologueCrouch.classList.add('is-lightning-lit');
+      } else if (lastStage === 2 && prologueStand) {
+        prologueStand.classList.add('is-lightning-lit');
+      }
+
       // Trigger screen-level sheet flash overlay (strictly visual, silent)
       if (prologueFlash) {
         prologueFlash.classList.add('is-flashing');
@@ -1969,6 +1998,12 @@
           }
         }, 65);
       }
+
+      // Smoothly fade figure back to pure pitch darkness after flash (eyes stay glowing)
+      setTimeout(() => {
+        if (prologueCrouch) prologueCrouch.classList.remove('is-lightning-lit');
+        if (prologueStand) prologueStand.classList.remove('is-lightning-lit');
+      }, 280);
 
       // Scatter bats
       for (let i = 0; i < bats.length; i++) {
@@ -2007,7 +2042,7 @@
       });
     }
 
-    // Interactive pointer coordinates for head tracking and parallax
+    // Interactive pointer coordinates for eye tracking and parallax
     let pMx = 0;
     let pMy = 0;
     let targetPMx = 0;
@@ -2026,6 +2061,9 @@
     }
 
     let pStartTime = performance.now();
+    let lastScrollY = window.scrollY;
+    let lastScrollTime = performance.now();
+    let scrollVelocity = 0;
 
     const renderPrologue = (timestamp) => {
       requestAnimationFrame(renderPrologue);
@@ -2038,56 +2076,88 @@
 
       const isMotionActive = motionEnabled && !prefersReducedMotion();
 
+      // Compute scroll velocity for aerodynamic wind response
+      const now = performance.now();
+      const dt = Math.max(1, now - lastScrollTime);
+      const curScrollY = window.scrollY;
+      const rawVel = (curScrollY - lastScrollY) / (dt / 1000);
+      scrollVelocity += (rawVel - scrollVelocity) * 0.15;
+      lastScrollY = curScrollY;
+      lastScrollTime = now;
+
+      const baseWind = 3.5;
+      const windGust = Math.sin(timestamp * 0.0022) * 2 + Math.cos(timestamp * 0.0047) * 1;
+      const scrollWind = Math.min(26, Math.abs(scrollVelocity) * 0.035);
+      const dynamicWind = baseWind + windGust + scrollWind;
+
       // Smooth pointer tracking
       pMx += (targetPMx - pMx) * 0.08;
       pMy += (targetPMy - pMy) * 0.08;
-
-      // Update head rotation on both figures
-      if (isMotionActive) {
-        if (headCrouch) {
-          headCrouch.style.transform = `rotate(${pMx * 8}deg)`;
-        }
-        if (headStand) {
-          headStand.style.transform = `rotate(${pMx * 8}deg)`;
-        }
-        if (prologueSkyline) {
-          prologueSkyline.style.transform = `translate3d(${pMx * 6}px, ${pMy * 3}px, 0)`;
-        }
-      }
 
       // Calculate scroll progress p in [0, 1]
       const totalScrollable = Math.max(1, rect.height - window.innerHeight);
       const scrolled = Math.max(0, -rect.top);
       const p = Math.min(1, Math.max(0, scrolled / totalScrollable));
 
-      // 3-Stage State Handling
+      // 3-Stage State Handling with Full Bidirectional Smoothness
       let currentStage = 1;
       if (p < 0.35) {
         currentStage = 1;
-        if (prologueCrouch) prologueCrouch.classList.add('is-visible');
-        if (prologueStand) prologueStand.classList.remove('is-visible');
+        if (prologueCrouch) {
+          prologueCrouch.classList.add('is-visible');
+          prologueCrouch.style.opacity = '';
+        }
+        if (prologueStand) {
+          prologueStand.classList.remove('is-visible');
+          prologueStand.style.opacity = '';
+        }
+        if (pEyesDescent) pEyesDescent.style.opacity = '0';
         if (prologueStatus) prologueStatus.textContent = 'GOTHAM RECON // ELEVATION 412M';
         if (pStep1) pStep1.classList.add('is-active');
         if (pStep2) pStep2.classList.remove('is-active');
         if (pStep3) pStep3.classList.remove('is-active');
+
+        // Eye tracking
+        if (isMotionActive && pEyesCrouch) {
+          pEyesCrouch.style.transform = `translate3d(${pMx * 8}px, ${pMy * 4}px, 0)`;
+        }
       } else if (p < 0.72) {
         currentStage = 2;
-        if (prologueCrouch) prologueCrouch.classList.remove('is-visible');
-        if (prologueStand) prologueStand.classList.add('is-visible');
+        if (prologueCrouch) {
+          prologueCrouch.classList.remove('is-visible');
+          prologueCrouch.style.opacity = '';
+        }
+        if (prologueStand) {
+          prologueStand.classList.add('is-visible');
+          prologueStand.style.opacity = '';
+        }
+        if (pEyesDescent) pEyesDescent.style.opacity = '0';
         if (prologueStatus) prologueStatus.textContent = 'GOTHAM ROOFTOP APEX // ELEVATION 280M';
         if (pStep1) pStep1.classList.remove('is-active');
         if (pStep2) pStep2.classList.add('is-active');
         if (pStep3) pStep3.classList.remove('is-active');
+
+        // Eye tracking
+        if (isMotionActive && pEyesStand) {
+          pEyesStand.style.transform = `translate3d(${pMx * 8}px, ${pMy * 4}px, 0)`;
+        }
       } else {
         currentStage = 3;
-        // Dissolve both figures gracefully into the hero vista
-        const fadeOut = Math.max(0, 1 - (p - 0.72) / 0.28);
+        // Dissolve both figures gracefully into the hero vista; descent eyes streak down
+        const fadeProg = Math.min(1, Math.max(0, (p - 0.72) / 0.28));
         if (prologueCrouch) {
           prologueCrouch.classList.remove('is-visible');
           prologueCrouch.style.opacity = '0';
         }
         if (prologueStand) {
-          prologueStand.style.opacity = `${fadeOut}`;
+          prologueStand.style.opacity = `${Math.max(0, 1 - fadeProg * 1.8)}`;
+        }
+        if (pEyesDescent) {
+          const descentOpacity = fadeProg < 0.1 ? fadeProg * 10 : Math.max(0, 1 - (fadeProg - 0.7) * 3.3);
+          pEyesDescent.style.opacity = `${descentOpacity}`;
+          const eyeY = 35 + fadeProg * 50;
+          pEyesDescent.style.top = `${eyeY}%`;
+          pEyesDescent.style.transform = `translate3d(calc(-50% + ${pMx * 12}px), -50%, 0)`;
         }
         if (prologueStatus) prologueStatus.textContent = 'ARKHAM CITY GRID // INFILTRATION';
         if (pStep1) pStep1.classList.remove('is-active');
@@ -2095,15 +2165,106 @@
         if (pStep3) pStep3.classList.add('is-active');
       }
 
-      // If crossed into new stage via scroll, fire instant dramatic lightning
+      if (isMotionActive && prologueSkyline) {
+        prologueSkyline.style.transform = `translate3d(${pMx * 6}px, ${pMy * 3 - p * 80}px, 0)`;
+      }
+
+      // If crossed into new stage via scroll in either direction, fire instant dramatic lightning
       if (currentStage !== lastStage) {
         lastStage = currentStage;
         triggerLightning();
       }
 
-      pCtx.clearRect(0, 0, pWidth, pHeight);
-
       const elapsed = (timestamp - pStartTime) / 1000;
+
+      // Render Dynamic Aerodynamic Flying Cape on Stage 2
+      if (capeCanvas && capeCtx && currentStage === 2 && isMotionActive) {
+        const cW = capeCanvas.clientWidth || 400;
+        const cH = capeCanvas.clientHeight || 600;
+        capeCtx.clearRect(0, 0, cW, cH);
+
+        const isLit = prologueStand ? prologueStand.classList.contains('is-lightning-lit') : false;
+        
+        // Origin: upper back / shoulders of standing figure
+        const originX = cW * 0.48;
+        const originY = cH * 0.28;
+        
+        const numRibs = 7;
+        const ribs = [];
+        const capeElapsed = elapsed * 3.2;
+
+        for (let i = 0; i < numRibs; i++) {
+          const t = i / (numRibs - 1);
+          // Angle spreads backwards and upwards in the wind (to the left)
+          const baseAngle = Math.PI * 0.58 + t * Math.PI * 0.42;
+          const baseLen = (cH * 0.35) + Math.sin(t * Math.PI) * (cH * 0.24) + t * (cH * 0.12);
+          
+          // Travelling aerodynamic sine wave with wind gust & scroll speed modulation
+          const wave1 = Math.sin(capeElapsed + i * 0.85) * (14 + dynamicWind * 0.7);
+          const wave2 = Math.cos(capeElapsed * 1.8 + i * 1.3) * (7 + dynamicWind * 0.35);
+          const updraft = -Math.abs(dynamicWind) * 3.2;
+
+          const p0 = { x: originX - (1 - t) * (cW * 0.08), y: originY + t * (cH * 0.04) };
+          const p1 = {
+            x: p0.x + Math.cos(baseAngle) * (baseLen * 0.45) + wave1 * 0.5,
+            y: p0.y + Math.sin(baseAngle) * (baseLen * 0.45) + updraft * 0.4
+          };
+          const p2 = {
+            x: p0.x + Math.cos(baseAngle) * baseLen + wave1,
+            y: p0.y + Math.sin(baseAngle) * baseLen + wave2 + updraft
+          };
+          ribs.push({ p0, p1, p2 });
+        }
+
+        capeCtx.beginPath();
+        capeCtx.moveTo(ribs[0].p0.x, ribs[0].p0.y);
+        for (let i = 0; i < numRibs; i++) {
+          capeCtx.lineTo(ribs[i].p0.x, ribs[i].p0.y);
+        }
+        capeCtx.quadraticCurveTo(ribs[numRibs - 1].p1.x, ribs[numRibs - 1].p1.y, ribs[numRibs - 1].p2.x, ribs[numRibs - 1].p2.y);
+        
+        // Scalloped bat-wing edges
+        for (let i = numRibs - 1; i > 0; i--) {
+          const curr = ribs[i].p2;
+          const prev = ribs[i - 1].p2;
+          const midX = (curr.x + prev.x) * 0.5;
+          const midY = (curr.y + prev.y) * 0.5 - (cH * 0.045);
+          capeCtx.quadraticCurveTo(midX, midY, prev.x, prev.y);
+        }
+        capeCtx.quadraticCurveTo(ribs[0].p1.x, ribs[0].p1.y, ribs[0].p0.x, ribs[0].p0.y);
+        capeCtx.closePath();
+
+        const capeGrad = capeCtx.createLinearGradient(originX, originY, ribs[numRibs - 1].p2.x, ribs[numRibs - 1].p2.y);
+        capeGrad.addColorStop(0, '#010204');
+        capeGrad.addColorStop(0.5, '#070b10');
+        capeGrad.addColorStop(1, '#020305');
+        capeCtx.fillStyle = capeGrad;
+        capeCtx.fill();
+
+        // Rim lightning stroke
+        capeCtx.lineWidth = isLit ? 3 : 1.2;
+        capeCtx.strokeStyle = isLit ? 'rgba(180, 230, 255, 0.9)' : 'rgba(25, 35, 48, 0.6)';
+        if (isLit) {
+          capeCtx.shadowColor = '#00e5ff';
+          capeCtx.shadowBlur = 16;
+        } else {
+          capeCtx.shadowBlur = 0;
+        }
+        capeCtx.stroke();
+
+        // Internal comic folds
+        capeCtx.shadowBlur = 0;
+        capeCtx.strokeStyle = isLit ? 'rgba(140, 195, 230, 0.45)' : 'rgba(15, 22, 30, 0.8)';
+        capeCtx.lineWidth = 1;
+        for (let i = 1; i < numRibs - 1; i++) {
+          capeCtx.beginPath();
+          capeCtx.moveTo(ribs[i].p0.x, ribs[i].p0.y);
+          capeCtx.quadraticCurveTo(ribs[i].p1.x, ribs[i].p1.y, ribs[i].p2.x, ribs[i].p2.y);
+          capeCtx.stroke();
+        }
+      }
+
+      pCtx.clearRect(0, 0, pWidth, pHeight);
 
       // 1. Storm Cloud Layers (Upper 60% of sky)
       if (pWidth > 0 && pHeight > 0) {
