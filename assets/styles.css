@@ -1173,16 +1173,18 @@ textarea {
 .prologue__figure--crouch {
   bottom: 0;
   left: clamp(1%, 4vw, 10%);
-  width: clamp(340px, 38vw, 560px);
-  height: clamp(520px, 64vh, 820px);
+  width: clamp(320px, 36vw, 520px);
+  height: auto;
+  aspect-ratio: 685 / 1024;
   transform: translateY(24px) scale(0.96);
 }
 
 .prologue__figure--stand {
   bottom: 0;
   right: clamp(2%, 6vw, 12%);
-  width: clamp(360px, 40vw, 600px);
-  height: clamp(540px, 66vh, 850px);
+  width: clamp(340px, 38vw, 560px);
+  height: auto;
+  aspect-ratio: 621 / 960;
   transform: translateY(30px) scale(0.96);
 }
 
@@ -1216,37 +1218,38 @@ textarea {
   z-index: 8;
   display: flex;
   align-items: center;
-  gap: clamp(6px, 0.75vw, 10px);
+  gap: clamp(5px, 0.6vw, 8px);
   pointer-events: none;
+  transform: translate(-50%, -50%);
   will-change: transform;
   transition: transform 0.12s ease-out, opacity 0.25s ease-out;
 }
 
 .prologue__eye {
   display: inline-block;
-  width: clamp(8px, 0.75vw, 12px);
-  height: clamp(2.5px, 0.25vw, 4px);
+  width: clamp(7px, 0.65vw, 10px);
+  height: clamp(2.2px, 0.2vw, 3.2px);
   background: #ffffff;
   border-radius: 1px;
-  box-shadow: 0 0 10px #00e5ff, 0 0 4px #ffffff, 0 0 18px rgba(0, 229, 255, 0.7);
+  box-shadow: 0 0 10px #00e5ff, 0 0 4px #ffffff, 0 0 16px rgba(0, 229, 255, 0.75);
 }
 
 .prologue__eye--left {
-  transform: rotate(-9deg);
+  transform: rotate(-8deg);
 }
 
 .prologue__eye--right {
-  transform: rotate(9deg);
+  transform: rotate(8deg);
 }
 
 .prologue__eyes--crouch {
-  top: 15.2%;
-  left: 33.2%;
+  top: 46.5%;
+  left: 37.6%;
 }
 
 .prologue__eyes--stand {
-  top: 24.5%;
-  left: 48%;
+  top: 23.4%;
+  left: 35.8%;
 }
 
 .prologue__eyes--descent {

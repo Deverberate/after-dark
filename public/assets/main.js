@@ -172,6 +172,9 @@
           case 'lock':
             this.playLock(t);
             break;
+          case 'thunder':
+            this.playThunder(t);
+            break;
         }
       };
 
@@ -290,6 +293,86 @@
       gain2.connect(dest);
       osc2.start(t);
       osc2.stop(t + 0.09);
+    }
+
+    playThunder(t) {
+      const dest = this.masterGain || this.ctx.destination;
+
+      // 1. Deep atmospheric sub-bass rumble
+      const subOsc1 = this.ctx.createOscillator();
+      const subOsc2 = this.ctx.createOscillator();
+      const subGain = this.ctx.createGain();
+      const subFilter = this.ctx.createBiquadFilter();
+
+      subFilter.type = 'lowpass';
+      subFilter.frequency.setValueAtTime(85, t);
+      subFilter.frequency.exponentialRampToValueAtTime(45, t + 1.8);
+
+      subOsc1.type = 'triangle';
+      subOsc1.frequency.setValueAtTime(54, t);
+      subOsc1.frequency.exponentialRampToValueAtTime(32, t + 1.8);
+
+      subOsc2.type = 'sawtooth';
+      subOsc2.frequency.setValueAtTime(64, t);
+      subOsc2.frequency.exponentialRampToValueAtTime(38, t + 1.8);
+
+      subGain.gain.setValueAtTime(0.001, t);
+      subGain.gain.linearRampToValueAtTime(0.32, t + 0.08);
+      subGain.gain.exponentialRampToValueAtTime(0.18, t + 0.45);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.85);
+
+      subOsc1.connect(subFilter);
+      subOsc2.connect(subFilter);
+      subFilter.connect(subGain);
+      subGain.connect(dest);
+
+      subOsc1.start(t);
+      subOsc2.start(t);
+      subOsc1.stop(t + 1.9);
+      subOsc2.stop(t + 1.9);
+
+      // 2. Gritty lightning strike crack (bandpass brownian noise with soft air ionization saturation)
+      const bufferSize = Math.floor(this.ctx.sampleRate * 1.5);
+      const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.04 * white)) / 1.04;
+        lastOut = output[i];
+        output[i] *= 3.5;
+      }
+
+      const noiseNode = this.ctx.createBufferSource();
+      noiseNode.buffer = noiseBuffer;
+
+      const noiseFilter = this.ctx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.setValueAtTime(480, t);
+      noiseFilter.frequency.exponentialRampToValueAtTime(140, t + 0.35);
+      noiseFilter.Q.setValueAtTime(1.8, t);
+
+      const waveShaper = this.ctx.createWaveShaper();
+      const curve = new Float32Array(256);
+      for (let i = 0; i < 256; i++) {
+        const x = (i * 2) / 256 - 1;
+        curve[i] = (Math.PI + 4) * x / (Math.PI + 4 * Math.abs(x));
+      }
+      waveShaper.curve = curve;
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.001, t);
+      noiseGain.gain.linearRampToValueAtTime(0.34, t + 0.02);
+      noiseGain.gain.exponentialRampToValueAtTime(0.08, t + 0.28);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
+
+      noiseNode.connect(noiseFilter);
+      noiseFilter.connect(waveShaper);
+      waveShaper.connect(noiseGain);
+      noiseGain.connect(dest);
+
+      noiseNode.start(t);
+      noiseNode.stop(t + 1.5);
     }
 
     syncUI() {
@@ -1193,7 +1276,12 @@
   document.querySelectorAll('#audio-toggle, [data-audio-toggle], .hud-audio-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      wayneAudio.toggle();
+      const nowEnabled = wayneAudio.toggle();
+      if (!nowEnabled) {
+        if (typeof pauseCurrentSoundtrack === 'function') {
+          pauseCurrentSoundtrack();
+        }
+      }
       triggerHaptic(15);
     });
   });
@@ -1533,6 +1621,9 @@
   }
 
   function playCurrentSoundtrack() {
+    if (window.wayneAudio && !window.wayneAudio.isEnabled()) {
+      return;
+    }
     if (!isPlayerReady || !ytPlayer || typeof ytPlayer.playVideo !== 'function') {
       pendingSoundtrackPlay = true;
       return;
@@ -1553,12 +1644,14 @@
   }
 
   function pauseCurrentSoundtrack() {
-    if (!isPlayerReady || !ytPlayer || typeof ytPlayer.pauseVideo !== 'function') return;
-    try {
-      ytPlayer.pauseVideo();
-      isSoundtrackPlaying = false;
-      syncSoundtrackUI(false);
-    } catch (e) {}
+    pendingSoundtrackPlay = false;
+    if (isPlayerReady && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+      try {
+        ytPlayer.pauseVideo();
+      } catch (e) {}
+    }
+    isSoundtrackPlaying = false;
+    syncSoundtrackUI(false);
   }
 
   function loadSoundtrack(index, autoPlay = true) {
@@ -1606,7 +1699,9 @@
     ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((evt) => {
       window.removeEventListener(evt, triggerAutoplayOnGesture);
     });
-    playCurrentSoundtrack();
+    if (window.wayneAudio && window.wayneAudio.isEnabled()) {
+      playCurrentSoundtrack();
+    }
   };
 
   ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((evt) => {
@@ -1626,7 +1721,9 @@
 
     if (!isSoundtrackPlaying && !userGestureReceived) {
       userGestureReceived = true;
-      playCurrentSoundtrack();
+      if (window.wayneAudio && window.wayneAudio.isEnabled()) {
+        playCurrentSoundtrack();
+      }
     }
 
     if (closeBtn) closeBtn.focus();
@@ -1662,16 +1759,28 @@
     }
   });
 
+  // Sync with global audio state (e.g. #audio-toggle Audio: Off / Audio: On)
+  window.addEventListener('audiostatechange', (e) => {
+    if (e && e.detail && e.detail.enabled === false) {
+      pauseCurrentSoundtrack();
+    }
+  });
+
   // Transport Controls
   if (playBtn) {
     playBtn.addEventListener('click', () => {
       userGestureReceived = true;
-      wayneAudio.play('click');
-      triggerHaptic(14);
       if (isSoundtrackPlaying) {
         pauseCurrentSoundtrack();
+        wayneAudio.play('click');
+        triggerHaptic(14);
       } else {
+        if (!wayneAudio.isEnabled()) {
+          wayneAudio.toggle();
+        }
         playCurrentSoundtrack();
+        wayneAudio.play('click');
+        triggerHaptic(14);
       }
     });
   }
@@ -1679,6 +1788,7 @@
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
       userGestureReceived = true;
+      if (!wayneAudio.isEnabled()) wayneAudio.toggle();
       wayneAudio.play('click');
       triggerHaptic(12);
       loadSoundtrack(currentTrackIndex - 1, true);
@@ -1688,6 +1798,7 @@
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       userGestureReceived = true;
+      if (!wayneAudio.isEnabled()) wayneAudio.toggle();
       wayneAudio.play('click');
       triggerHaptic(12);
       loadSoundtrack(currentTrackIndex + 1, true);
@@ -1697,6 +1808,7 @@
   trackCards.forEach((card, index) => {
     card.addEventListener('click', () => {
       userGestureReceived = true;
+      if (!wayneAudio.isEnabled()) wayneAudio.toggle();
       wayneAudio.play('click');
       triggerHaptic(12);
       loadSoundtrack(index, true);
@@ -1969,6 +2081,11 @@
       lightningActive = true;
       lightningStartTime = performance.now();
 
+      // Trigger gritty thunder & rumble audio when lightning strikes (respects Audio On/Off)
+      if (window.wayneAudio && window.wayneAudio.isEnabled()) {
+        window.wayneAudio.play('thunder');
+      }
+
       // Generate 1-2 prominent lightning branches originating from the clouds
       const startX = pWidth * (0.35 + Math.random() * 0.4);
       const startY = pHeight * 0.05;
@@ -2119,7 +2236,7 @@
 
         // Eye tracking
         if (isMotionActive && pEyesCrouch) {
-          pEyesCrouch.style.transform = `translate3d(${pMx * 8}px, ${pMy * 4}px, 0)`;
+          pEyesCrouch.style.transform = `translate3d(calc(-50% + ${pMx * 6}px), calc(-50% + ${pMy * 3}px), 0)`;
         }
       } else if (p < 0.72) {
         currentStage = 2;
@@ -2139,7 +2256,7 @@
 
         // Eye tracking
         if (isMotionActive && pEyesStand) {
-          pEyesStand.style.transform = `translate3d(${pMx * 8}px, ${pMy * 4}px, 0)`;
+          pEyesStand.style.transform = `translate3d(calc(-50% + ${pMx * 6}px), calc(-50% + ${pMy * 3}px), 0)`;
         }
       } else {
         currentStage = 3;
@@ -2185,9 +2302,9 @@
 
         const isLit = prologueStand ? prologueStand.classList.contains('is-lightning-lit') : false;
         
-        // Origin: upper back / shoulders of standing figure
-        const originX = cW * 0.48;
-        const originY = cH * 0.28;
+        // Origin: upper back / shoulders of standing figure (calibrated to Finch perch art)
+        const originX = cW * 0.36;
+        const originY = cH * 0.24;
         
         const numRibs = 7;
         const ribs = [];
@@ -2196,8 +2313,8 @@
         for (let i = 0; i < numRibs; i++) {
           const t = i / (numRibs - 1);
           // Angle spreads backwards and upwards in the wind (to the left)
-          const baseAngle = Math.PI * 0.58 + t * Math.PI * 0.42;
-          const baseLen = (cH * 0.35) + Math.sin(t * Math.PI) * (cH * 0.24) + t * (cH * 0.12);
+          const baseAngle = Math.PI * 0.62 + t * Math.PI * 0.44;
+          const baseLen = (cH * 0.38) + Math.sin(t * Math.PI) * (cH * 0.26) + t * (cH * 0.14);
           
           // Travelling aerodynamic sine wave with wind gust & scroll speed modulation
           const wave1 = Math.sin(capeElapsed + i * 0.85) * (14 + dynamicWind * 0.7);
