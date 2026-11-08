@@ -1881,23 +1881,22 @@
 
   /* ----------------------------------------------------------------------
      Wayne Applied Sciences — Arkham City Hero Atmospheric VFX
-     Falling snowflakes, ash embers, dual sweeping volumetric searchlights,
-     and 3D cursor parallax
+     Fixed global snowfall, ash embers, dual sweeping volumetric searchlights,
+     scroll wind dynamics, and 3D cursor parallax
   ---------------------------------------------------------------------- */
   const arkhamCanvas = document.getElementById('arkham-canvas');
   const heroSection = document.getElementById('hero');
   const arkhamPerch = document.querySelector('.arkham-perch');
   const arkhamSkyline = document.querySelector('.arkham-skyline');
 
-  if (arkhamCanvas && arkhamCanvas.getContext && heroSection) {
+  if (arkhamCanvas && arkhamCanvas.getContext) {
     const aCtx = arkhamCanvas.getContext('2d');
-    let cWidth = 0;
-    let cHeight = 0;
+    let cWidth = window.innerWidth;
+    let cHeight = window.innerHeight;
 
     const resizeArkhamCanvas = () => {
-      const rect = heroSection.getBoundingClientRect();
-      cWidth = rect.width;
-      cHeight = rect.height;
+      cWidth = window.innerWidth;
+      cHeight = window.innerHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       arkhamCanvas.width = cWidth * dpr;
       arkhamCanvas.height = cHeight * dpr;
@@ -1908,8 +1907,8 @@
     resizeArkhamCanvas();
     window.addEventListener('resize', resizeArkhamCanvas, { passive: true });
 
-    // Snowflakes (130 multi-depth particles)
-    const NUM_SNOW = 130;
+    // Snowflakes (150 multi-depth particles drifting across full viewport)
+    const NUM_SNOW = 150;
     const snowflakes = [];
     for (let i = 0; i < NUM_SNOW; i++) {
       snowflakes.push({
@@ -1917,26 +1916,26 @@
         y: Math.random() * (cHeight || 800),
         radius: Math.random() * 2.2 + 0.6,
         alpha: Math.random() * 0.6 + 0.25,
-        speedY: Math.random() * 1.4 + 0.5,
+        speedY: Math.random() * 1.3 + 0.6,
         windDrift: Math.random() * 0.8 + 0.2,
         swayPhase: Math.random() * Math.PI * 2,
         swaySpeed: Math.random() * 1.5 + 0.8
       });
     }
 
-    // Ash Embers (24 glowing particles drifting upward)
-    const NUM_EMBERS = 24;
+    // Ash Embers (28 glowing particles drifting upward from urban floor)
+    const NUM_EMBERS = 28;
     const embers = [];
     for (let i = 0; i < NUM_EMBERS; i++) {
       embers.push({
         x: Math.random() * (cWidth || 1200),
-        y: (cHeight || 800) + Math.random() * 100,
+        y: (cHeight || 800) + Math.random() * 120,
         radius: Math.random() * 1.8 + 0.8,
         speedY: -(Math.random() * 0.9 + 0.4),
         speedX: (Math.random() - 0.5) * 0.6,
         alpha: Math.random() * 0.7 + 0.2,
-        maxLife: Math.random() * 200 + 100,
-        life: Math.random() * 100
+        maxLife: Math.random() * 220 + 110,
+        life: Math.random() * 110
       });
     }
 
@@ -1951,10 +1950,22 @@
       targetMy = (e.clientY / window.innerHeight - 0.5) * 2;
     }, { passive: true });
 
+    // Scroll Velocity Wind Draft
+    let lastScrollY = window.scrollY || window.pageYOffset || 0;
+    let scrollVelocity = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentY = window.scrollY || window.pageYOffset || 0;
+      scrollVelocity = currentY - lastScrollY;
+      lastScrollY = currentY;
+    }, { passive: true });
+
     let vfxStartTime = performance.now();
 
     const renderArkhamVFX = (timestamp) => {
       requestAnimationFrame(renderArkhamVFX);
+
+      if (document.hidden) return;
 
       // Check motion preference
       const isMotionActive = motionEnabled && !prefersReducedMotion();
@@ -1962,6 +1973,10 @@
       // Smooth parallax damping
       currentMx += (targetMx - currentMx) * 0.08;
       currentMy += (targetMy - currentMy) * 0.08;
+
+      // Smooth scroll velocity damping
+      scrollVelocity *= 0.91;
+      const scrollDraft = Math.max(-5, Math.min(9, scrollVelocity * 0.14));
 
       if (isMotionActive) {
         if (arkhamPerch) {
@@ -1986,9 +2001,9 @@
         const sl1Spread = 0.16;
 
         const g1 = aCtx.createRadialGradient(sl1X, sl1Y, 10, sl1X + Math.cos(sl1Angle) * sl1Len * 0.5, sl1Y + Math.sin(sl1Angle) * sl1Len * 0.5, sl1Len * 0.8);
-        g1.addColorStop(0, 'rgba(215, 230, 255, 0.15)');
-        g1.addColorStop(0.35, 'rgba(160, 195, 240, 0.07)');
-        g1.addColorStop(0.8, 'rgba(120, 160, 210, 0.015)');
+        g1.addColorStop(0, 'rgba(215, 230, 255, 0.14)');
+        g1.addColorStop(0.35, 'rgba(160, 195, 240, 0.06)');
+        g1.addColorStop(0.8, 'rgba(120, 160, 210, 0.012)');
         g1.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         aCtx.beginPath();
@@ -2007,8 +2022,8 @@
         const sl2Spread = 0.18;
 
         const g2 = aCtx.createRadialGradient(sl2X, sl2Y, 10, sl2X + Math.cos(sl2Angle) * sl2Len * 0.5, sl2Y + Math.sin(sl2Angle) * sl2Len * 0.5, sl2Len * 0.8);
-        g2.addColorStop(0, 'rgba(215, 230, 255, 0.14)');
-        g2.addColorStop(0.35, 'rgba(160, 195, 240, 0.06)');
+        g2.addColorStop(0, 'rgba(215, 230, 255, 0.13)');
+        g2.addColorStop(0.35, 'rgba(160, 195, 240, 0.05)');
         g2.addColorStop(0.8, 'rgba(120, 160, 210, 0.01)');
         g2.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
@@ -2021,14 +2036,17 @@
         aCtx.fill();
       }
 
-      // 2. Snowflakes
+      // 2. Snowflakes (Full Viewport with Scroll Drift)
       for (let i = 0; i < NUM_SNOW; i++) {
         const s = snowflakes[i];
         if (isMotionActive) {
-          s.y += s.speedY;
-          s.x += Math.sin(elapsed * s.swaySpeed + s.swayPhase) * s.windDrift;
+          s.y += s.speedY + scrollDraft;
+          s.x += Math.sin(elapsed * s.swaySpeed + s.swayPhase) * s.windDrift + (scrollDraft * 0.2);
           if (s.y > cHeight + 10) {
             s.y = -10;
+            s.x = Math.random() * cWidth;
+          } else if (s.y < -10) {
+            s.y = cHeight + 10;
             s.x = Math.random() * cWidth;
           }
           if (s.x > cWidth + 10) s.x = -10;
@@ -2041,11 +2059,11 @@
         aCtx.fill();
       }
 
-      // 3. Ash Embers (Rising from Industrial Horizon)
+      // 3. Ash Embers (Rising with Scroll Reaction)
       for (let i = 0; i < NUM_EMBERS; i++) {
         const em = embers[i];
         if (isMotionActive) {
-          em.y += em.speedY;
+          em.y += em.speedY - (scrollDraft * 0.35);
           em.x += em.speedX + Math.sin(elapsed * 2 + i) * 0.3;
           em.life++;
 
@@ -2053,7 +2071,10 @@
             em.y = cHeight + Math.random() * 40;
             em.x = Math.random() * cWidth;
             em.life = 0;
-            em.maxLife = Math.random() * 200 + 100;
+            em.maxLife = Math.random() * 220 + 110;
+          } else if (em.y > cHeight + 60) {
+            em.y = 0;
+            em.x = Math.random() * cWidth;
           }
         }
 

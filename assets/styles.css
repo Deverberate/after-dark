@@ -1082,14 +1082,14 @@ textarea {
   justify-content: center;
 }
 
-/* Atmospheric VFX Canvas */
+/* Atmospheric VFX Canvas — Fixed Global Layer Across Entire Site */
 .arkham-canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Gotham Skyline Silhouette */
@@ -1149,20 +1149,48 @@ textarea {
   20%, 24%, 55% { opacity: 0.15; }
 }
 
-/* CRT Scanlines Overlay */
+/* CRT Scanlines Overlay — Fixed Full-Site Ambient Atmosphere */
 .arkham-scanlines {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 998;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0, 0, 0, 0.14) 0px,
-    rgba(0, 0, 0, 0.14) 1px,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 1px,
     transparent 1px,
     transparent 3px
   );
-  opacity: 0.55;
+  opacity: 0.32;
+}
+
+/* Arkham Tactical Section Accents */
+.arkham-sec-tag {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  background: rgba(225, 6, 0, 0.08);
+  border: 1px solid rgba(225, 6, 0, 0.24);
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+/* Global Tactical Hover Accents */
+.gallery__card,
+.model,
+.chip-table-wrap {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.gallery__card:hover,
+.model:hover {
+  border-color: rgba(225, 6, 0, 0.35);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 24px rgba(225, 6, 0, 0.08);
 }
 
 /* Mission Status Header */
