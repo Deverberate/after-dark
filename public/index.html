@@ -23,7 +23,7 @@
   <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="assets/styles.css?v=2.6">
+  <link rel="stylesheet" href="assets/styles.css?v=2.7">
   <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -137,34 +137,30 @@
 
         <!-- Stage 1 Figure: Watchtower Gargoyle Crouch (Capullo Reference) -->
         <div class="prologue__figure prologue__figure--crouch is-visible" id="prologue-figure-crouch" aria-hidden="true">
+          <!-- Cast Shadow of His Body on the Rooftop / Gargoyle -->
+          <div class="prologue__cast-shadow" id="p-shadow-crouch" aria-hidden="true">
+            <img class="prologue__shadow-art" src="assets/images/stage1-capullo-gargoyle.png" alt="" />
+          </div>
+          <!-- Clear Batman Body with Chiaroscuro Face/Torso Lighting -->
           <div class="prologue__figure-body" id="p-body-crouch">
             <img class="prologue__art prologue__art--crouch" id="p-art-crouch" src="assets/images/stage1-capullo-gargoyle.png" alt="" />
-          </div>
-          <!-- Stealth Mode Cowl Eyes (Always Glowing in the gloom) -->
-          <div class="prologue__eyes prologue__eyes--crouch" id="p-eyes-crouch">
-            <span class="prologue__eye prologue__eye--left"></span>
-            <span class="prologue__eye prologue__eye--right"></span>
+            <div class="prologue__chiaroscuro" aria-hidden="true"></div>
           </div>
         </div>
 
         <!-- Stage 2 Figure: Standing Apex & Aerodynamic Billowing Wind Cape (Finch Reference) -->
         <div class="prologue__figure prologue__figure--stand" id="prologue-figure-stand" aria-hidden="true">
+          <!-- Cast Shadow of His Body on the Rooftop / Apex -->
+          <div class="prologue__cast-shadow" id="p-shadow-stand" aria-hidden="true">
+            <img class="prologue__shadow-art" src="assets/images/stage2-finch-perch.png" alt="" />
+          </div>
+          <!-- Clear Batman Body with Chiaroscuro Face/Torso Lighting -->
           <div class="prologue__figure-body" id="p-body-stand">
             <!-- Dynamic Billowing Wind Cape Canvas -->
             <canvas id="prologue-cape-canvas" class="prologue__cape-canvas"></canvas>
             <img class="prologue__art prologue__art--stand" id="p-art-stand" src="assets/images/stage2-finch-perch.png" alt="" />
+            <div class="prologue__chiaroscuro" aria-hidden="true"></div>
           </div>
-          <!-- Stealth Mode Cowl Eyes -->
-          <div class="prologue__eyes prologue__eyes--stand" id="p-eyes-stand">
-            <span class="prologue__eye prologue__eye--left"></span>
-            <span class="prologue__eye prologue__eye--right"></span>
-          </div>
-        </div>
-
-        <!-- Stage 3 Floating Eyes (Descending into Arkham City Hero Vista) -->
-        <div class="prologue__eyes prologue__eyes--descent" id="p-eyes-descent" aria-hidden="true">
-          <span class="prologue__eye prologue__eye--left"></span>
-          <span class="prologue__eye prologue__eye--right"></span>
         </div>
 
         <!-- Tactical HUD Controls & Skip Button -->
@@ -1381,6 +1377,6 @@
     </div>
   </footer>
 
-  <script src="assets/main.js?v=2.6" defer></script>
+  <script src="assets/main.js?v=2.7" defer></script>
 </body>
 </html>

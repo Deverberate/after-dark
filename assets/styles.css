@@ -1154,20 +1154,78 @@ textarea {
   50% { transform: translateY(-3px) scale(1.015); }
 }
 
-/* Stealth Mode & Lightning Chiaroscuro Engine */
+/* Cast Shadow of Batman's Own Body Projected on the Rooftop / Background */
+.prologue__cast-shadow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  opacity: 0.22;
+  filter: brightness(0) blur(4px);
+  transform: scaleY(0.72) skewX(-24deg) translateY(14%) translateX(10%);
+  transition: opacity 0.12s ease-out, transform 0.12s ease-out, filter 0.12s ease-out;
+  will-change: opacity, transform, filter;
+}
+
+.prologue__shadow-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+/* Batman Clear Figure Body & Chiaroscuro Lighting Engine */
 .prologue__figure-body {
   position: relative;
   width: 100%;
   height: 100%;
-  opacity: 0.02;
-  filter: brightness(0);
-  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease-out;
-  will-change: opacity, filter;
+  z-index: 2;
+  opacity: 0.94;
+  filter: brightness(0.76) contrast(1.18) drop-shadow(0 18px 36px rgba(0, 0, 0, 0.94));
+  transition: filter 0.12s ease-out, transform 0.12s ease-out, opacity 0.25s ease-out;
+  will-change: filter, transform, opacity;
 }
 
+/* Downward Shadow Cast on His Face & Body from Overhead Lightning */
+.prologue__chiaroscuro {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.08) 12%,
+    rgba(0, 0, 0, 0.42) 24%,
+    rgba(0, 0, 0, 0.82) 52%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  mix-blend-mode: multiply;
+  transition: opacity 0.1s ease-out;
+}
+
+/* Lightning Strike Flash: Dramatic Comic Chiaroscuro & Cast Body Shadow */
 .prologue__figure.is-lightning-lit .prologue__figure-body {
   opacity: 1;
-  filter: brightness(1.32) contrast(1.22) drop-shadow(0 0 32px rgba(180, 230, 255, 0.85));
+  filter: brightness(1.78) contrast(2.35) saturate(0.65) drop-shadow(26px 38px 12px rgba(0, 0, 0, 0.96)) drop-shadow(0 0 42px rgba(180, 230, 255, 0.85));
+  transition: none;
+}
+
+.prologue__figure.is-lightning-lit .prologue__chiaroscuro {
+  opacity: 0.92;
+  transition: none;
+}
+
+.prologue__figure.is-lightning-lit .prologue__cast-shadow {
+  opacity: 0.88;
+  filter: brightness(0) blur(2px);
+  transform: scaleY(0.85) skewX(-32deg) translateY(22%) translateX(18%);
+  transition: none;
 }
 
 .prologue__figure--crouch {
@@ -1210,62 +1268,6 @@ textarea {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-}
-
-/* Razor-Sharp Glowing Cowl Eyes (Always Piercing Through the Dark) */
-.prologue__eyes {
-  position: absolute;
-  z-index: 8;
-  display: flex;
-  align-items: center;
-  gap: clamp(5px, 0.6vw, 8px);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-  transition: transform 0.12s ease-out, opacity 0.25s ease-out;
-}
-
-.prologue__eye {
-  display: inline-block;
-  width: clamp(7px, 0.65vw, 10px);
-  height: clamp(2.2px, 0.2vw, 3.2px);
-  background: #ffffff;
-  border-radius: 1px;
-  box-shadow: 0 0 10px #00e5ff, 0 0 4px #ffffff, 0 0 16px rgba(0, 229, 255, 0.75);
-}
-
-.prologue__eye--left {
-  transform: rotate(-8deg);
-}
-
-.prologue__eye--right {
-  transform: rotate(8deg);
-}
-
-.prologue__eyes--crouch {
-  top: 46.5%;
-  left: 37.6%;
-}
-
-.prologue__eyes--stand {
-  top: 23.4%;
-  left: 35.8%;
-}
-
-.prologue__eyes--descent {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-  z-index: 9;
-  transition: opacity 0.25s ease-out, transform 0.1s linear;
-}
-
-.prologue__eyes--descent .prologue__eye {
-  width: clamp(10px, 1vw, 16px);
-  height: clamp(3px, 0.3vw, 5px);
-  box-shadow: 0 0 14px #00e5ff, 0 0 6px #ffffff, 0 0 24px rgba(0, 229, 255, 0.85);
 }
 
 /* Prologue Tactical HUD Overlay */

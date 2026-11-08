@@ -298,81 +298,115 @@
     playThunder(t) {
       const dest = this.masterGain || this.ctx.destination;
 
-      // 1. Deep atmospheric sub-bass rumble
-      const subOsc1 = this.ctx.createOscillator();
-      const subOsc2 = this.ctx.createOscillator();
+      // 1. Initial Ionizing Atmospheric Snap (Crisp transient crack without harsh clipping)
+      const crackOsc = this.ctx.createOscillator();
+      const crackGain = this.ctx.createGain();
+      const crackFilter = this.ctx.createBiquadFilter();
+
+      crackOsc.type = 'triangle';
+      crackOsc.frequency.setValueAtTime(320, t);
+      crackOsc.frequency.exponentialRampToValueAtTime(120, t + 0.12);
+
+      crackFilter.type = 'bandpass';
+      crackFilter.frequency.setValueAtTime(340, t);
+      crackFilter.frequency.exponentialRampToValueAtTime(140, t + 0.12);
+      crackFilter.Q.setValueAtTime(2.2, t);
+
+      crackGain.gain.setValueAtTime(0.001, t);
+      crackGain.gain.linearRampToValueAtTime(0.24, t + 0.015);
+      crackGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+
+      crackOsc.connect(crackFilter);
+      crackFilter.connect(crackGain);
+      crackGain.connect(dest);
+
+      crackOsc.start(t);
+      crackOsc.stop(t + 0.15);
+
+      // 2. Primary Sub-Bass Detonating Impact (Ominous cinematic punch)
+      const subOsc = this.ctx.createOscillator();
       const subGain = this.ctx.createGain();
       const subFilter = this.ctx.createBiquadFilter();
 
+      subOsc.type = 'sine';
+      subOsc.frequency.setValueAtTime(68, t);
+      subOsc.frequency.exponentialRampToValueAtTime(36, t + 1.2);
+
       subFilter.type = 'lowpass';
-      subFilter.frequency.setValueAtTime(85, t);
-      subFilter.frequency.exponentialRampToValueAtTime(45, t + 1.8);
-
-      subOsc1.type = 'triangle';
-      subOsc1.frequency.setValueAtTime(54, t);
-      subOsc1.frequency.exponentialRampToValueAtTime(32, t + 1.8);
-
-      subOsc2.type = 'sawtooth';
-      subOsc2.frequency.setValueAtTime(64, t);
-      subOsc2.frequency.exponentialRampToValueAtTime(38, t + 1.8);
+      subFilter.frequency.setValueAtTime(95, t);
+      subFilter.frequency.exponentialRampToValueAtTime(42, t + 1.6);
 
       subGain.gain.setValueAtTime(0.001, t);
-      subGain.gain.linearRampToValueAtTime(0.32, t + 0.08);
-      subGain.gain.exponentialRampToValueAtTime(0.18, t + 0.45);
-      subGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.85);
+      subGain.gain.linearRampToValueAtTime(0.38, t + 0.04);
+      subGain.gain.exponentialRampToValueAtTime(0.22, t + 0.35);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
 
-      subOsc1.connect(subFilter);
-      subOsc2.connect(subFilter);
+      subOsc.connect(subFilter);
       subFilter.connect(subGain);
       subGain.connect(dest);
 
-      subOsc1.start(t);
-      subOsc2.start(t);
-      subOsc1.stop(t + 1.9);
-      subOsc2.stop(t + 1.9);
+      subOsc.start(t);
+      subOsc.stop(t + 1.85);
 
-      // 2. Gritty lightning strike crack (bandpass brownian noise with soft air ionization saturation)
-      const bufferSize = Math.floor(this.ctx.sampleRate * 1.5);
+      // 3. Gotham Skyscraper Rolling Reverberation Echoes
+      const echoOsc = this.ctx.createOscillator();
+      const echoGain = this.ctx.createGain();
+      const echoFilter = this.ctx.createBiquadFilter();
+
+      echoOsc.type = 'triangle';
+      echoOsc.frequency.setValueAtTime(52, t + 0.22);
+      echoOsc.frequency.exponentialRampToValueAtTime(30, t + 2.2);
+
+      echoFilter.type = 'lowpass';
+      echoFilter.frequency.setValueAtTime(75, t + 0.22);
+      echoFilter.frequency.exponentialRampToValueAtTime(38, t + 2.2);
+
+      echoGain.gain.setValueAtTime(0.0001, t);
+      echoGain.gain.setValueAtTime(0.001, t + 0.22);
+      echoGain.gain.linearRampToValueAtTime(0.22, t + 0.34);
+      echoGain.gain.exponentialRampToValueAtTime(0.12, t + 0.75);
+      echoGain.gain.exponentialRampToValueAtTime(0.0001, t + 2.4);
+
+      echoOsc.connect(echoFilter);
+      echoFilter.connect(echoGain);
+      echoGain.connect(dest);
+
+      echoOsc.start(t + 0.22);
+      echoOsc.stop(t + 2.45);
+
+      // 4. Lush Velvet Brownian Noise Storm Bed (Warm, satisfying low-end roll)
+      const bufferSize = Math.floor(this.ctx.sampleRate * 2.5);
       const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const output = noiseBuffer.getChannelData(0);
       let lastOut = 0.0;
       for (let i = 0; i < bufferSize; i++) {
         const white = Math.random() * 2 - 1;
-        output[i] = (lastOut + (0.04 * white)) / 1.04;
+        output[i] = (lastOut + (0.025 * white)) / 1.025;
         lastOut = output[i];
-        output[i] *= 3.5;
+        output[i] *= 4.2;
       }
 
       const noiseNode = this.ctx.createBufferSource();
       noiseNode.buffer = noiseBuffer;
 
       const noiseFilter = this.ctx.createBiquadFilter();
-      noiseFilter.type = 'bandpass';
-      noiseFilter.frequency.setValueAtTime(480, t);
-      noiseFilter.frequency.exponentialRampToValueAtTime(140, t + 0.35);
-      noiseFilter.Q.setValueAtTime(1.8, t);
-
-      const waveShaper = this.ctx.createWaveShaper();
-      const curve = new Float32Array(256);
-      for (let i = 0; i < 256; i++) {
-        const x = (i * 2) / 256 - 1;
-        curve[i] = (Math.PI + 4) * x / (Math.PI + 4 * Math.abs(x));
-      }
-      waveShaper.curve = curve;
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.setValueAtTime(320, t);
+      noiseFilter.frequency.exponentialRampToValueAtTime(85, t + 0.6);
+      noiseFilter.frequency.exponentialRampToValueAtTime(38, t + 2.4);
 
       const noiseGain = this.ctx.createGain();
       noiseGain.gain.setValueAtTime(0.001, t);
-      noiseGain.gain.linearRampToValueAtTime(0.34, t + 0.02);
-      noiseGain.gain.exponentialRampToValueAtTime(0.08, t + 0.28);
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
+      noiseGain.gain.linearRampToValueAtTime(0.28, t + 0.03);
+      noiseGain.gain.exponentialRampToValueAtTime(0.16, t + 0.45);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, t + 2.4);
 
       noiseNode.connect(noiseFilter);
-      noiseFilter.connect(waveShaper);
-      waveShaper.connect(noiseGain);
+      noiseFilter.connect(noiseGain);
       noiseGain.connect(dest);
 
       noiseNode.start(t);
-      noiseNode.stop(t + 1.5);
+      noiseNode.stop(t + 2.5);
     }
 
     syncUI() {
@@ -2003,9 +2037,6 @@
   const prologueCrouch = document.getElementById('prologue-figure-crouch');
   const prologueStand = document.getElementById('prologue-figure-stand');
   const capeCanvas = document.getElementById('prologue-cape-canvas');
-  const pEyesCrouch = document.getElementById('p-eyes-crouch');
-  const pEyesStand = document.getElementById('p-eyes-stand');
-  const pEyesDescent = document.getElementById('p-eyes-descent');
   const prologueSkyline = document.querySelector('.prologue__skyline');
   const prologueStatus = document.getElementById('prologue-status');
   const pStep1 = document.getElementById('p-step-1');
@@ -2116,11 +2147,11 @@
         }, 65);
       }
 
-      // Smoothly fade figure back to pure pitch darkness after flash (eyes stay glowing)
+      // Smoothly fade figure chiaroscuro and cast shadow back to ambient night after flash
       setTimeout(() => {
         if (prologueCrouch) prologueCrouch.classList.remove('is-lightning-lit');
         if (prologueStand) prologueStand.classList.remove('is-lightning-lit');
-      }, 280);
+      }, 340);
 
       // Scatter bats
       for (let i = 0; i < bats.length; i++) {
@@ -2129,10 +2160,10 @@
       }
     };
 
-    // Ambient lightning timer: fires every 4.8 - 5.8s
+    // Ambient lightning timer: fires every ~10s as requested by user
     let ambientLightningTimer = null;
     const scheduleNextLightning = () => {
-      const delay = 4600 + Math.random() * 1200;
+      const delay = 9600 + Math.random() * 800; // ~10s gap
       ambientLightningTimer = setTimeout(() => {
         // Only trigger if prologue is partially or fully in viewport
         const rect = prologueSection.getBoundingClientRect();
@@ -2223,21 +2254,18 @@
         if (prologueCrouch) {
           prologueCrouch.classList.add('is-visible');
           prologueCrouch.style.opacity = '';
+          if (isMotionActive) {
+            prologueCrouch.style.transform = `translate3d(${pMx * 5}px, ${pMy * 3 + 24}px, 0) scale(0.96)`;
+          }
         }
         if (prologueStand) {
           prologueStand.classList.remove('is-visible');
           prologueStand.style.opacity = '';
         }
-        if (pEyesDescent) pEyesDescent.style.opacity = '0';
         if (prologueStatus) prologueStatus.textContent = 'GOTHAM RECON // ELEVATION 412M';
         if (pStep1) pStep1.classList.add('is-active');
         if (pStep2) pStep2.classList.remove('is-active');
         if (pStep3) pStep3.classList.remove('is-active');
-
-        // Eye tracking
-        if (isMotionActive && pEyesCrouch) {
-          pEyesCrouch.style.transform = `translate3d(calc(-50% + ${pMx * 6}px), calc(-50% + ${pMy * 3}px), 0)`;
-        }
       } else if (p < 0.72) {
         currentStage = 2;
         if (prologueCrouch) {
@@ -2247,20 +2275,17 @@
         if (prologueStand) {
           prologueStand.classList.add('is-visible');
           prologueStand.style.opacity = '';
+          if (isMotionActive) {
+            prologueStand.style.transform = `translate3d(${pMx * 5}px, ${pMy * 3 + 30}px, 0) scale(0.96)`;
+          }
         }
-        if (pEyesDescent) pEyesDescent.style.opacity = '0';
         if (prologueStatus) prologueStatus.textContent = 'GOTHAM ROOFTOP APEX // ELEVATION 280M';
         if (pStep1) pStep1.classList.remove('is-active');
         if (pStep2) pStep2.classList.add('is-active');
         if (pStep3) pStep3.classList.remove('is-active');
-
-        // Eye tracking
-        if (isMotionActive && pEyesStand) {
-          pEyesStand.style.transform = `translate3d(calc(-50% + ${pMx * 6}px), calc(-50% + ${pMy * 3}px), 0)`;
-        }
       } else {
         currentStage = 3;
-        // Dissolve both figures gracefully into the hero vista; descent eyes streak down
+        // Dissolve both figures gracefully into the hero vista
         const fadeProg = Math.min(1, Math.max(0, (p - 0.72) / 0.28));
         if (prologueCrouch) {
           prologueCrouch.classList.remove('is-visible');
@@ -2268,13 +2293,6 @@
         }
         if (prologueStand) {
           prologueStand.style.opacity = `${Math.max(0, 1 - fadeProg * 1.8)}`;
-        }
-        if (pEyesDescent) {
-          const descentOpacity = fadeProg < 0.1 ? fadeProg * 10 : Math.max(0, 1 - (fadeProg - 0.7) * 3.3);
-          pEyesDescent.style.opacity = `${descentOpacity}`;
-          const eyeY = 35 + fadeProg * 50;
-          pEyesDescent.style.top = `${eyeY}%`;
-          pEyesDescent.style.transform = `translate3d(calc(-50% + ${pMx * 12}px), -50%, 0)`;
         }
         if (prologueStatus) prologueStatus.textContent = 'ARKHAM CITY GRID // INFILTRATION';
         if (pStep1) pStep1.classList.remove('is-active');

@@ -85,56 +85,75 @@ test.describe('Feedback Verification: Audio Mute & Thunder & Eye Alignment', () 
     expect(audioResult.error).toBeUndefined();
   });
 
-  test('3. Glowing cowl eyes exact coordinates and container aspect-ratio locking', async ({ page }) => {
+  test('3. Eyes removed, Batman clearly visible in dark, with lightning chiaroscuro and cast body shadow', async ({ page }) => {
     await page.goto('http://127.0.0.1:3000');
     await page.waitForLoadState('networkidle');
 
     const metrics = await page.evaluate(() => {
-      const crouchFig = document.getElementById('prologue-figure-crouch');
-      const standFig = document.getElementById('prologue-figure-stand');
       const crouchEyes = document.getElementById('p-eyes-crouch');
       const standEyes = document.getElementById('p-eyes-stand');
+      const descentEyes = document.getElementById('p-eyes-descent');
+      const anyEye = document.querySelector('.prologue__eye, .prologue__eyes');
+
+      const crouchFig = document.getElementById('prologue-figure-crouch');
+      const standFig = document.getElementById('prologue-figure-stand');
+      const crouchBody = document.getElementById('p-body-crouch');
+      const crouchShadow = document.getElementById('p-shadow-crouch');
+      const standShadow = document.getElementById('p-shadow-stand');
 
       const cCS = window.getComputedStyle(crouchFig);
       const sCS = window.getComputedStyle(standFig);
-      const ceCS = window.getComputedStyle(crouchEyes);
-      const seCS = window.getComputedStyle(standEyes);
+      const cbCS = window.getComputedStyle(crouchBody);
+      const csCS = window.getComputedStyle(crouchShadow);
 
       return {
+        eyesRemoved: !crouchEyes && !standEyes && !descentEyes && !anyEye,
         crouchAspectRatio: cCS.aspectRatio,
         standAspectRatio: sCS.aspectRatio,
-        crouchEyesTop: ceCS.top,
-        crouchEyesLeft: ceCS.left,
-        standEyesTop: seCS.top,
-        standEyesLeft: seCS.left,
-        crouchBox: crouchFig.getBoundingClientRect(),
-        standBox: standFig.getBoundingClientRect(),
-        crouchEyesBox: crouchEyes.getBoundingClientRect(),
-        standEyesBox: standEyes.getBoundingClientRect()
+        crouchBodyOpacity: parseFloat(cbCS.opacity),
+        crouchBodyFilter: cbCS.filter,
+        ambientShadowOpacity: parseFloat(csCS.opacity),
+        hasCastShadows: Boolean(crouchShadow && standShadow)
       };
     });
 
-    // Check aspect-ratio locking
+    // 1. Eyes completely removed
+    expect(metrics.eyesRemoved).toBe(true);
+
+    // 2. Aspect ratios locked
     expect(metrics.crouchAspectRatio).toMatch(/685\s*\/\s*1024/);
     expect(metrics.standAspectRatio).toMatch(/621\s*\/\s*960/);
 
-    // Verify eye center placement relative to figure
-    // Stage 1: eyes should be vertically around 46.5% (+/- 3%) and horizontally around 37.6% (+/- 3%)
-    const cEyeYRel = (metrics.crouchEyesBox.top + metrics.crouchEyesBox.height / 2 - metrics.crouchBox.top) / metrics.crouchBox.height;
-    const cEyeXRel = (metrics.crouchEyesBox.left + metrics.crouchEyesBox.width / 2 - metrics.crouchBox.left) / metrics.crouchBox.width;
+    // 3. Batman clearly visible in normal dark (not 0.02 pitch-black silhouette)
+    expect(metrics.crouchBodyOpacity).toBeGreaterThanOrEqual(0.8);
+    expect(metrics.hasCastShadows).toBe(true);
 
-    expect(cEyeYRel).toBeGreaterThan(0.43);
-    expect(cEyeYRel).toBeLessThan(0.50);
-    expect(cEyeXRel).toBeGreaterThan(0.34);
-    expect(cEyeXRel).toBeLessThan(0.42);
+    // 4. Test lightning strike dynamics: casts stark chiaroscuro & heavy body shadow
+    const lightningDynamics = await page.evaluate(() => {
+      const crouchFig = document.getElementById('prologue-figure-crouch');
+      const crouchBody = document.getElementById('p-body-crouch');
+      const crouchShadow = document.getElementById('p-shadow-crouch');
+      const chiaroscuro = crouchBody.querySelector('.prologue__chiaroscuro');
 
-    // Stage 2: eyes should be vertically around 23.4% (+/- 3%) and horizontally around 35.8% (+/- 3%)
-    const sEyeYRel = (metrics.standEyesBox.top + metrics.standEyesBox.height / 2 - metrics.standBox.top) / metrics.standBox.height;
-    const sEyeXRel = (metrics.standEyesBox.left + metrics.standEyesBox.width / 2 - metrics.standBox.left) / metrics.standBox.width;
+      crouchFig.classList.add('is-lightning-lit');
 
-    expect(sEyeYRel).toBeGreaterThan(0.20);
-    expect(sEyeYRel).toBeLessThan(0.27);
-    expect(sEyeXRel).toBeGreaterThan(0.32);
-    expect(sEyeXRel).toBeLessThan(0.40);
+      const bodyStyle = window.getComputedStyle(crouchBody);
+      const shadowStyle = window.getComputedStyle(crouchShadow);
+      const chiaroscuroStyle = chiaroscuro ? window.getComputedStyle(chiaroscuro) : null;
+
+      const result = {
+        litBodyFilter: bodyStyle.filter,
+        litShadowOpacity: parseFloat(shadowStyle.opacity),
+        litChiaroscuroOpacity: chiaroscuroStyle ? parseFloat(chiaroscuroStyle.opacity) : 0
+      };
+
+      crouchFig.classList.remove('is-lightning-lit');
+      return result;
+    });
+
+    // During lightning: shadow opacity jumps high (casting body shadow)
+    expect(lightningDynamics.litShadowOpacity).toBeGreaterThanOrEqual(0.8);
+    // Face and body chiaroscuro overlay activates
+    expect(lightningDynamics.litChiaroscuroOpacity).toBeGreaterThanOrEqual(0.85);
   });
 });
