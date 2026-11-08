@@ -1,0 +1,15 @@
+{
+  "name": "batman-motiondesign",
+  "version": "1.0.0",
+  "description": "M4 After Dark — Batman-themed MacBook Pro M4 Max concept study",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.49.1"
+  }
+}

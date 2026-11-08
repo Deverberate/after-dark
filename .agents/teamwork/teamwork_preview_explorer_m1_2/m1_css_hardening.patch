@@ -1,0 +1,53 @@
+--- a/assets/styles.css
++++ b/assets/styles.css
+@@ -246,6 +246,14 @@
+   outline-offset: 4px;
+ }
+ 
++h1,
++h2,
++h3,
++h4,
++h5,
++h6,
++[id]:target,
++:target,
+ a,
+ button,
+ input,
+@@ -1317,6 +1325,7 @@
+   vertical-align: top;
+   font-size: 0.82rem;
+   line-height: 1.55;
++  font-variant-numeric: tabular-nums;
+ }
+ 
+ .chip-table thead th {
+@@ -2354,7 +2363,8 @@
+   align-items: center;
+   gap: 1rem 1.75rem;
+   margin-top: 1.5rem;
+-  padding-block: 1.25rem;
++  padding-top: 1.25rem;
++  padding-bottom: max(1.75rem, env(safe-area-inset-bottom));
+   border-top: 1px solid var(--line);
+   font-family: var(--font-mono);
+   font-size: 0.58rem;
+@@ -2551,6 +2561,9 @@
+     border-left: 1px solid var(--line);
+     transform: translateX(102%);
+     visibility: hidden;
++    overflow-y: auto;
++    overscroll-behavior: contain;
++    -webkit-overflow-scrolling: touch;
+     transition: transform 0.5s var(--ease), visibility 0.5s;
+   }
+ 
+@@ -2908,6 +2921,7 @@
+   .chip-table th,
+   .chip-table td {
+     padding: 0.85rem 0.8rem;
++    font-variant-numeric: tabular-nums;
+   }
+ 
+   .machine__stamp {

@@ -1,0 +1,540 @@
+--- a/index.html
++++ b/index.html
+@@ -7,7 +7,7 @@
+   <meta name="theme-color" content="#050607">
+ 
+   <title>M4 After Dark — MacBook Pro 16″ M4 Max / A Batman-Inspired Concept</title>
+-  <meta name="description" content="A cinematic concept study of Apple's 16-inch MacBook Pro with M4 Max. 16 CPU cores, 40 GPU cores, 546GB/s of unified memory bandwidth, and a 16.2-inch Liquid Retina XDR display — staged in obsidian, ice grey, and signal red.">
++  <meta name="description" content="A cinematic concept study of Apple’s 16-inch MacBook Pro with M4 Max. 16 CPU cores, 40 GPU cores, 546GB/s of unified memory bandwidth, and a 16.2-inch Liquid Retina XDR display — staged in obsidian, ice grey, and signal red.">
+   <meta name="author" content="After Dark — an independent concept study">
+ 
+   <meta property="og:type" content="website">
+@@ -21,6 +21,7 @@
+ 
+   <link rel="preload" href="assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+   <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
++  <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
+ 
+   <link rel="stylesheet" href="assets/styles.css">
+   <script>document.documentElement.classList.replace('no-js', 'js');</script>
+@@ -111,14 +112,14 @@
+       <div class="wrap hero__inner">
+         <div class="hero__copy">
+           <p class="label reveal"><span class="label__no">01</span> Gotham Applied Sciences — File M4</p>
+-          <p class="hero__kicker reveal">MacBook Pro 16-inch <span aria-hidden="true">/</span> M4 Max</p>
++          <p class="hero__kicker reveal">MacBook Pro 16&#8209;inch <span aria-hidden="true">/</span> M4 Max</p>
+ 
+           <h1 class="hero__title" id="hero-title">
+             <span class="hero__line"><span class="hero__line-in">M4</span></span>
+             <span class="hero__line hero__line--serif"><span class="hero__line-in">after <em>dark.</em></span></span>
+           </h1>
+ 
+-          <p class="hero__lede reveal">Apple’s flagship notebook, staged as the machine it feels like: a 16-core CPU, a 40-core GPU, 546GB/s of unified memory bandwidth, and a 16.2-inch XDR display that makes the room irrelevant.</p>
++          <p class="hero__lede reveal">Apple’s flagship notebook, staged as the machine it feels like: a 16&#8209;core CPU, a 40&#8209;core GPU, 546&nbsp;GB/s of unified memory bandwidth, and a 16.2&#8209;inch XDR display that makes the room irrelevant.</p>
+ 
+           <div class="hero__actions reveal">
+             <a class="btn btn--solid" href="#silicon">
+@@ -134,19 +135,19 @@
+           <dl class="hero__stats reveal">
+             <div>
+               <dt>CPU</dt>
+-              <dd>16<span> cores</span></dd>
++              <dd>16<span>&nbsp;cores</span></dd>
+             </div>
+             <div>
+               <dt>GPU</dt>
+-              <dd>40<span> cores</span></dd>
++              <dd>40<span>&nbsp;cores</span></dd>
+             </div>
+             <div>
+               <dt>Bandwidth</dt>
+-              <dd>546<span> GB/s</span></dd>
++              <dd>546<span>&nbsp;GB/s</span></dd>
+             </div>
+             <div>
+               <dt>Video</dt>
+-              <dd>21<span> hr</span></dd>
++              <dd>21<span>&nbsp;hr</span></dd>
+             </div>
+           </dl>
+         </div>
+@@ -160,8 +161,8 @@
+ 
+             <div class="hud hud--tl" aria-hidden="true"><span>Optic 01</span><span>Lock</span></div>
+             <div class="hud hud--tr" aria-hidden="true"><span class="hud__rec"></span><span>Signal</span></div>
+-            <div class="hud hud--bl" aria-hidden="true"><span>16.2″ XDR</span><span>3456 × 2234</span></div>
+-            <div class="hud hud--br" aria-hidden="true"><span>Space Black</span><span>2.15 kg</span></div>
++            <div class="hud hud--bl" aria-hidden="true"><span>16.2″ XDR</span><span>3456&nbsp;&times;&nbsp;2234</span></div>
++            <div class="hud hud--br" aria-hidden="true"><span>Space Black</span><span>2.15&nbsp;kg</span></div>
+             <span class="hud__corner hud__corner--tl" aria-hidden="true"></span>
+             <span class="hud__corner hud__corner--tr" aria-hidden="true"></span>
+             <span class="hud__corner hud__corner--bl" aria-hidden="true"></span>
+@@ -170,7 +171,7 @@
+           </div>
+           <figcaption class="media-cap">
+             <span><span class="media-cap__fig">Fig. 01</span> The machine, awake.</span>
+-            <span>M4 Max / 16-inch</span>
++            <span>M4 Max / 16&#8209;inch</span>
+           </figcaption>
+         </figure>
+       </div>
+@@ -179,17 +180,17 @@
+         <div class="marquee__track">
+           <ul class="marquee__group">
+             <li>M4 Max</li>
+-            <li>16-core CPU</li>
+-            <li>40-core GPU</li>
+-            <li>546GB/s unified memory</li>
++            <li>16&#8209;core CPU</li>
++            <li>40&#8209;core GPU</li>
++            <li>546&nbsp;GB/s unified memory</li>
+             <li>Thunderbolt 5</li>
+             <li>Liquid Retina XDR</li>
+           </ul>
+           <ul class="marquee__group">
+             <li>M4 Max</li>
+-            <li>16-core CPU</li>
+-            <li>40-core GPU</li>
+-            <li>546GB/s unified memory</li>
++            <li>16&#8209;core CPU</li>
++            <li>40&#8209;core GPU</li>
++            <li>546&nbsp;GB/s unified memory</li>
+             <li>Thunderbolt 5</li>
+             <li>Liquid Retina XDR</li>
+           </ul>
+@@ -205,7 +206,7 @@
+         <div class="section__head reveal">
+           <p class="label"><span class="label__no">02</span> The Machine</p>
+           <h2 class="h2" id="machine-title">The flagship wears <em>black</em>.</h2>
+-          <p class="section__note">MacBook Pro 16-inch. M4 Max. The top of the line, in the only finish that makes sense here.</p>
++          <p class="section__note">MacBook Pro 16&#8209;inch. M4 Max. The top of the line, in the only finish that makes sense here.</p>
+         </div>
+ 
+         <div class="machine__grid">
+@@ -225,35 +226,35 @@
+           </figure>
+ 
+           <div class="machine__body">
+-            <p class="machine__lede reveal">The 16-inch M4 Max is not a cautious upgrade. It is a desktop-class machine that happens to fold: twelve performance cores, four efficiency cores, up to forty GPU cores, and a memory subsystem wide enough to keep all of them fed.</p>
++            <p class="machine__lede reveal">The 16&#8209;inch M4 Max is not a cautious upgrade. It is a desktop-class machine that happens to fold: twelve performance cores, four efficiency cores, up to forty GPU cores, and a memory subsystem wide enough to keep all of them fed.</p>
+ 
+             <ul class="machine__list">
+               <li class="machine__item reveal">
+                 <span class="machine__no" aria-hidden="true">01</span>
+                 <div>
+                   <h3 class="machine__title">A display that ends arguments</h3>
+-                  <p>16.2-inch Liquid Retina XDR. 3456 × 2234 at 254 ppi. ProMotion up to 120Hz. 1,000 nits sustained, 1,600 nits peak HDR, and an optional nano-texture finish that turns hard light into matte grey.</p>
++                  <p>16.2&#8209;inch Liquid Retina XDR. 3456&nbsp;&times;&nbsp;2234 at 254&nbsp;ppi. ProMotion up to 120&nbsp;Hz. 1,000&nbsp;nits sustained, 1,600&nbsp;nits peak HDR, and an optional nano-texture finish that turns hard light into matte grey.</p>
+                 </div>
+               </li>
+               <li class="machine__item reveal">
+                 <span class="machine__no" aria-hidden="true">02</span>
+                 <div>
+                   <h3 class="machine__title">Enough battery to outlast the night</h3>
+-                  <p>Up to 21 hours of video playback on the 16-inch M4 Max. Enough to finish the cut, the build, or the render without hunting for a wall socket.</p>
++                  <p>Up to 21&nbsp;hours of video playback on the 16&#8209;inch M4 Max. Enough to finish the cut, the build, or the render without hunting for a wall socket.</p>
+                 </div>
+               </li>
+               <li class="machine__item reveal">
+                 <span class="machine__no" aria-hidden="true">03</span>
+                 <div>
+                   <h3 class="machine__title">Ports with somewhere to be</h3>
+-                  <p>Three Thunderbolt 5 ports at up to 120Gb/s, HDMI, an SDXC slot, MagSafe 3, and a headphone jack. The adapter dongle stays in the drawer.</p>
++                  <p>Three Thunderbolt 5 ports at up to 120&nbsp;Gb/s, HDMI, an SDXC slot, MagSafe 3, and a headphone jack. The adapter dongle stays in the drawer.</p>
+                 </div>
+               </li>
+               <li class="machine__item reveal">
+                 <span class="machine__no" aria-hidden="true">04</span>
+                 <div>
+                   <h3 class="machine__title">A room that hears you</h3>
+-                  <p>A 12MP Center Stage camera with Desk View, a six-speaker system with force-cancelling woofers, Spatial Audio, and a three-mic array. The call is the only thing that breaks the illusion.</p>
++                  <p>A 12&nbsp;MP Center Stage camera with Desk View, a six-speaker system with force-cancelling woofers, Spatial Audio, and a three-mic array. The call is the only thing that breaks the illusion.</p>
+                 </div>
+               </li>
+             </ul>
+@@ -272,19 +273,19 @@
+           </div>
+           <div>
+             <dt>Refresh</dt>
+-            <dd>120Hz</dd>
++            <dd>120&nbsp;Hz</dd>
+           </div>
+           <div>
+             <dt>Battery</dt>
+-            <dd>21 hr</dd>
++            <dd>21&nbsp;hr</dd>
+           </div>
+           <div>
+             <dt>Weight</dt>
+-            <dd>2.15 kg</dd>
++            <dd>2.15&nbsp;kg</dd>
+           </div>
+           <div>
+             <dt>Thickness</dt>
+-            <dd>1.68 cm</dd>
++            <dd>1.68&nbsp;cm</dd>
+           </div>
+         </dl>
+       </div>
+@@ -316,39 +317,39 @@
+               <tbody>
+                 <tr>
+                   <th scope="row">CPU</th>
+-                  <td>10-core<br><span class="dim">4 performance + 6 efficiency</span></td>
+-                  <td>Up to 14-core<br><span class="dim">10 performance + 4 efficiency</span></td>
+-                  <td class="is-max">Up to 16-core<br><span class="dim">12 performance + 4 efficiency</span></td>
++                  <td>10&#8209;core<br><span class="dim">4&nbsp;performance + 6&nbsp;efficiency</span></td>
++                  <td>Up to 14&#8209;core<br><span class="dim">10&nbsp;performance + 4&nbsp;efficiency</span></td>
++                  <td class="is-max">Up to 16&#8209;core<br><span class="dim">12&nbsp;performance + 4&nbsp;efficiency</span></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">GPU</th>
+-                  <td>10-core</td>
+-                  <td>Up to 20-core</td>
+-                  <td class="is-max">Up to 40-core</td>
++                  <td>10&#8209;core</td>
++                  <td>Up to 20&#8209;core</td>
++                  <td class="is-max">Up to 40&#8209;core</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Neural Engine</th>
+-                  <td>16-core</td>
+-                  <td>16-core</td>
+-                  <td class="is-max">16-core</td>
++                  <td>16&#8209;core</td>
++                  <td>16&#8209;core</td>
++                  <td class="is-max">16&#8209;core</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Memory bandwidth</th>
+-                  <td>120 GB/s</td>
+-                  <td>273 GB/s</td>
+-                  <td class="is-max">546 GB/s</td>
++                  <td>120&nbsp;GB/s</td>
++                  <td>273&nbsp;GB/s</td>
++                  <td class="is-max">546&nbsp;GB/s</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Max unified memory</th>
+-                  <td>32GB</td>
+-                  <td>64GB</td>
+-                  <td class="is-max">128GB</td>
++                  <td>32&nbsp;GB</td>
++                  <td>64&nbsp;GB</td>
++                  <td class="is-max">128&nbsp;GB</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Display sizes</th>
+-                  <td>14-inch</td>
+-                  <td>14- or 16-inch</td>
+-                  <td class="is-max">14- or 16-inch</td>
++                  <td>14&#8209;inch</td>
++                  <td>14-&nbsp;or&nbsp;16&#8209;inch</td>
++                  <td class="is-max">14-&nbsp;or&nbsp;16&#8209;inch</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Thunderbolt</th>
+@@ -391,7 +392,7 @@
+             </ul>
+             <p class="bars__unit">GB/s</p>
+ 
+-            <p class="bandwidth__foot">The Max moves 4.55× the data of the base M4 per second.</p>
++            <p class="bandwidth__foot">The Max moves 4.55&times;&nbsp;the data of the base M4 per second.</p>
+           </aside>
+         </div>
+ 
+@@ -426,7 +427,7 @@
+           <div class="workload__result" aria-live="polite">
+             <p class="workload__eyebrow">Recommended configuration</p>
+             <p class="workload__chip" id="fit-name">M4</p>
+-            <p class="workload__model" id="fit-model">14-inch MacBook Pro with M4</p>
++            <p class="workload__model" id="fit-model">14&#8209;inch MacBook Pro with M4</p>
+             <p class="workload__copy" id="fit-copy">Ten CPU cores and ten GPU cores are plenty for writing, research, photo work, and a browser with too many tabs. The base machine is the quiet choice.</p>
+             <a class="text-link" href="#models">See the models <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+           </div>
+@@ -451,15 +452,15 @@
+             <div class="die__readout" aria-hidden="true">
+               <span>SYS / M4 MAX</span>
+               <span>16C CPU · 40C GPU · 16C NE</span>
+-              <span>546 GB/s</span>
++              <span>546&nbsp;GB/s</span>
+             </div>
+           </div>
+ 
+           <dl class="die__legend">
+-            <div><dt><span class="legend-dot legend-dot--cpu" aria-hidden="true"></span>CPU clusters</dt><dd>12 performance + 4 efficiency cores</dd></div>
++            <div><dt><span class="legend-dot legend-dot--cpu" aria-hidden="true"></span>CPU clusters</dt><dd>12&nbsp;performance + 4&nbsp;efficiency cores</dd></div>
+             <div><dt><span class="legend-dot legend-dot--gpu" aria-hidden="true"></span>GPU cores</dt><dd>Up to 40, hardware ray tracing</dd></div>
+-            <div><dt><span class="legend-dot legend-dot--ne" aria-hidden="true"></span>Neural Engine</dt><dd>16 cores for on-device AI</dd></div>
+-            <div><dt><span class="legend-dot legend-dot--mem" aria-hidden="true"></span>Memory bus</dt><dd>546GB/s unified bandwidth</dd></div>
++            <div><dt><span class="legend-dot legend-dot--ne" aria-hidden="true"></span>Neural Engine</dt><dd>16&nbsp;cores for on-device AI</dd></div>
++            <div><dt><span class="legend-dot legend-dot--mem" aria-hidden="true"></span>Memory bus</dt><dd>546&nbsp;GB/s unified bandwidth</dd></div>
+           </dl>
+         </div>
+       </div>
+@@ -473,14 +474,14 @@
+         <div class="section__head reveal">
+           <p class="label"><span class="label__no">04</span> Proof</p>
+           <h2 class="h2" id="proof-title">Faster in the <em>dark</em>.</h2>
+-          <p class="section__note">Apple’s own numbers: M4 Max against the M1 Max it replaces at the top of the line. Up to 3.5× the render, 2.2× the build.</p>
++          <p class="section__note">Apple’s own numbers: M4 Max against the M1 Max it replaces at the top of the line. Up to 3.5&times;&nbsp;the render, 2.2&times;&nbsp;the build.</p>
+         </div>
+ 
+         <div class="proof__grid">
+           <div class="proof__hero reveal">
+-            <p class="proof__stat">3.5<span>×</span></p>
++            <p class="proof__stat">3.5<span>&times;</span></p>
+             <p class="proof__stat-label">Redshift render<br><span>vs. M1 Max</span></p>
+-            <p class="proof__stat-copy">Apple’s published comparison for the 16-core CPU / 40-core GPU M4 Max against a 10-core CPU / 32-core GPU M1 Max. The gap is the point.</p>
++            <p class="proof__stat-copy">Apple’s published comparison for the 16&#8209;core CPU / 40&#8209;core GPU M4 Max against a 10&#8209;core CPU / 32&#8209;core GPU M1 Max. The gap is the point.</p>
+           </div>
+ 
+           <ul class="bench">
+@@ -490,7 +491,7 @@
+                 <span class="bench__note">3D render</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 100%"></span></span>
+-              <span class="bench__ratio">3.5×</span>
++              <span class="bench__ratio">3.5&times;</span>
+             </li>
+             <li class="bench__row reveal">
+               <div class="bench__meta">
+@@ -498,7 +499,7 @@
+                 <span class="bench__note">On-device AI</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 86%"></span></span>
+-              <span class="bench__ratio">3×+</span>
++              <span class="bench__ratio">3&times;+</span>
+             </li>
+             <li class="bench__row reveal">
+               <div class="bench__meta">
+@@ -506,7 +507,7 @@
+                 <span class="bench__note">Build</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 63%"></span></span>
+-              <span class="bench__ratio">2.2×</span>
++              <span class="bench__ratio">2.2&times;</span>
+             </li>
+             <li class="bench__row reveal">
+               <div class="bench__meta">
+@@ -514,7 +515,7 @@
+                 <span class="bench__note">Multicore</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 63%"></span></span>
+-              <span class="bench__ratio">2.2×</span>
++              <span class="bench__ratio">2.2&times;</span>
+             </li>
+             <li class="bench__row reveal">
+               <div class="bench__meta">
+@@ -522,7 +523,7 @@
+                 <span class="bench__note">Graphics</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 54%"></span></span>
+-              <span class="bench__ratio">1.9×</span>
++              <span class="bench__ratio">1.9&times;</span>
+             </li>
+             <li class="bench__row reveal">
+               <div class="bench__meta">
+@@ -530,12 +531,12 @@
+                 <span class="bench__note">Upscaling</span>
+               </div>
+               <span class="bench__track"><span class="bench__fill" style="--value: 46%"></span></span>
+-              <span class="bench__ratio">1.6×</span>
++              <span class="bench__ratio">1.6&times;</span>
+             </li>
+           </ul>
+         </div>
+ 
+-        <p class="fineprint reveal">Apple-published “up to” comparisons, not independent lab tests. M4 Max configuration: 16-core CPU, 40-core GPU. M1 Max configuration: 10-core CPU, 32-core GPU. Real-world performance depends on workload, configuration, and thermal conditions. Sources listed in the footer.</p>
++        <p class="fineprint reveal">Apple-published “up to” comparisons, not independent lab tests. M4 Max configuration: 16&#8209;core CPU, 40&#8209;core GPU. M1 Max configuration: 10&#8209;core CPU, 32&#8209;core GPU. Real-world performance depends on workload, configuration, and thermal conditions. Sources listed in the footer.</p>
+       </div>
+     </section>
+ 
+@@ -546,8 +547,8 @@
+       <div class="wrap">
+         <div class="section__head reveal">
+           <p class="label"><span class="label__no">05</span> Armor</p>
+-          <h2 class="h2" id="armor-title">2.15 kg of <em>quiet</em>.</h2>
+-          <p class="section__note">Space Black anodized aluminum, a 1.68 cm hinge, and a finish that keeps the light where it belongs.</p>
++          <h2 class="h2" id="armor-title">2.15&nbsp;kg of <em>quiet</em>.</h2>
++          <p class="section__note">Space Black anodized aluminum, a 1.68&nbsp;cm hinge, and a finish that keeps the light where it belongs.</p>
+         </div>
+ 
+         <div class="gallery">
+@@ -595,8 +596,8 @@
+             </div>
+             <figcaption class="gallery__cap">
+               <div>
+-                <h3 class="gallery__title">A 1.68 cm edge.</h3>
+-                <p>Thin enough to carry under one arm. Strong enough to run a 40-core GPU, three Thunderbolt 5 ports, and a 100Wh battery.</p>
++                <h3 class="gallery__title">A 1.68&nbsp;cm edge.</h3>
++                <p>Thin enough to carry under one arm. Strong enough to run a 40&#8209;core GPU, three Thunderbolt 5 ports, and a 100&nbsp;Wh battery.</p>
+               </div>
+               <span class="gallery__tag">Chassis / Detail</span>
+             </figcaption>
+@@ -605,8 +606,8 @@
+ 
+         <dl class="armor__strip reveal">
+           <div><dt>Display</dt><dd>16.2″ Liquid Retina XDR</dd></div>
+-          <div><dt>Peak HDR</dt><dd>1,600 nits</dd></div>
+-          <div><dt>Camera</dt><dd>12MP Center Stage</dd></div>
++          <div><dt>Peak HDR</dt><dd>1,600&nbsp;nits</dd></div>
++          <div><dt>Camera</dt><dd>12&nbsp;MP Center Stage</dd></div>
+           <div><dt>Audio</dt><dd>Six speakers · Spatial Audio</dd></div>
+           <div><dt>Finish</dt><dd>Space Black / Silver</dd></div>
+         </dl>
+@@ -622,7 +623,7 @@
+           <div>
+             <p class="label"><span class="label__no">06</span> Spec sheet</p>
+             <h2 class="h2" id="specs-title">Everything, <em>on record</em>.</h2>
+-            <p class="section__note">16-inch MacBook Pro with M4 Max. Launch configuration, October 2024.</p>
++            <p class="section__note">16&#8209;inch MacBook Pro with M4 Max. Launch configuration, October 2024.</p>
+           </div>
+           <button class="btn btn--ghost specs__print" type="button" id="print-specs">
+             <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-print"/></svg>
+@@ -633,39 +634,39 @@
+         <dl class="spec-table reveal">
+           <div class="spec-table__row">
+             <dt>Model</dt>
+-            <dd>MacBook Pro (16-inch, 2024)</dd>
++            <dd>MacBook Pro (16&#8209;inch, 2024)</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Chip</dt>
+-            <dd>Apple M4 Max — up to 16-core CPU (12 performance + 4 efficiency), up to 40-core GPU, 16-core Neural Engine, hardware-accelerated ray tracing</dd>
++            <dd>Apple M4 Max — up to 16&#8209;core CPU (12&nbsp;performance + 4&nbsp;efficiency), up to 40&#8209;core GPU, 16&#8209;core Neural Engine, hardware-accelerated ray tracing</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Display</dt>
+-            <dd>16.2-inch Liquid Retina XDR, 3456 × 2234 at 254 ppi, ProMotion up to 120Hz, 1,000,000:1 contrast, 1,000 nits sustained / 1,600 nits peak HDR, optional nano-texture glass</dd>
++            <dd>16.2&#8209;inch Liquid Retina XDR, 3456&nbsp;&times;&nbsp;2234 at 254&nbsp;ppi, ProMotion up to 120&nbsp;Hz, 1,000,000:1 contrast, 1,000&nbsp;nits sustained / 1,600&nbsp;nits peak HDR, optional nano-texture glass</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Memory</dt>
+-            <dd>36GB unified memory standard; configurable up to 128GB</dd>
++            <dd>36&nbsp;GB unified memory standard; configurable up to 128&nbsp;GB</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Storage</dt>
+-            <dd>1TB SSD standard; configurable up to 8TB</dd>
++            <dd>1&nbsp;TB SSD standard; configurable up to 8&nbsp;TB</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Battery</dt>
+-            <dd>Up to 21 hours video playback, up to 14 hours wireless web; 100Wh lithium-polymer</dd>
++            <dd>Up to 21&nbsp;hours video playback, up to 14&nbsp;hours wireless web; 100&nbsp;Wh lithium-polymer</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Power</dt>
+-            <dd>140W USB-C power adapter; MagSafe 3 charging</dd>
++            <dd>140&nbsp;W USB-C power adapter; MagSafe 3 charging</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Ports</dt>
+-            <dd>Three Thunderbolt 5 (USB-C) at up to 120Gb/s, HDMI, SDXC card slot, MagSafe 3, 3.5mm headphone jack</dd>
++            <dd>Three Thunderbolt 5 (USB-C) at up to 120&nbsp;Gb/s, HDMI, SDXC card slot, MagSafe 3, 3.5&nbsp;mm headphone jack</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Camera</dt>
+-            <dd>12MP Center Stage camera with Desk View</dd>
++            <dd>12&nbsp;MP Center Stage camera with Desk View</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Audio</dt>
+@@ -681,7 +682,7 @@
+           </div>
+           <div class="spec-table__row">
+             <dt>Size &amp; weight</dt>
+-            <dd>35.57 cm wide × 24.81 cm deep × 1.68 cm high; 2.15 kg</dd>
++            <dd>35.57&nbsp;cm wide &times;&nbsp;24.81&nbsp;cm deep &times;&nbsp;1.68&nbsp;cm high; 2.15&nbsp;kg</dd>
+           </div>
+           <div class="spec-table__row">
+             <dt>Finish</dt>
+@@ -689,7 +690,7 @@
+           </div>
+           <div class="spec-table__row">
+             <dt>Price</dt>
+-            <dd>From $3,499 (U.S.) — 14-core CPU, 32-core GPU, 36GB unified memory, 1TB SSD</dd>
++            <dd>From $3,499 (U.S.) — 14&#8209;core CPU, 32&#8209;core GPU, 36&nbsp;GB unified memory, 1&nbsp;TB SSD</dd>
+           </div>
+         </dl>
+ 
+@@ -711,49 +712,49 @@
+         <div class="models__grid">
+           <article class="model reveal">
+             <p class="model__kicker">M4 <span>/ The scout</span></p>
+-            <h3 class="model__name">14-inch<br>MacBook Pro</h3>
++            <h3 class="model__name">14&#8209;inch<br>MacBook Pro</h3>
+             <p class="model__price">From $1,599</p>
+             <p class="model__copy">For daylight work that ends before midnight. Writing, research, photo editing, and code that does not need a render farm.</p>
+             <dl class="model__specs">
+-              <div><dt>CPU</dt><dd>10-core</dd></div>
+-              <div><dt>GPU</dt><dd>10-core</dd></div>
+-              <div><dt>Bandwidth</dt><dd>120 GB/s</dd></div>
+-              <div><dt>Memory</dt><dd>Up to 32GB</dd></div>
++              <div><dt>CPU</dt><dd>10&#8209;core</dd></div>
++              <div><dt>GPU</dt><dd>10&#8209;core</dd></div>
++              <div><dt>Bandwidth</dt><dd>120&nbsp;GB/s</dd></div>
++              <div><dt>Memory</dt><dd>Up to 32&nbsp;GB</dd></div>
+             </dl>
+             <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+-              See it at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
++              Configure M4 at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+             </a>
+           </article>
+ 
+           <article class="model reveal">
+             <p class="model__kicker">M4 Pro <span>/ The operative</span></p>
+-            <h3 class="model__name">14- or 16-inch<br>MacBook Pro</h3>
++            <h3 class="model__name">14-&nbsp;or&nbsp;16&#8209;inch<br>MacBook Pro</h3>
+             <p class="model__price">From $1,999</p>
+             <p class="model__copy">For the work that follows you home. 4K multicam, large Xcode builds, 3D scenes, and local models that need more room.</p>
+             <dl class="model__specs">
+-              <div><dt>CPU</dt><dd>Up to 14-core</dd></div>
+-              <div><dt>GPU</dt><dd>Up to 20-core</dd></div>
+-              <div><dt>Bandwidth</dt><dd>273 GB/s</dd></div>
+-              <div><dt>Memory</dt><dd>Up to 64GB</dd></div>
++              <div><dt>CPU</dt><dd>Up to 14&#8209;core</dd></div>
++              <div><dt>GPU</dt><dd>Up to 20&#8209;core</dd></div>
++              <div><dt>Bandwidth</dt><dd>273&nbsp;GB/s</dd></div>
++              <div><dt>Memory</dt><dd>Up to 64&nbsp;GB</dd></div>
+             </dl>
+             <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+-              See it at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
++              Configure M4 Pro at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+             </a>
+           </article>
+ 
+           <article class="model model--max reveal">
+             <p class="model__kicker">M4 Max <span>/ The Batcomputer</span></p>
+-            <h3 class="model__name">16-inch<br>MacBook Pro</h3>
++            <h3 class="model__name">16&#8209;inch<br>MacBook Pro</h3>
+             <p class="model__price">From $3,499</p>
+             <p class="model__copy">For the hours when the city goes quiet. 8K, simulation, training, and every heavy application open at once.</p>
+             <dl class="model__specs">
+-              <div><dt>CPU</dt><dd>Up to 16-core</dd></div>
+-              <div><dt>GPU</dt><dd>Up to 40-core</dd></div>
+-              <div><dt>Bandwidth</dt><dd>546 GB/s</dd></div>
+-              <div><dt>Memory</dt><dd>Up to 128GB</dd></div>
++              <div><dt>CPU</dt><dd>Up to 16&#8209;core</dd></div>
++              <div><dt>GPU</dt><dd>Up to 40&#8209;core</dd></div>
++              <div><dt>Bandwidth</dt><dd>546&nbsp;GB/s</dd></div>
++              <div><dt>Memory</dt><dd>Up to 128&nbsp;GB</dd></div>
+             </dl>
+             <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+-              See it at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
++              Configure M4 Max at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+             </a>
+           </article>
+         </div>
+@@ -800,8 +801,8 @@
+             <ul>
+               <li><a href="https://www.apple.com/newsroom/2024/10/new-macbook-pro-features-m4-family-of-chips-and-apple-intelligence/" target="_blank" rel="noopener noreferrer">Apple Newsroom — MacBook Pro launch<span class="sr-only"> (opens in a new tab)</span></a></li>
+               <li><a href="https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/" target="_blank" rel="noopener noreferrer">Apple Newsroom — M4 Pro and M4 Max<span class="sr-only"> (opens in a new tab)</span></a></li>
+-              <li><a href="https://support.apple.com/en-us/121554" target="_blank" rel="noopener noreferrer">Apple Support — 16-inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
+-              <li><a href="https://support.apple.com/en-us/121553" target="_blank" rel="noopener noreferrer">Apple Support — 14-inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
++              <li><a href="https://support.apple.com/en-us/121554" target="_blank" rel="noopener noreferrer">Apple Support — 16&#8209;inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
++              <li><a href="https://support.apple.com/en-us/121553" target="_blank" rel="noopener noreferrer">Apple Support — 14&#8209;inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
+             </ul>
+           </div>
+         </nav>

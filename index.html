@@ -1,0 +1,1057 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050607">
+
+  <title>M4 After Dark — MacBook Pro 16″ M4 Max / A Batman-Inspired Concept</title>
+  <meta name="description" content="A cinematic concept study of Apple’s 16-inch MacBook Pro with M4 Max. 16 CPU cores, 40 GPU cores, 546GB/s of unified memory bandwidth, and a 16.2-inch Liquid Retina XDR display — staged in obsidian, ice grey, and signal red.">
+  <meta name="author" content="After Dark — an independent concept study">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="M4 After Dark — The Batcomputer, Reissued">
+  <meta property="og:description" content="MacBook Pro 16-inch with M4 Max, staged as the machine it feels like. Specs, comparisons, benchmarks, and a very dark room.">
+  <meta property="og:image" content="assets/images/m4-closed.jpg">
+  <meta property="og:site_name" content="M4 After Dark">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050607'/%3E%3Cg transform='translate(0 25)'%3E%3Cpath d='M50 6C47.5 10 44 12 39 12L30 15L10 24L24 24L16 40L32 29L36 43L43 31L50 36L57 31L64 43L68 29L84 40L76 24L90 24L70 15L61 12C56 12 52.5 10 50 6Z' fill='%23e6edf1'/%3E%3C/g%3E%3C/svg%3E">
+
+  <link rel="preload" href="assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Inline icon + mark sprite -->
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="bat-mark" viewBox="0 0 100 50">
+      <path d="M50 6C47.5 10 44 12 39 12L30 15L10 24L24 24L16 40L32 29L36 43L43 31L50 36L57 31L64 43L68 29L84 40L76 24L90 24L70 15L61 12C56 12 52.5 10 50 6Z"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 16 16">
+      <path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+    </symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 16 16">
+      <path d="M2 8h11M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 16 16">
+      <path d="M5 3.2 12.5 8 5 12.8Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-pause" viewBox="0 0 16 16">
+      <path d="M5 3h2v10H5zM9 3h2v10H9z" fill="currentColor"/>
+    </symbol>
+    <symbol id="i-print" viewBox="0 0 16 16">
+      <path d="M4.5 6V2.5h7V6M4.5 12H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-1.5M4.5 9.5h7v4h-7z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="miter"/>
+    </symbol>
+    <symbol id="i-external" viewBox="0 0 16 16">
+      <path d="M9 2h5v5M14 2 7.5 8.5M12 9.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/>
+    </symbol>
+  </svg>
+
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <div class="site-header__inner wrap">
+      <a class="brand" href="#top" translate="no">
+        <svg class="brand__bat" aria-hidden="true" focusable="false"><use href="#bat-mark"/></svg>
+        <span class="brand__text">
+          <span class="brand__name">After Dark</span>
+          <span class="brand__sub">M4 Field System</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="site-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#machine">The Machine</a></li>
+          <li><a class="nav__link" href="#silicon">Silicon</a></li>
+          <li><a class="nav__link" href="#proof">Proof</a></li>
+          <li><a class="nav__link" href="#armor">Armor</a></li>
+          <li><a class="nav__link" href="#specs">Specs</a></li>
+        </ul>
+        <p class="nav__foot" aria-hidden="true">
+          <span>Concept study / 2026</span>
+          <span>Obsidian · Ice · Signal Red</span>
+        </p>
+      </nav>
+
+      <div class="site-header__end">
+        <p class="signal" aria-label="Flagship configuration: M4 Max, 16-inch">
+          <span class="signal__dot" aria-hidden="true"></span>
+          <span class="signal__text">M4 Max <span aria-hidden="true">/</span> 16″</span>
+        </p>
+        <p class="clock">
+          <span class="clock__city">Gotham</span>
+          <time data-clock datetime="2026-11-07T00:00:00-05:00">--:--</time>
+        </p>
+        <button class="btn btn--ghost header__audio" id="audio-toggle" data-audio-toggle type="button" aria-pressed="false" aria-label="Audio: Off, toggle tactical sound synthesis">
+          <span class="hud-audio-btn__label">Audio: Off</span>
+        </button>
+        <button class="menu-toggle" type="button" id="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+          <span class="menu-toggle__text">Menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ============================================================
+         01 — Hero
+    ============================================================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__signal" aria-hidden="true">
+        <svg viewBox="0 0 100 50" focusable="false"><use href="#bat-mark"/></svg>
+      </div>
+
+      <div class="wrap hero__inner">
+        <div class="hero__copy">
+          <p class="label reveal"><span class="label__no">01</span> Gotham Applied Sciences — File M4</p>
+          <p class="hero__kicker reveal">MacBook Pro 16&#8209;inch <span aria-hidden="true">/</span> M4 Max</p>
+
+          <h1 class="hero__title" id="hero-title">
+            <span class="hero__line"><span class="hero__line-in">M4</span></span>
+            <span class="hero__line hero__line--serif"><span class="hero__line-in">after <em>dark.</em></span></span>
+          </h1>
+
+          <p class="hero__lede reveal">Apple’s flagship notebook, staged as the machine it feels like: a 16&#8209;core CPU, a 40&#8209;core GPU, 546&nbsp;GB/s of unified memory bandwidth, and a 16.2&#8209;inch XDR display that makes the room irrelevant.</p>
+
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#silicon">
+              <span>Explore the Silicon</span>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="#specs">
+              <span>Read the Spec Sheet</span>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+            </a>
+          </div>
+
+          <dl class="hero__stats reveal">
+            <div>
+              <dt>CPU</dt>
+              <dd>16<span>&nbsp;cores</span></dd>
+            </div>
+            <div>
+              <dt>GPU</dt>
+              <dd>40<span>&nbsp;cores</span></dd>
+            </div>
+            <div>
+              <dt>Bandwidth</dt>
+              <dd>546<span>&nbsp;GB/s</span></dd>
+            </div>
+            <div>
+              <dt>Video</dt>
+              <dd>21<span>&nbsp;hr</span></dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="hero__media reveal">
+          <div class="hero__frame">
+            <picture>
+              <source type="image/webp" srcset="assets/images/m4-open-700.webp 700w, assets/images/m4-open-1000.webp 1000w, assets/images/m4-open-1300.webp 1300w" sizes="(min-width: 1100px) 44vw, 92vw">
+              <img src="assets/images/m4-open.jpg" alt="A space-black MacBook Pro photographed at a low angle in a dark room, its lid catching a cold blue light and its keyboard glowing faintly." width="1841" height="2994" fetchpriority="high">
+            </picture>
+
+            <div class="hud hud--tl" aria-hidden="true"><span>Optic 01</span><span>Lock</span></div>
+            <div class="hud hud--tr" aria-hidden="true"><span class="hud__rec"></span><span>Signal</span></div>
+            <div class="hud hud--bl" aria-hidden="true"><span>16.2″ XDR</span><span>3456&nbsp;&times;&nbsp;2234</span></div>
+            <div class="hud hud--br" aria-hidden="true"><span>Space Black</span><span>2.15&nbsp;kg</span></div>
+            <span class="hud__corner hud__corner--tl" aria-hidden="true"></span>
+            <span class="hud__corner hud__corner--tr" aria-hidden="true"></span>
+            <span class="hud__corner hud__corner--bl" aria-hidden="true"></span>
+            <span class="hud__corner hud__corner--br" aria-hidden="true"></span>
+            <span class="hud__cross" aria-hidden="true"></span>
+
+            <!-- Interactive Diagnostic Inspection Pins -->
+            <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-hero-1" aria-label="Inspect Optic Reticle: Liquid Retina XDR Display" data-pin-id="hero-1" style="--pin-top: 28%; --pin-left: 48%;">
+              <span class="pin__target" aria-hidden="true">
+                <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                  <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                  <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                  <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                  <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                </svg>
+                <span class="pin__dot"></span>
+              </span>
+              <div class="pin__tooltip spec-card" id="pin-callout-hero-1" role="tooltip">
+                <div class="pin__callout-header">
+                  <span class="pin__badge">SYS // 01</span>
+                  <span class="pin__status"><span class="pin__status-pulse"></span>ACTIVE</span>
+                </div>
+                <h4 class="pin__title">Liquid Retina XDR Display</h4>
+                <p class="pin__spec">16.2″ · 3456&times;2234 at 254&nbsp;ppi · 1,600&nbsp;nits peak HDR · 1,000,000:1 contrast · ProMotion 120Hz · Optional nano-texture</p>
+              </div>
+            </button>
+
+            <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-hero-2" aria-label="Inspect Core Package Reticle: Apple Silicon M4 Max" data-pin-id="hero-2" style="--pin-top: 66%; --pin-left: 50%;">
+              <span class="pin__target" aria-hidden="true">
+                <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                  <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                  <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                  <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                  <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                </svg>
+                <span class="pin__dot"></span>
+              </span>
+              <div class="pin__tooltip spec-card" id="pin-callout-hero-2" role="tooltip">
+                <div class="pin__callout-header">
+                  <span class="pin__badge">SYS // 02</span>
+                  <span class="pin__status"><span class="pin__status-pulse"></span>ACTIVE</span>
+                </div>
+                <h4 class="pin__title">Apple Silicon M4 Max</h4>
+                <p class="pin__spec">16&#8209;core CPU (12P + 4E) · 40&#8209;core GPU · 16&#8209;core Neural Engine · 546&nbsp;GB/s unified memory bandwidth</p>
+              </div>
+            </button>
+
+            <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-hero-3" aria-label="Inspect I/O Vector Reticle: Thunderbolt 5 and MagSafe" data-pin-id="hero-3" style="--pin-top: 80%; --pin-left: 22%;">
+              <span class="pin__target" aria-hidden="true">
+                <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                  <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                  <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                  <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                  <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                </svg>
+                <span class="pin__dot"></span>
+              </span>
+              <div class="pin__tooltip spec-card" id="pin-callout-hero-3" role="tooltip">
+                <div class="pin__callout-header">
+                  <span class="pin__badge">SYS // 03</span>
+                  <span class="pin__status"><span class="pin__status-pulse"></span>ACTIVE</span>
+                </div>
+                <h4 class="pin__title">Thunderbolt 5 &amp; MagSafe 3</h4>
+                <p class="pin__spec">120&nbsp;Gb/s bandwidth · 3&times; TB5 ports · Drive up to three 6K external displays · 140W fast charging</p>
+              </div>
+            </button>
+          </div>
+          <figcaption class="media-cap">
+            <span><span class="media-cap__fig">Fig. 01</span> The machine, awake.</span>
+            <span>M4 Max / 16&#8209;inch</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="marquee marquee--hero" aria-hidden="true">
+        <div class="marquee__track">
+          <ul class="marquee__group">
+            <li>M4 Max</li>
+            <li>16&#8209;core CPU</li>
+            <li>40&#8209;core GPU</li>
+            <li>546&nbsp;GB/s unified memory</li>
+            <li>Thunderbolt 5</li>
+            <li>Liquid Retina XDR</li>
+          </ul>
+          <ul class="marquee__group">
+            <li>M4 Max</li>
+            <li>16&#8209;core CPU</li>
+            <li>40&#8209;core GPU</li>
+            <li>546&nbsp;GB/s unified memory</li>
+            <li>Thunderbolt 5</li>
+            <li>Liquid Retina XDR</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         02 — The Machine
+    ============================================================= -->
+    <section class="section machine" id="machine" aria-labelledby="machine-title">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <p class="label"><span class="label__no">02</span> The Machine</p>
+          <h2 class="h2" id="machine-title">The flagship wears <em>black</em>.</h2>
+          <p class="section__note">MacBook Pro 16&#8209;inch. M4 Max. The top of the line, in the only finish that makes sense here.</p>
+        </div>
+
+        <div class="machine__grid">
+          <figure class="machine__media reveal">
+            <div class="machine__frame">
+              <picture>
+                <source type="image/webp" srcset="assets/images/m4-closed-700.webp 700w, assets/images/m4-closed-1000.webp 1000w, assets/images/m4-closed-1300.webp 1300w" sizes="(min-width: 1000px) 42vw, 92vw">
+                <img src="assets/images/m4-closed.jpg" alt="A closed space-black MacBook Pro on a dark, textured surface, lit by a cold blue light that reveals the Apple logo in silhouette." width="1626" height="2710" loading="lazy" decoding="async">
+              </picture>
+              <span class="machine__stamp" aria-hidden="true">Flagship / 16″</span>
+              <span class="machine__rule" aria-hidden="true"></span>
+            </div>
+            <figcaption class="media-cap">
+              <span><span class="media-cap__fig">Fig. 02</span> Closed. Still listening.</span>
+              <span>Space Black / 2024</span>
+            </figcaption>
+          </figure>
+
+          <div class="machine__body">
+            <p class="machine__lede reveal">The 16&#8209;inch M4 Max is not a cautious upgrade. It is a desktop-class machine that happens to fold: twelve performance cores, four efficiency cores, up to forty GPU cores, and a memory subsystem wide enough to keep all of them fed.</p>
+
+            <ul class="machine__list">
+              <li class="machine__item reveal">
+                <span class="machine__no" aria-hidden="true">01</span>
+                <div>
+                  <h3 class="machine__title">A display that ends arguments</h3>
+                  <p>16.2&#8209;inch Liquid Retina XDR. 3456&nbsp;&times;&nbsp;2234 at 254&nbsp;ppi. ProMotion up to 120&nbsp;Hz. 1,000&nbsp;nits sustained, 1,600&nbsp;nits peak HDR, and an optional nano-texture finish that turns hard light into matte grey.</p>
+                </div>
+              </li>
+              <li class="machine__item reveal">
+                <span class="machine__no" aria-hidden="true">02</span>
+                <div>
+                  <h3 class="machine__title">Enough battery to outlast the night</h3>
+                  <p>Up to 21&nbsp;hours of video playback on the 16&#8209;inch M4 Max. Enough to finish the cut, the build, or the render without hunting for a wall socket.</p>
+                </div>
+              </li>
+              <li class="machine__item reveal">
+                <span class="machine__no" aria-hidden="true">03</span>
+                <div>
+                  <h3 class="machine__title">Ports with somewhere to be</h3>
+                  <p>Three Thunderbolt 5 ports at up to 120&nbsp;Gb/s, HDMI, an SDXC slot, MagSafe 3, and a headphone jack. The adapter dongle stays in the drawer.</p>
+                </div>
+              </li>
+              <li class="machine__item reveal">
+                <span class="machine__no" aria-hidden="true">04</span>
+                <div>
+                  <h3 class="machine__title">A room that hears you</h3>
+                  <p>A 12&nbsp;MP Center Stage camera with Desk View, a six-speaker system with force-cancelling woofers, Spatial Audio, and a three-mic array. The call is the only thing that breaks the illusion.</p>
+                </div>
+              </li>
+            </ul>
+
+            <blockquote class="pull reveal">
+              <p>“The city doesn’t sleep. Neither does the render queue.”</p>
+              <footer>Field note — 03:12, Gotham</footer>
+            </blockquote>
+          </div>
+        </div>
+
+        <dl class="ticker reveal">
+          <div>
+            <dt>Display</dt>
+            <dd>16.2″ XDR</dd>
+          </div>
+          <div>
+            <dt>Refresh</dt>
+            <dd>120&nbsp;Hz</dd>
+          </div>
+          <div>
+            <dt>Battery</dt>
+            <dd>21&nbsp;hr</dd>
+          </div>
+          <div>
+            <dt>Weight</dt>
+            <dd>2.15&nbsp;kg</dd>
+          </div>
+          <div>
+            <dt>Thickness</dt>
+            <dd>1.68&nbsp;cm</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         03 — Silicon
+    ============================================================= -->
+    <section class="section silicon" id="silicon" aria-labelledby="silicon-title">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <p class="label"><span class="label__no">03</span> Silicon</p>
+          <h2 class="h2" id="silicon-title">Three chips. One <em>shadow</em>.</h2>
+          <p class="section__note">Same M4 family. Different appetites. Know which one you are before you configure it.</p>
+        </div>
+
+        <div class="silicon__grid">
+          <div class="chip-table-wrap reveal" tabindex="0" role="region" aria-label="Apple silicon comparison table">
+            <table class="chip-table">
+              <caption class="sr-only">Comparison of M4, M4 Pro, and M4 Max specifications</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span class="sr-only">Specification</span></th>
+                  <th scope="col"><span class="chip-table__name">M4</span><span class="chip-table__sub">The scout</span></th>
+                  <th scope="col"><span class="chip-table__name">M4 Pro</span><span class="chip-table__sub">The operative</span></th>
+                  <th scope="col" class="is-max"><span class="chip-table__name">M4 Max</span><span class="chip-table__sub">The Batcomputer</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">CPU</th>
+                  <td>10&#8209;core<br><span class="dim">4&nbsp;performance + 6&nbsp;efficiency</span></td>
+                  <td>Up to 14&#8209;core<br><span class="dim">10&nbsp;performance + 4&nbsp;efficiency</span></td>
+                  <td class="is-max">Up to 16&#8209;core<br><span class="dim">12&nbsp;performance + 4&nbsp;efficiency</span></td>
+                </tr>
+                <tr>
+                  <th scope="row">GPU</th>
+                  <td>10&#8209;core</td>
+                  <td>Up to 20&#8209;core</td>
+                  <td class="is-max">Up to 40&#8209;core</td>
+                </tr>
+                <tr>
+                  <th scope="row">Neural Engine</th>
+                  <td>16&#8209;core</td>
+                  <td>16&#8209;core</td>
+                  <td class="is-max">16&#8209;core</td>
+                </tr>
+                <tr>
+                  <th scope="row">Memory bandwidth</th>
+                  <td>120&nbsp;GB/s</td>
+                  <td>273&nbsp;GB/s</td>
+                  <td class="is-max">546&nbsp;GB/s</td>
+                </tr>
+                <tr>
+                  <th scope="row">Max unified memory</th>
+                  <td>32&nbsp;GB</td>
+                  <td>64&nbsp;GB</td>
+                  <td class="is-max">128&nbsp;GB</td>
+                </tr>
+                <tr>
+                  <th scope="row">Display sizes</th>
+                  <td>14&#8209;inch</td>
+                  <td>14-&nbsp;or&nbsp;16&#8209;inch</td>
+                  <td class="is-max">14-&nbsp;or&nbsp;16&#8209;inch</td>
+                </tr>
+                <tr>
+                  <th scope="row">Thunderbolt</th>
+                  <td>Thunderbolt 4</td>
+                  <td>Thunderbolt 5</td>
+                  <td class="is-max">Thunderbolt 5</td>
+                </tr>
+                <tr>
+                  <th scope="row">From</th>
+                  <td>$1,599</td>
+                  <td>$1,999</td>
+                  <td class="is-max">$3,199 <span class="dim">14″</span><br><span class="dim">$3,499 — 16″</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="table-note">U.S. launch pricing, October 2024. “Up to” configurations vary by model and build-to-order options.</p>
+          </div>
+
+          <aside class="bandwidth reveal" aria-labelledby="bandwidth-title">
+            <p class="label"><span class="label__no">03.1</span> Bandwidth</p>
+            <h3 class="bandwidth__title" id="bandwidth-title">The width of the pipe.</h3>
+            <p class="bandwidth__copy">Unified memory is shared by CPU, GPU, and Neural Engine. More bandwidth means fewer waits when all three are working at once.</p>
+
+            <ul class="bars">
+              <li class="bars__row">
+                <span class="bars__name">M4</span>
+                <span class="bars__track bars__bar" data-fill="22%"><span class="bars__fill" style="--value: 22%"></span></span>
+                <span class="bars__value" data-count="120">120</span>
+              </li>
+              <li class="bars__row">
+                <span class="bars__name">M4 Pro</span>
+                <span class="bars__track bars__bar" data-fill="50%"><span class="bars__fill" style="--value: 50%"></span></span>
+                <span class="bars__value" data-count="273">273</span>
+              </li>
+              <li class="bars__row">
+                <span class="bars__name">M4 Max</span>
+                <span class="bars__track bars__bar" data-fill="100%"><span class="bars__fill bars__fill--max" style="--value: 100%"></span></span>
+                <span class="bars__value" data-count="546">546</span>
+              </li>
+            </ul>
+            <p class="bars__unit">GB/s</p>
+
+            <p class="bandwidth__foot">The Max moves 4.55&times;&nbsp;the data of the base M4 per second.</p>
+          </aside>
+        </div>
+
+        <div class="workload reveal">
+          <fieldset class="workload__fieldset">
+            <legend class="workload__legend">Choose your workload</legend>
+            <div class="workload__options">
+              <label class="workload__option">
+                <input type="radio" name="workload" value="everyday" checked>
+                <span class="workload__box">
+                  <span class="workload__name">Everyday</span>
+                  <span class="workload__desc">Writing, research, photos, light code</span>
+                </span>
+              </label>
+              <label class="workload__option">
+                <input type="radio" name="workload" value="professional">
+                <span class="workload__box">
+                  <span class="workload__name">Professional</span>
+                  <span class="workload__desc">4K multicam, large builds, 3D, local AI</span>
+                </span>
+              </label>
+              <label class="workload__option">
+                <input type="radio" name="workload" value="extreme">
+                <span class="workload__box">
+                  <span class="workload__name">Extreme</span>
+                  <span class="workload__desc">8K, simulation, training, everything at once</span>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="workload__result" aria-live="polite">
+            <p class="workload__eyebrow">Recommended configuration</p>
+            <p class="workload__chip" id="fit-name">M4</p>
+            <p class="workload__model" id="fit-model">14&#8209;inch MacBook Pro with M4</p>
+            <p class="workload__copy" id="fit-copy">Ten CPU cores and ten GPU cores are plenty for writing, research, photo work, and a browser with too many tabs. The base machine is the quiet choice.</p>
+            <a class="text-link" href="#models">See the models <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+          </div>
+        </div>
+
+        <div class="die reveal">
+          <div class="die__head">
+            <div>
+              <p class="label"><span class="label__no">03.2</span> Die study</p>
+              <h3 class="die__title">A map of the dark.</h3>
+              <p class="die__copy">A stylized view of the M4 Max package: CPU clusters, GPU cores, the Neural Engine, and the memory controllers that keep them fed. Red marks the signal path. This is an illustration, not a photograph of silicon.</p>
+            </div>
+            <button class="die__toggle" type="button" id="die-toggle" data-playing="true" aria-label="Pause die animation">
+              <svg class="icon die__icon die__icon--pause" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg>
+              <svg class="icon die__icon die__icon--play" aria-hidden="true" focusable="false"><use href="#i-play"/></svg>
+              <span class="die__toggle-label">Pause</span>
+            </button>
+          </div>
+
+          <div class="die__frame">
+            <canvas id="die-canvas" width="1600" height="760" role="img" aria-label="Stylized animated map of the M4 Max chip: four CPU clusters, five rows of GPU cores, a Neural Engine block, and memory controllers along the edges, with a red signal pulse moving through the layout."></canvas>
+            <div class="die__readout" aria-hidden="true">
+              <span>SYS / M4 MAX</span>
+              <span>16C CPU · 40C GPU · 16C NE</span>
+              <span>546&nbsp;GB/s</span>
+            </div>
+          </div>
+
+          <dl class="die__legend">
+            <div><dt><span class="legend-dot legend-dot--cpu" aria-hidden="true"></span>CPU clusters</dt><dd>12&nbsp;performance + 4&nbsp;efficiency cores</dd></div>
+            <div><dt><span class="legend-dot legend-dot--gpu" aria-hidden="true"></span>GPU cores</dt><dd>Up to 40, hardware ray tracing</dd></div>
+            <div><dt><span class="legend-dot legend-dot--ne" aria-hidden="true"></span>Neural Engine</dt><dd>16&nbsp;cores for on-device AI</dd></div>
+            <div><dt><span class="legend-dot legend-dot--mem" aria-hidden="true"></span>Memory bus</dt><dd>546&nbsp;GB/s unified bandwidth</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         04 — Proof
+    ============================================================= -->
+    <section class="section proof" id="proof" aria-labelledby="proof-title">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <p class="label"><span class="label__no">04</span> Proof</p>
+          <h2 class="h2" id="proof-title">Faster in the <em>dark</em>.</h2>
+          <p class="section__note">Apple’s own numbers: M4 Max against the M1 Max it replaces at the top of the line. Up to 3.5&times;&nbsp;the render, 2.2&times;&nbsp;the build.</p>
+        </div>
+
+        <div class="proof__grid">
+          <div class="proof__hero reveal">
+            <p class="proof__stat" data-count="3.5">3.5<span>&times;</span></p>
+            <p class="proof__stat-label">Redshift render<br><span>vs. M1 Max</span></p>
+            <p class="proof__stat-copy">Apple’s published comparison for the 16&#8209;core CPU / 40&#8209;core GPU M4 Max against a 10&#8209;core CPU / 32&#8209;core GPU M1 Max. The gap is the point.</p>
+          </div>
+
+          <ul class="bench">
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">Redshift</span>
+                <span class="bench__note">3D render</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="100%"><span class="bench__fill" style="--value: 100%"></span></span>
+              <span class="bench__ratio">3.5&times;</span>
+            </li>
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">Neural Engine</span>
+                <span class="bench__note">On-device AI</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="86%"><span class="bench__fill" style="--value: 86%"></span></span>
+              <span class="bench__ratio">3&times;+</span>
+            </li>
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">Xcode</span>
+                <span class="bench__note">Build</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="63%"><span class="bench__fill" style="--value: 63%"></span></span>
+              <span class="bench__ratio">2.2&times;</span>
+            </li>
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">CPU</span>
+                <span class="bench__note">Multicore</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="63%"><span class="bench__fill" style="--value: 63%"></span></span>
+              <span class="bench__ratio">2.2&times;</span>
+            </li>
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">GPU</span>
+                <span class="bench__note">Graphics</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="54%"><span class="bench__fill" style="--value: 54%"></span></span>
+              <span class="bench__ratio">1.9&times;</span>
+            </li>
+            <li class="bench__row reveal">
+              <div class="bench__meta">
+                <span class="bench__task">Topaz Video AI</span>
+                <span class="bench__note">Upscaling</span>
+              </div>
+              <span class="bench__track bench__bar" data-fill="46%"><span class="bench__fill" style="--value: 46%"></span></span>
+              <span class="bench__ratio">1.6&times;</span>
+            </li>
+          </ul>
+        </div>
+
+        <p class="fineprint reveal">Apple-published “up to” comparisons, not independent lab tests. M4 Max configuration: 16&#8209;core CPU, 40&#8209;core GPU. M1 Max configuration: 10&#8209;core CPU, 32&#8209;core GPU. Real-world performance depends on workload, configuration, and thermal conditions. Sources listed in the footer.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         05 — Armor
+    ============================================================= -->
+    <section class="section armor" id="armor" aria-labelledby="armor-title">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <p class="label"><span class="label__no">05</span> Armor</p>
+          <h2 class="h2" id="armor-title">2.15&nbsp;kg of <em>quiet</em>.</h2>
+          <p class="section__note">Space Black anodized aluminum, a 1.68&nbsp;cm hinge, and a finish that keeps the light where it belongs.</p>
+        </div>
+
+        <div class="gallery">
+          <figure class="gallery__card reveal">
+            <div class="gallery__media">
+              <picture>
+                <source type="image/webp" srcset="assets/images/keyboard-560.webp 560w, assets/images/keyboard-900.webp 900w" sizes="(min-width: 1000px) 30vw, 92vw">
+                <img src="assets/images/keyboard.jpg" alt="Close crop of a space-black MacBook Pro keyboard, with the lid edge cutting diagonally across the frame and cool blue light tracing the keys." width="1100" height="820" loading="lazy" decoding="async">
+              </picture>
+              <span class="gallery__index" aria-hidden="true">01</span>
+
+              <!-- Interactive Pin: Armor 1 -->
+              <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-armor-1" aria-label="Inspect Input Reticle: Backlit Magic Keyboard and Touch ID" data-pin-id="armor-1" style="--pin-top: 44%; --pin-left: 54%;">
+                <span class="pin__target" aria-hidden="true">
+                  <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                    <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                    <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                    <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                    <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                  </svg>
+                  <span class="pin__dot"></span>
+                </span>
+                <div class="pin__tooltip spec-card" id="pin-callout-armor-1" role="tooltip">
+                  <div class="pin__callout-header">
+                    <span class="pin__badge">ARMOR // 01</span>
+                    <span class="pin__status"><span class="pin__status-pulse"></span>LOCKED</span>
+                  </div>
+                  <h4 class="pin__title">Touch ID &amp; Scissor Mechanism</h4>
+                  <p class="pin__spec">Full-height function row · Secure Enclave AES-256 · 1.0&nbsp;mm travel · Ambient light sensor</p>
+                </div>
+              </button>
+            </div>
+            <figcaption class="gallery__cap">
+              <div>
+                <h3 class="gallery__title">The keys disappear.</h3>
+                <p>Backlit Magic Keyboard with Touch ID. Black keycaps on black aluminum, lit just enough to find the right key at 03:00.</p>
+              </div>
+              <span class="gallery__tag">Input / Detail</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery__card reveal">
+            <div class="gallery__media gallery__media--lid">
+              <picture>
+                <source type="image/webp" srcset="assets/images/lid-560.webp 560w, assets/images/lid-900.webp 900w" sizes="(min-width: 1000px) 30vw, 92vw">
+                <img src="assets/images/lid.jpg" alt="Close crop of the lid of a closed blue-lit MacBook Pro, with the Apple logo appearing as a dark silhouette against the anodized surface." width="900" height="760" loading="lazy" decoding="async">
+              </picture>
+              <span class="gallery__index" aria-hidden="true">02</span>
+
+              <!-- Interactive Pin: Armor 2 -->
+              <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-armor-2" aria-label="Inspect Finish Reticle: Space Black Anodization" data-pin-id="armor-2" style="--pin-top: 48%; --pin-left: 48%;">
+                <span class="pin__target" aria-hidden="true">
+                  <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                    <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                    <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                    <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                    <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                  </svg>
+                  <span class="pin__dot"></span>
+                </span>
+                <div class="pin__tooltip spec-card" id="pin-callout-armor-2" role="tooltip">
+                  <div class="pin__callout-header">
+                    <span class="pin__badge">ARMOR // 02</span>
+                    <span class="pin__status"><span class="pin__status-pulse"></span>LOCKED</span>
+                  </div>
+                  <h4 class="pin__title">Space Black Enclosure</h4>
+                  <p class="pin__spec">Chemical anodization seal · Nano-scale oxide surface repels fingerprints · 100% recycled aluminum unibody</p>
+                </div>
+              </button>
+            </div>
+            <figcaption class="gallery__cap">
+              <div>
+                <h3 class="gallery__title">The mark, in negative.</h3>
+                <p>Space Black anodized aluminum. No gloss, no chrome, no reflection where it does not help. The logo reads as a shadow.</p>
+              </div>
+              <span class="gallery__tag">Finish / Detail</span>
+            </figcaption>
+          </figure>
+
+          <figure class="gallery__card reveal">
+            <div class="gallery__media">
+              <picture>
+                <source type="image/webp" srcset="assets/images/edge-560.webp 560w, assets/images/edge-900.webp 900w" sizes="(min-width: 1000px) 30vw, 92vw">
+                <img src="assets/images/edge.jpg" alt="Close crop of the front edge and keyboard of a space-black MacBook Pro, with a bright rim of blue light along the chassis and keys fading into shadow." width="1100" height="760" loading="lazy" decoding="async">
+              </picture>
+              <span class="gallery__index" aria-hidden="true">03</span>
+
+              <!-- Interactive Pin: Armor 3 -->
+              <button class="pin" type="button" aria-expanded="false" aria-controls="pin-callout-armor-3" aria-label="Inspect Chassis Reticle: 1.68 cm Unibody Profile" data-pin-id="armor-3" style="--pin-top: 50%; --pin-left: 64%;">
+                <span class="pin__target" aria-hidden="true">
+                  <svg class="pin__reticle" viewBox="0 0 32 32" focusable="false">
+                    <circle class="pin__pulse" cx="16" cy="16" r="10" />
+                    <path class="pin__bracket" d="M6 12 V6 H12 M20 6 H26 V12 M26 20 V26 H20 M12 26 H6 V20" />
+                    <line class="pin__cross" x1="16" y1="11" x2="16" y2="21" />
+                    <line class="pin__cross" x1="11" y1="16" x2="21" y2="16" />
+                  </svg>
+                  <span class="pin__dot"></span>
+                </span>
+                <div class="pin__tooltip spec-card" id="pin-callout-armor-3" role="tooltip">
+                  <div class="pin__callout-header">
+                    <span class="pin__badge">ARMOR // 03</span>
+                    <span class="pin__status"><span class="pin__status-pulse"></span>LOCKED</span>
+                  </div>
+                  <h4 class="pin__title">1.68&nbsp;cm Unibody Profile</h4>
+                  <p class="pin__spec">1.68&nbsp;cm thin · 2.15&nbsp;kg total weight · 100&nbsp;Wh battery · Up to 21 hours continuous playback</p>
+                </div>
+              </button>
+            </div>
+            <figcaption class="gallery__cap">
+              <div>
+                <h3 class="gallery__title">A 1.68&nbsp;cm edge.</h3>
+                <p>Thin enough to carry under one arm. Strong enough to run a 40&#8209;core GPU, three Thunderbolt 5 ports, and a 100&nbsp;Wh battery.</p>
+              </div>
+              <span class="gallery__tag">Chassis / Detail</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <dl class="armor__strip reveal">
+          <div><dt>Display</dt><dd>16.2″ Liquid Retina XDR</dd></div>
+          <div><dt>Peak HDR</dt><dd>1,600&nbsp;nits</dd></div>
+          <div><dt>Camera</dt><dd>12&nbsp;MP Center Stage</dd></div>
+          <div><dt>Audio</dt><dd>Six speakers · Spatial Audio</dd></div>
+          <div><dt>Finish</dt><dd>Space Black / Silver</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         06 — Spec sheet
+    ============================================================= -->
+    <section class="section specs" id="specs" aria-labelledby="specs-title">
+      <div class="wrap">
+        <div class="section__head specs__head reveal">
+          <div>
+            <p class="label"><span class="label__no">06</span> Spec sheet</p>
+            <h2 class="h2" id="specs-title">Everything, <em>on record</em>.</h2>
+            <p class="section__note">16&#8209;inch MacBook Pro with M4 Max. Launch configuration, October 2024.</p>
+          </div>
+          <button class="btn btn--ghost specs__print" type="button" id="print-specs">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-print"/></svg>
+            <span>Print / Save PDF</span>
+          </button>
+        </div>
+
+        <dl class="spec-table reveal">
+          <div class="spec-table__row">
+            <dt>Model</dt>
+            <dd>MacBook Pro (16&#8209;inch, 2024)</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Chip</dt>
+            <dd>Apple M4 Max — up to 16&#8209;core CPU (12&nbsp;performance + 4&nbsp;efficiency), up to 40&#8209;core GPU, 16&#8209;core Neural Engine, hardware-accelerated ray tracing</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Display</dt>
+            <dd>16.2&#8209;inch Liquid Retina XDR, 3456&nbsp;&times;&nbsp;2234 at 254&nbsp;ppi, ProMotion up to 120&nbsp;Hz, 1,000,000:1 contrast, 1,000&nbsp;nits sustained / 1,600&nbsp;nits peak HDR, optional nano-texture glass</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Memory</dt>
+            <dd>36&nbsp;GB unified memory standard; configurable up to 128&nbsp;GB</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Storage</dt>
+            <dd>1&nbsp;TB SSD standard; configurable up to 8&nbsp;TB</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Battery</dt>
+            <dd>Up to 21&nbsp;hours video playback, up to 14&nbsp;hours wireless web; 100&nbsp;Wh lithium-polymer</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Power</dt>
+            <dd>140&nbsp;W USB-C power adapter; MagSafe 3 charging</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Ports</dt>
+            <dd>Three Thunderbolt 5 (USB-C) at up to 120&nbsp;Gb/s, HDMI, SDXC card slot, MagSafe 3, 3.5&nbsp;mm headphone jack</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Camera</dt>
+            <dd>12&nbsp;MP Center Stage camera with Desk View</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Audio</dt>
+            <dd>Six-speaker system with force-cancelling woofers, Spatial Audio, three-mic array with directional beamforming</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Keyboard</dt>
+            <dd>Backlit Magic Keyboard with Touch ID; Force Touch trackpad</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Wireless</dt>
+            <dd>Wi-Fi 6E (802.11ax), Bluetooth 5.3</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Size &amp; weight</dt>
+            <dd>35.57&nbsp;cm wide &times;&nbsp;24.81&nbsp;cm deep &times;&nbsp;1.68&nbsp;cm high; 2.15&nbsp;kg</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Finish</dt>
+            <dd>Space Black or Silver</dd>
+          </div>
+          <div class="spec-table__row">
+            <dt>Price</dt>
+            <dd>From $3,499 (U.S.) — 14&#8209;core CPU, 32&#8209;core GPU, 36&nbsp;GB unified memory, 1&nbsp;TB SSD</dd>
+          </div>
+        </dl>
+
+        <p class="fineprint reveal">Launch specifications and U.S. pricing. Configurations, availability, and battery figures vary by region and use. Battery life depends on configuration and workload. See Apple’s official specifications for the definitive record.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         07 — Models
+    ============================================================= -->
+    <section class="section models" id="models" aria-labelledby="models-title">
+      <div class="wrap">
+        <div class="section__head reveal">
+          <p class="label"><span class="label__no">07</span> Choose your weapon</p>
+          <h2 class="h2" id="models-title">Pick your <em>weight class</em>.</h2>
+          <p class="section__note">Three chips, three temperaments. All of them MacBook Pro. Only one of them is the Batcomputer.</p>
+        </div>
+
+        <div class="models__grid">
+          <article class="model reveal">
+            <p class="model__kicker">M4 <span>/ The scout</span></p>
+            <h3 class="model__name">14&#8209;inch<br>MacBook Pro</h3>
+            <p class="model__price">From $1,599</p>
+            <p class="model__copy">For daylight work that ends before midnight. Writing, research, photo editing, and code that does not need a render farm.</p>
+            <dl class="model__specs">
+              <div><dt>CPU</dt><dd>10&#8209;core</dd></div>
+              <div><dt>GPU</dt><dd>10&#8209;core</dd></div>
+              <div><dt>Bandwidth</dt><dd>120&nbsp;GB/s</dd></div>
+              <div><dt>Memory</dt><dd>Up to 32&nbsp;GB</dd></div>
+            </dl>
+            <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+              Configure M4 at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </article>
+
+          <article class="model reveal">
+            <p class="model__kicker">M4 Pro <span>/ The operative</span></p>
+            <h3 class="model__name">14-&nbsp;or&nbsp;16&#8209;inch<br>MacBook Pro</h3>
+            <p class="model__price">From $1,999</p>
+            <p class="model__copy">For the work that follows you home. 4K multicam, large Xcode builds, 3D scenes, and local models that need more room.</p>
+            <dl class="model__specs">
+              <div><dt>CPU</dt><dd>Up to 14&#8209;core</dd></div>
+              <div><dt>GPU</dt><dd>Up to 20&#8209;core</dd></div>
+              <div><dt>Bandwidth</dt><dd>273&nbsp;GB/s</dd></div>
+              <div><dt>Memory</dt><dd>Up to 64&nbsp;GB</dd></div>
+            </dl>
+            <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+              Configure M4 Pro at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </article>
+
+          <article class="model model--max reveal">
+            <p class="model__kicker">M4 Max <span>/ The Batcomputer</span></p>
+            <h3 class="model__name">16&#8209;inch<br>MacBook Pro</h3>
+            <p class="model__price">From $3,499</p>
+            <p class="model__copy">For the hours when the city goes quiet. 8K, simulation, training, and every heavy application open at once.</p>
+            <dl class="model__specs">
+              <div><dt>CPU</dt><dd>Up to 16&#8209;core</dd></div>
+              <div><dt>GPU</dt><dd>Up to 40&#8209;core</dd></div>
+              <div><dt>Bandwidth</dt><dd>546&nbsp;GB/s</dd></div>
+              <div><dt>Memory</dt><dd>Up to 128&nbsp;GB</dd></div>
+            </dl>
+            <a class="model__link" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+              Configure M4 Max at Apple <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg><span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </article>
+        </div>
+
+        <div class="outro reveal">
+          <svg class="outro__bat" aria-hidden="true" focusable="false"><use href="#bat-mark"/></svg>
+          <p class="outro__kicker">End of file / M4</p>
+          <p class="outro__title">The night is <em>yours</em>.</p>
+          <div class="outro__actions">
+            <a class="btn btn--solid" href="https://www.apple.com/macbook-pro/" target="_blank" rel="noopener noreferrer">
+              <span>Configure M4 Flagship at Apple</span>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-external"/></svg>
+              <span class="sr-only"> (opens in a new tab)</span>
+            </a>
+            <a class="btn btn--ghost" href="#specs">View the Spec Sheet</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       Wayne Applied Sciences — Batcomputer Telemetry HUD Tray
+  ============================================================= -->
+  <aside id="telemetry-hud" class="hud-tray" aria-label="Wayne Applied Sciences Telemetry HUD">
+    <!-- Collapsed Status Bar Trigger -->
+    <button class="hud-tray__toggle" id="telemetry-toggle" type="button" aria-expanded="false" aria-controls="telemetry-panel">
+      <span class="hud-tray__pulse" aria-hidden="true"></span>
+      <span class="hud-tray__sec" id="telemetry-sec">SEC: 01 HERO</span>
+      <span class="hud-tray__sep" aria-hidden="true">/</span>
+      <span class="hud-tray__scroll" id="telemetry-scroll">00%</span>
+      <span class="hud-tray__sep" aria-hidden="true">/</span>
+      <span class="hud-tray__time" id="telemetry-time">Gotham 00:00</span>
+      <span class="hud-tray__sep" aria-hidden="true">/</span>
+      <span class="hud-tray__audio" id="telemetry-audio-ind">Audio: Off</span>
+      <span class="hud-tray__chevron" aria-hidden="true">▲</span>
+      <span class="sr-only"> — Toggle Batcomputer Telemetry HUD</span>
+    </button>
+
+    <!-- Expanded Diagnostic Panel -->
+    <div class="hud-panel hud-tray__panel hud-diagnostic" id="telemetry-panel" hidden>
+      <div class="hud-panel__header">
+        <div class="hud-panel__title">
+          <span class="hud-panel__bat" aria-hidden="true">❖</span>
+          <span>WAYNE APPLIED SCIENCES // HUD-M4</span>
+        </div>
+        <button class="hud-panel__close" id="telemetry-close" type="button" aria-label="Close Telemetry HUD">
+          <span>ESC ✕</span>
+        </button>
+      </div>
+
+      <div class="hud-panel__body">
+        <!-- CPU Load Waveform -->
+        <div class="hud-gauge">
+          <div class="hud-gauge__header">
+            <span>CPU (16-Core) Load</span>
+            <span class="hud-gauge__val" id="telemetry-cpu-val">28%</span>
+          </div>
+          <canvas id="telemetry-cpu-canvas" width="260" height="32" role="img" aria-label="Simulated CPU utilization waveform"></canvas>
+        </div>
+
+        <!-- GPU Ray Tracing Waveform -->
+        <div class="hud-gauge">
+          <div class="hud-gauge__header">
+            <span>GPU (40-Core) Ray Trace</span>
+            <span class="hud-gauge__val" id="telemetry-gpu-val">64%</span>
+          </div>
+          <canvas id="telemetry-gpu-canvas" width="260" height="32" role="img" aria-label="Simulated GPU ray trace waveform"></canvas>
+        </div>
+
+        <!-- Memory Stream Flow -->
+        <div class="hud-gauge">
+          <div class="hud-gauge__header">
+            <span>Memory Bandwidth Stream</span>
+            <span class="hud-gauge__val">546&nbsp;GB/s</span>
+          </div>
+          <div class="telemetry-flow" aria-hidden="true">
+            <div class="telemetry-flow__rail">
+              <span class="telemetry-flow__packet"></span>
+              <span class="telemetry-flow__packet"></span>
+              <span class="telemetry-flow__packet"></span>
+              <span class="telemetry-flow__packet"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Workload Live Sync -->
+        <div class="hud-metric">
+          <span class="hud-subhead">Active Profile Fit</span>
+          <p class="hud-workload-name" id="telemetry-workload-name">M4 (Everyday)</p>
+        </div>
+
+        <!-- Tactical Audio Toggle -->
+        <div class="hud-metric hud-metric--audio">
+          <span class="hud-subhead">Tactical Audio Synth</span>
+          <button class="hud-audio-btn" id="audio-toggle-hud" data-audio-toggle type="button" aria-pressed="false" aria-label="Audio: Off, toggle tactical audio synthesis">
+            <span class="hud-audio-btn__dot" aria-hidden="true"></span>
+            <span class="hud-audio-btn__label">Audio: Off</span>
+          </button>
+        </div>
+
+        <!-- Quick Nav Shortcuts -->
+        <div class="hud-quicknav">
+          <span class="hud-subhead">Jump Coordinates</span>
+          <div class="hud-quicknav__links">
+            <a href="#hero">01 HERO</a>
+            <a href="#machine">02 MACHINE</a>
+            <a href="#silicon">03 SILICON</a>
+            <a href="#proof">04 PROOF</a>
+            <a href="#armor">05 ARMOR</a>
+            <a href="#specs">06 SPECS</a>
+            <a href="#models">07 MODELS</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <div class="footer__lead">
+          <p class="footer__eyebrow">A concept study in obsidian, ice, and signal red.</p>
+          <p class="footer__statement">Built for the hours when the city goes quiet.</p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Footer">
+          <div class="footer__col">
+            <h2 class="footer__title">Index</h2>
+            <ul>
+              <li><a href="#machine">The Machine</a></li>
+              <li><a href="#silicon">Silicon</a></li>
+              <li><a href="#proof">Proof</a></li>
+              <li><a href="#armor">Armor</a></li>
+              <li><a href="#specs">Specs</a></li>
+              <li><a href="#models">Models</a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <h2 class="footer__title">Sources</h2>
+            <ul>
+              <li><a href="https://www.apple.com/newsroom/2024/10/new-macbook-pro-features-m4-family-of-chips-and-apple-intelligence/" target="_blank" rel="noopener noreferrer">Apple Newsroom — MacBook Pro launch<span class="sr-only"> (opens in a new tab)</span></a></li>
+              <li><a href="https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/" target="_blank" rel="noopener noreferrer">Apple Newsroom — M4 Pro and M4 Max<span class="sr-only"> (opens in a new tab)</span></a></li>
+              <li><a href="https://support.apple.com/en-us/121554" target="_blank" rel="noopener noreferrer">Apple Support — 16&#8209;inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
+              <li><a href="https://support.apple.com/en-us/121553" target="_blank" rel="noopener noreferrer">Apple Support — 14&#8209;inch specs<span class="sr-only"> (opens in a new tab)</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <p class="footer__word" aria-hidden="true">After Dark</p>
+
+      <p class="footer__disclaimer">Independent concept study. Not affiliated with, endorsed by, or sponsored by Apple Inc. Apple, MacBook Pro, M4, M4 Pro, M4 Max, Liquid Retina XDR, ProMotion, MagSafe, Thunderbolt, and Center Stage are trademarks of Apple Inc. Batman, Gotham, and related marks are trademarks of DC Comics. This is a non-commercial fan concept. Photography: original images provided by the project author. Specifications and performance claims are sourced from Apple’s October 2024 launch materials; benchmark figures are Apple-published comparisons, not independent tests.</p>
+
+      <div class="footer__bottom">
+        <p>© <span id="year">2026</span> <span translate="no">After Dark</span>. Concept study.</p>
+        <p class="footer__colophon">Set in Instrument Sans, Instrument Serif &amp; Geist Mono. Built as static HTML, CSS &amp; JS.</p>
+        <button class="motion-toggle" type="button" id="motion-toggle" aria-pressed="true">
+          <span class="motion-toggle__dot" aria-hidden="true"></span>
+          <span class="motion-toggle__label">Motion On</span>
+        </button>
+        <button class="motion-toggle footer__audio" data-audio-toggle type="button" aria-pressed="false" aria-label="Audio: Off, toggle tactical sound">
+          <span class="motion-toggle__dot" aria-hidden="true"></span>
+          <span class="hud-audio-btn__label">Audio: Off</span>
+        </button>
+        <a class="footer__top-link" href="#top">Back to Top <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/main.js" defer></script>
+</body>
+</html>

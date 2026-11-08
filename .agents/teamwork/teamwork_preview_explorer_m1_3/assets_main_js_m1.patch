@@ -1,0 +1,109 @@
+diff --git a/assets/main.js b/assets/main.js
+index 40f3534..f38a592 100644
+--- a/assets/main.js
++++ b/assets/main.js
+@@ -257,13 +257,23 @@
+     let mx = 74;
+     let my = 24;
+     let queued = false;
++    let heroRect = hero.getBoundingClientRect();
++
++    const updateHeroRect = () => {
++      heroRect = hero.getBoundingClientRect();
++    };
++
++    window.addEventListener('resize', updateHeroRect, { passive: true });
++    window.addEventListener('scroll', updateHeroRect, { passive: true });
++    hero.addEventListener('pointerenter', updateHeroRect, { passive: true });
+ 
+     hero.addEventListener('pointermove', (event) => {
+       if (!motionEnabled) return;
+ 
+-      const rect = hero.getBoundingClientRect();
+-      mx = Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100));
+-      my = Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100));
++      const width = heroRect.width || 1;
++      const height = heroRect.height || 1;
++      mx = Math.max(0, Math.min(100, ((event.clientX - heroRect.left) / width) * 100));
++      my = Math.max(0, Math.min(100, ((event.clientY - heroRect.top) / height) * 100));
+ 
+       if (queued) return;
+       queued = true;
+@@ -296,13 +306,13 @@
+       name: 'M4 Pro',
+       model: '14- or 16-inch MacBook Pro with M4 Pro',
+       copy:
+-        'Up to 14 CPU cores, up to 20 GPU cores, and 273GB/s of bandwidth give 4K multicam, large Xcode builds, 3D scenes, and local models room to breathe.',
++        'Up to 14 CPU cores, up to 20 GPU cores, and 273\u00A0GB/s of bandwidth give 4K multicam, large Xcode builds, 3D scenes, and local models room to breathe.',
+     },
+     extreme: {
+       name: 'M4 Max',
+       model: '16-inch MacBook Pro with M4 Max',
+       copy:
+-        'Up to 16 CPU cores, up to 40 GPU cores, and 546GB/s of unified memory bandwidth. Built for 8K, simulation, model training, and every heavy app open at once.',
++        'Up to 16 CPU cores, up to 40 GPU cores, and 546\u00A0GB/s of unified memory bandwidth. Built for 8K, simulation, model training, and every heavy app open at once.',
+     },
+   };
+ 
+@@ -314,15 +324,49 @@
+     if (fitCopy) fitCopy.textContent = fit.copy;
+   };
+ 
++  const syncWorkloadToUrl = (value) => {
++    try {
++      const url = new URL(window.location.href);
++      url.searchParams.set('workload', value);
++      window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
++    } catch {
++      window.history.replaceState(null, '', `?workload=${encodeURIComponent(value)}`);
++    }
++  };
++
+   if (workloadInputs.length) {
+     workloadInputs.forEach((input) => {
+       input.addEventListener('change', () => {
+-        if (input.checked) updateFit(input.value);
++        if (input.checked) {
++          updateFit(input.value);
++          syncWorkloadToUrl(input.value);
++        }
+       });
+     });
+ 
+-    const checked = workloadInputs.find((input) => input.checked);
+-    if (checked) updateFit(checked.value);
++    let initialWorkload = null;
++    try {
++      const params = new URLSearchParams(window.location.search);
++      const requested = params.get('workload');
++      if (requested && Object.prototype.hasOwnProperty.call(fits, requested)) {
++        initialWorkload = requested;
++      }
++    } catch {
++      initialWorkload = null;
++    }
++
++    if (initialWorkload) {
++      const targetInput = workloadInputs.find((input) => input.value === initialWorkload);
++      if (targetInput) {
++        workloadInputs.forEach((input) => {
++          input.checked = input === targetInput;
++        });
++        updateFit(initialWorkload);
++      }
++    } else {
++      const checked = workloadInputs.find((input) => input.checked);
++      if (checked) updateFit(checked.value);
++    }
+   }
+ 
+   /* ----------------------------------------------------------------------
+@@ -499,7 +543,7 @@
+       label('CPU · 16 CORES', cpu.x, cpu.y - 8, 'rgba(230,237,241,0.58)', Math.max(8, width * 0.0058));
+       label('GPU · 40 CORES', gpu.x, gpu.y - 8, 'rgba(230,237,241,0.58)', Math.max(8, width * 0.0058));
+       label('NEURAL ENGINE · 16 CORES', ne.x, ne.y - 8, 'rgba(225,6,0,0.8)', Math.max(8, width * 0.0058));
+-      label('UNIFIED MEMORY FABRIC · 546 GB/s', mem.x, mem.y - 8, 'rgba(230,237,241,0.48)', Math.max(8, width * 0.0058));
++      label('UNIFIED MEMORY FABRIC · 546\u00A0GB/s', mem.x, mem.y - 8, 'rgba(230,237,241,0.48)', Math.max(8, width * 0.0058));
+ 
+       // CPU cluster: 4 × 4
+       const cpuGap = Math.max(3, cpu.w * 0.018);
