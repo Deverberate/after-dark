@@ -23,7 +23,7 @@
   <link rel="preload" href="assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="assets/styles.css?v=2.7">
+  <link rel="stylesheet" href="assets/styles.css?v=2.8">
   <script>document.documentElement.classList.replace('no-js', 'js');</script>
 </head>
 <body>
@@ -107,81 +107,6 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <!-- ============================================================
-         00 — Prologue: Comic Scrollytelling Rooftop Descent
-    ============================================================= -->
-    <section class="prologue" id="prologue" aria-label="Prologue: Gotham Rooftop Descent">
-      <div class="prologue__sticky" id="prologue-sticky">
-        <!-- Storm Clouds, Volumetric Bat-Signal, Lightning & Bats Canvas -->
-        <canvas id="prologue-canvas" class="prologue__canvas" role="img" aria-label="Animated stormy Gotham night sky with Bat-Signal projection, drifting clouds, and periodic lightning"></canvas>
-
-        <!-- Sky Lightning Flash Overlay -->
-        <div class="prologue__flash" id="prologue-flash" aria-hidden="true"></div>
-
-        <!-- Distant City Rooftops Parallax -->
-        <div class="prologue__skyline" aria-hidden="true">
-          <svg class="prologue__skyline-svg" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice" focusable="false">
-            <defs>
-              <linearGradient id="prologue-sky-grad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#0c1017" stop-opacity="0.9"/>
-                <stop offset="60%" stop-color="#05070a" stop-opacity="0.95"/>
-                <stop offset="100%" stop-color="#010203" stop-opacity="1"/>
-              </linearGradient>
-            </defs>
-            <path d="M0 600 L0 420 L60 420 L70 330 L80 330 L85 240 L90 240 L92 160 L95 160 L97 90 L100 160 L103 160 L105 240 L110 240 L115 330 L125 330 L135 420 L220 420 L230 360 L280 360 L285 290 L295 290 L300 360 L360 360 L370 430 L440 430 L450 340 L490 340 L500 430 L580 430 L590 280 L600 200 L605 100 L610 200 L620 280 L640 430 L720 430 L730 330 L780 330 L790 430 L870 430 L880 310 L890 230 L895 110 L900 230 L910 310 L930 430 L1020 430 L1030 350 L1080 350 L1090 430 L1180 430 L1190 260 L1200 170 L1205 60 L1210 170 L1220 260 L1240 430 L1330 430 L1340 320 L1390 320 L1400 430 L1490 430 L1500 270 L1510 190 L1515 110 L1520 190 L1530 270 L1550 430 L1600 430 L1600 600 Z" fill="url(#prologue-sky-grad)"/>
-            <circle cx="97" cy="90" r="3" fill="#e10600" opacity="0.8"/>
-            <circle cx="605" cy="100" r="3" fill="#e10600" opacity="0.8"/>
-            <circle cx="1205" cy="60" r="3" fill="#e10600" opacity="0.8"/>
-          </svg>
-        </div>
-
-        <!-- Stage 1 Figure: Watchtower Gargoyle Crouch (Capullo Reference) -->
-        <div class="prologue__figure prologue__figure--crouch is-visible" id="prologue-figure-crouch" aria-hidden="true">
-          <!-- Cast Shadow of His Body on the Rooftop / Gargoyle -->
-          <div class="prologue__cast-shadow" id="p-shadow-crouch" aria-hidden="true">
-            <img class="prologue__shadow-art" src="assets/images/stage1-capullo-gargoyle.png" alt="" />
-          </div>
-          <!-- Clear Batman Body with Chiaroscuro Face/Torso Lighting -->
-          <div class="prologue__figure-body" id="p-body-crouch">
-            <img class="prologue__art prologue__art--crouch" id="p-art-crouch" src="assets/images/stage1-capullo-gargoyle.png" alt="" />
-            <div class="prologue__chiaroscuro" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <!-- Stage 2 Figure: Standing Apex & Aerodynamic Billowing Wind Cape (Finch Reference) -->
-        <div class="prologue__figure prologue__figure--stand" id="prologue-figure-stand" aria-hidden="true">
-          <!-- Cast Shadow of His Body on the Rooftop / Apex -->
-          <div class="prologue__cast-shadow" id="p-shadow-stand" aria-hidden="true">
-            <img class="prologue__shadow-art" src="assets/images/stage2-finch-perch.png" alt="" />
-          </div>
-          <!-- Clear Batman Body with Chiaroscuro Face/Torso Lighting -->
-          <div class="prologue__figure-body" id="p-body-stand">
-            <!-- Dynamic Billowing Wind Cape Canvas -->
-            <canvas id="prologue-cape-canvas" class="prologue__cape-canvas"></canvas>
-            <img class="prologue__art prologue__art--stand" id="p-art-stand" src="assets/images/stage2-finch-perch.png" alt="" />
-            <div class="prologue__chiaroscuro" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <!-- Tactical HUD Controls & Skip Button -->
-        <div class="prologue__hud">
-          <div class="prologue__telemetry">
-            <span class="prologue__telemetry-dot" aria-hidden="true"></span>
-            <span class="prologue__telemetry-label" id="prologue-status">GOTHAM RECON // ELEVATION 412M</span>
-          </div>
-          <div class="prologue__indicator">
-            <span class="prologue__indicator-step is-active" id="p-step-1">01 // WATCHTOWER</span>
-            <span class="prologue__indicator-step" id="p-step-2">02 // APEX</span>
-            <span class="prologue__indicator-step" id="p-step-3">03 // DESCENT</span>
-          </div>
-          <button class="prologue__skip" id="prologue-skip" type="button" aria-label="DESCEND TO CONSOLE — Skip prologue and proceed to Hero console">
-            <span>DESCEND TO CONSOLE</span>
-            <span class="prologue__skip-icon" aria-hidden="true">↓</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
     <!-- ============================================================
          01 — Hero (Arkham City Menu Vista)
     ============================================================= -->
@@ -1377,6 +1302,6 @@
     </div>
   </footer>
 
-  <script src="assets/main.js?v=2.7" defer></script>
+  <script src="assets/main.js?v=2.8" defer></script>
 </body>
 </html>
